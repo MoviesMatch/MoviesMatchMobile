@@ -12,5 +12,10 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+
     </style>
+
+    <style name="Button.MoviesMatch" parent="Theme.AppCompat">
+        <item name="colorPrimary">@color/mv_darkRed</item>
+     </style>
 </resources>
