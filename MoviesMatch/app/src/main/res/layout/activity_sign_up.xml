@@ -33,7 +33,6 @@
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/editTextFirstName" />
 
-    />
 
     <EditText
         android:id="@+id/editTextEmail"
@@ -47,7 +46,6 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/editTextLastName" />
-    />
 
     <Spinner
         android:id="@+id/spinnerCountry"
@@ -59,7 +57,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
-    />
+
 
 
     <EditText
@@ -75,7 +73,6 @@
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/spinnerCountry" />
 
-    />
 
     <EditText
         android:id="@+id/editTextConfirmPassword"
@@ -89,7 +86,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
-    />
+
 
     <Button
         android:id="@+id/buttonRegister"
@@ -102,7 +99,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/editTextConfirmPassword" />
-    />
+    
 
     <ImageView
         android:id="@+id/imageViewLogo"
