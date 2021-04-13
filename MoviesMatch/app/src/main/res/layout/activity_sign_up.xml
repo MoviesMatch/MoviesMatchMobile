@@ -7,6 +7,21 @@
     tools:context=".SignUpActivity">
 
 
+    <TextView
+        android:id="@+id/textViewCreateAcc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:text="Create your account"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@id/guideline2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewLogo" />
+
     <EditText
         android:id="@+id/editTextFirstName"
         android:layout_width="wrap_content"
@@ -14,11 +29,14 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:hint="Your First Name"
+        android:background="@drawable/custom_rectangle"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
         app:layout_constraintBottom_toTopOf="@+id/editTextLastName"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewLogo" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewCreateAcc" />
 
     <EditText
         android:id="@+id/editTextLastName"
@@ -27,6 +45,9 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:hint="Your Last Name"
+        android:background="@drawable/custom_rectangle"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
         app:layout_constraintBottom_toTopOf="@+id/editTextEmail"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintHorizontal_bias="0.5"
@@ -41,6 +62,9 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:hint="Your Email"
+        android:background="@drawable/custom_rectangle"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
         app:layout_constraintBottom_toTopOf="@+id/spinnerCountry"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintHorizontal_bias="0.5"
@@ -52,6 +76,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:entries="@android:array/imProtocols"
+        android:background="@drawable/custom_rectangle"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
         app:layout_constraintBottom_toTopOf="@+id/editTextPassword"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintHorizontal_bias="0.5"
@@ -65,8 +92,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Your password"
+        android:hint="Your Password"
         android:inputType="textPassword"
+        android:background="@drawable/custom_rectangle"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
         app:layout_constraintBottom_toTopOf="@+id/editTextConfirmPassword"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintHorizontal_bias="0.5"
@@ -79,8 +109,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Confirm Your password"
+        android:hint="Confirm Your Password"
         android:inputType="textPassword"
+        android:background="@drawable/custom_rectangle"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
         app:layout_constraintBottom_toTopOf="@+id/buttonRegister"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintHorizontal_bias="0.5"
