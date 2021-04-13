@@ -50,7 +50,7 @@ public class BrowseActivity extends AppCompatActivity {
         groups.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(BrowseActivity.this, GroupsActivity.class));
+                startActivity(new Intent(BrowseActivity.this, MainActivity.class));
             }
         });
     }
