@@ -26,6 +26,7 @@ public class BrowseActivity extends AppCompatActivity {
         login();
         signup();
         groups();
+        swipe();
     }
 
     private void login(){
@@ -51,6 +52,15 @@ public class BrowseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(BrowseActivity.this, GroupsActivity.class));
+            }
+        });
+    }
+
+    private void swipe(){
+        swipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(BrowseActivity.this, SwipeActivity.class));
             }
         });
     }
