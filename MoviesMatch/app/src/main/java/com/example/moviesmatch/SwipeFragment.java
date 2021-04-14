@@ -3,12 +3,14 @@ package com.example.moviesmatch;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
@@ -16,25 +18,34 @@ import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 import java.util.ArrayList;
 
 public class SwipeFragment extends Fragment {
-    private ArrayList<String> al;
-    private ArrayAdapter<String> arrayAdapter;
+    private ArrayList<ImageView> al;
+    private SwipeAdapter arrayAdapter;
     private int i;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_swipe, container, false);
+        //TEMP hardcoded images
+        ImageView img1 = new ImageView(getContext());
+        ImageView img2 = new ImageView(getContext());
+        ImageView img3 = new ImageView(getContext());
+        ImageView img4 = new ImageView(getContext());
+        ImageView img5 = new ImageView(getContext());
+
+        img1.setImageResource(R.drawable.bob);
+        img2.setImageResource(R.drawable.bobdeux);
+        img3.setImageResource(R.drawable.bobtrois);
+        img4.setImageResource(R.drawable.ppexpress);
+        img5.setImageResource(R.drawable.myfairlady);
 
         al = new ArrayList<>();
-        al.add("php");
-        al.add("c");
-        al.add("python");
-        al.add("java");
-        al.add("html");
-        al.add("c++");
-        al.add("css");
-        al.add("javascript");
+        al.add(img1);
+        al.add(img2);
+        al.add(img3);
+        al.add(img4);
+        al.add(img5);
 
-        arrayAdapter = new ArrayAdapter<>(getContext(), R.layout.item, R.id.helloText, al);
+        arrayAdapter = new SwipeAdapter(getContext(), al);
 
         SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) view.findViewById(R.id.frame);
 
@@ -64,10 +75,7 @@ public class SwipeFragment extends Fragment {
             @Override
             public void onAdapterAboutToEmpty(int itemsInAdapter) {
                 // Ask for more data here
-                al.add("XML ".concat(String.valueOf(i)));
-                arrayAdapter.notifyDataSetChanged();
-                Log.d("LIST", "notified");
-                i++;
+
             }
 
             @Override
