@@ -6,12 +6,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         navSelectedItem();
         toolbarIconClicked();
 
+        //Fragment groups_fragment opened when MainActivity is called
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.frame,
                     new GroupsFragment()).commit();
@@ -39,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void toolbarIconClicked(){
+    //Event when clicked on hamburger icon
+    private void toolbarIconClicked() {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void navSelectedItem(){
+    //Events when clicked on the hamburger menu items to open fragments
+    private void navSelectedItem() {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -60,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
                     frag = new SettingsFragment();
                 } else if (itemId == R.id.donate) {
                     frag = new DonateFragment();
-                } else if (itemId == R.id.groups){
+                } else if (itemId == R.id.groups) {
                     frag = new GroupsFragment();
-                } else if (itemId == R.id.disconnect){
+                } else if (itemId == R.id.disconnect) {
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 }
 
