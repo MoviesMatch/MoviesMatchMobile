@@ -35,29 +35,45 @@
         android:id="@+id/buttonCreateGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create a group"
+        android:text="Create"
         android:theme="@style/Button.MoviesMatch"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextCreateGroup"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/editTextCreateGroup"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guidelineListViewBottom" />
+        app:layout_constraintTop_toBottomOf="@+id/guidelineListViewBottom"
+        app:layout_constraintBottom_toTopOf="@id/divider"/>
 
-    <TextView
-        android:id="@+id/textViewOr"
+    <EditText
+        android:id="@+id/editTextCreateGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Or"
-        android:textColor="@color/black"
-        android:textStyle="bold"
+        android:background="@drawable/custom_rectangle"
+        android:ems="5"
+        android:hint="Group name"
+        android:inputType="textPersonName"
+        android:paddingLeft="5dp"
+        android:textCursorDrawable="@drawable/color_cursor"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonCreateGroup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonCreateGroup" />
+        app:layout_constraintStart_toEndOf="@+id/buttonCreateGroup"
+        app:layout_constraintTop_toTopOf="@+id/buttonCreateGroup" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintTop_toBottomOf="@id/buttonCreateGroup"/>
 
     <Button
         android:id="@+id/buttonJoin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
         android:text="Join"
         android:theme="@style/Button.MoviesMatch"
         app:layout_constraintBottom_toBottomOf="@+id/editTextJoinCode"
@@ -78,10 +94,11 @@
         android:paddingLeft="5dp"
         android:textCursorDrawable="@drawable/color_cursor"
         android:textSize="22sp"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/buttonJoin"
-        app:layout_constraintTop_toBottomOf="@id/textViewOr" />
+        app:layout_constraintTop_toBottomOf="@id/divider"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineListViewTop"
