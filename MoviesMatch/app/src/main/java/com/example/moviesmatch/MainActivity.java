@@ -71,15 +71,20 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 }
 
-                if (frag != null) {
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.frame, frag);
-                    transaction.commit();
-                    drawerLayout.closeDrawers();
-                    return true;
-                }
-                return false;
+                return replaceFrag(frag);
+
             }
         });
+    }
+
+    public boolean replaceFrag( Fragment frag){
+        if (frag != null) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.frame, frag);
+            transaction.commit();
+            drawerLayout.closeDrawers();
+            return true;
+        }
+        return false;
     }
 }

@@ -62,7 +62,7 @@ public class BrowseActivity extends AppCompatActivity {
         swipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(BrowseActivity.this, SwipeActivity.class));
+                startActivity(new Intent(BrowseActivity.this, SwipeFragment.class));
             }
         });
     }

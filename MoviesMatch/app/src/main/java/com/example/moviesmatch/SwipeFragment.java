@@ -1,10 +1,13 @@
 package com.example.moviesmatch;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -12,17 +15,14 @@ import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
 
-public class SwipeActivity extends AppCompatActivity {
+public class SwipeFragment extends Fragment {
     private ArrayList<String> al;
     private ArrayAdapter<String> arrayAdapter;
     private int i;
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_swipe);
-
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_swipe, container, false);
 
         al = new ArrayList<>();
         al.add("php");
@@ -34,9 +34,9 @@ public class SwipeActivity extends AppCompatActivity {
         al.add("css");
         al.add("javascript");
 
-        arrayAdapter = new ArrayAdapter<>(this, R.layout.item, R.id.helloText, al);
+        arrayAdapter = new ArrayAdapter<>(getContext(), R.layout.item, R.id.helloText, al);
 
-        SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
+        SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) view.findViewById(R.id.frame);
 
         flingContainer.setAdapter(arrayAdapter);
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
@@ -53,12 +53,12 @@ public class SwipeActivity extends AppCompatActivity {
                 //Do something on the left!
                 //You also have access to the original object.
                 //If you want to use it just cast it (String) dataObject
-                Toast.makeText(SwipeActivity.this, "Left", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Left", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onRightCardExit(Object dataObject) {
-                Toast.makeText(SwipeActivity.this, "Right", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Right", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -76,9 +76,10 @@ public class SwipeActivity extends AppCompatActivity {
             }
 
 
-        }  );
+        });
 
 
-
+        return view;
     }
+
 }
