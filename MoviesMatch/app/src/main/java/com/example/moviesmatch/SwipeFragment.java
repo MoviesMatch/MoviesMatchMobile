@@ -82,12 +82,7 @@ public class SwipeFragment extends Fragment {
             public void onScroll(float v) {
 
             }
-
-
         });
-
-
         return view;
     }
-
 }

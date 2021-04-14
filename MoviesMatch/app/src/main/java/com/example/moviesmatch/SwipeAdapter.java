@@ -21,7 +21,7 @@ public class SwipeAdapter extends ArrayAdapter<ImageView> {
     private List<ImageView> moviesList = new ArrayList<>();
 
     public SwipeAdapter(@NonNull Context context, ArrayList<ImageView> list) {
-        super(context, 0 , list);
+        super(context, 0, list);
         mContext = context;
         moviesList = list;
     }
@@ -30,15 +30,13 @@ public class SwipeAdapter extends ArrayAdapter<ImageView> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View listItem = convertView;
-        if(listItem == null)
-            listItem = LayoutInflater.from(mContext).inflate(R.layout.item,parent,false);
+        if (listItem == null)
+            listItem = LayoutInflater.from(mContext).inflate(R.layout.item, parent, false);
 
         ImageView currentMovie = moviesList.get(position);
 
-        ImageView image = (ImageView)listItem.findViewById(R.id.image);
+        ImageView image = (ImageView) listItem.findViewById(R.id.image);
         image.setImageDrawable(currentMovie.getDrawable());
-
-
 
         return listItem;
     }
