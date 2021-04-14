@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 }
 
-                Toast.makeText(getApplicationContext(), menuItem.getTitle(), Toast.LENGTH_SHORT).show();
                 if (frag != null) {
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.frame, frag);
