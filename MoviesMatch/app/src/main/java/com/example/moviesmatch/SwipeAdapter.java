@@ -18,10 +18,11 @@ import java.util.List;
 public class SwipeAdapter extends ArrayAdapter<ImageView> {
 
     private Context mContext;
-    private List<ImageView> moviesList = new ArrayList<>();
+    private List<ImageView> moviesList;
 
     public SwipeAdapter(@NonNull Context context, ArrayList<ImageView> list) {
         super(context, 0, list);
+        moviesList = new ArrayList<>();
         mContext = context;
         moviesList = list;
     }
