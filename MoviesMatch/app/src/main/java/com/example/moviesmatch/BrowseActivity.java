@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class BrowseActivity extends AppCompatActivity {
-    Button login, signup, groups, swipe, account, settings, match, createGroup;
+    Button login, signup, groups, createGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,16 +19,11 @@ public class BrowseActivity extends AppCompatActivity {
         login = (Button) findViewById(R.id.buttonLogin);
         signup = findViewById(R.id.buttonSignup);
         groups = findViewById(R.id.buttonGroups);
-        swipe = findViewById(R.id.buttonSwipe);
-        account = findViewById(R.id.buttonAccount);
-        settings = findViewById(R.id.buttonSettings);
-        match = findViewById(R.id.buttonMatch);
         createGroup = findViewById(R.id.buttonCreateGroup);
 
         login();
         signup();
         groups();
-        swipe();
     }
 
     private void login(){
@@ -57,14 +52,4 @@ public class BrowseActivity extends AppCompatActivity {
             }
         });
     }
-
-    private void swipe(){
-        swipe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(BrowseActivity.this, SwipeFragment.class));
-            }
-        });
-    }
-
 }
