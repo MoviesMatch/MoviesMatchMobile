@@ -12,7 +12,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.Switch;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -59,20 +59,21 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 Fragment frag = null;
                 int itemId = menuItem.getItemId();
-                if (itemId == R.id.account) {
-                    frag = new AccountFragment();
-                } else if (itemId == R.id.settings) {
-                    frag = new SettingsFragment();
-                } else if (itemId == R.id.donate) {
-                    frag = new DonateFragment();
-                } else if (itemId == R.id.groups) {
-                    frag = new GroupsFragment();
-                } else if (itemId == R.id.disconnect) {
-                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                switch (itemId){
+                    case R.id.account:
+                        frag = new AccountFragment();
+                        break;
+                    case R.id.settings:
+                        frag = new SettingsFragment();
+                        break;
+                    case R.id.donate:
+                        frag = new DonateFragment();
+                        break;
+                    case R.id.disconnect:
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                        break;
                 }
-
                 return replaceFrag(frag);
-
             }
         });
     }
