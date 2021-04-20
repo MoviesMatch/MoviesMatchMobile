@@ -4,9 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import android.os.Bundle;
-import android.widget.TextView;
-
-import com.example.moviesmatch.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {
     @Override
@@ -16,4 +13,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
     }
 
+    @Override
+    public void onBackPressed(){
+        //Do nothing
+    }
 }
