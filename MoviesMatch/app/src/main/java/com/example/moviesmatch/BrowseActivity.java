@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class BrowseActivity extends AppCompatActivity {
-    Button login, signup, groups, createGroup;
+    Button login, signup, groups;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +19,6 @@ public class BrowseActivity extends AppCompatActivity {
         login = (Button) findViewById(R.id.buttonLogin);
         signup = findViewById(R.id.buttonSignup);
         groups = findViewById(R.id.buttonGroups);
-        createGroup = findViewById(R.id.buttonCreateGroup);
 
         login();
         signup();
