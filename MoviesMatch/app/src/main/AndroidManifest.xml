@@ -9,7 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MoviesMatch">
-        <activity android:name=".SwipeFragment"></activity>
         <activity android:name=".BrowseActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
@@ -21,5 +20,5 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".SignUpActivity" />
     </application>
-
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
