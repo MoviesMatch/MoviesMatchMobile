@@ -3,10 +3,13 @@ package com.example.moviesmatch;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 import java.util.ArrayList;
@@ -16,11 +19,21 @@ import java.util.Arrays;
 public class PreferencesActivity extends AppCompatActivity {
 
     private ListView listViewPreference;
+    private Button buttonClear, buttonSavePref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preferences);
 
+        // code pour les bouttons
+        buttonClear = findViewById(R.id.buttonClear);
+        buttonSavePref = findViewById(R.id.buttonSavePref);
+
+        savePrefs();
+        clearPrefs();
+
+
+        // code pour la listview
         listViewPreference = findViewById(R.id.listPreferences);
         ArrayList arrayListGenres = new ArrayList<>(Arrays.asList("Action", "Adventure", "Horror", "Comedy", "Thriller", "Science Fiction","Comedy", "Thriller", "Science Fiction"));
         ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, android.R.id.text1, arrayListGenres);
@@ -36,22 +49,27 @@ public class PreferencesActivity extends AppCompatActivity {
             }
         });
 
-        listViewPreference.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    }
+
+    public void savePrefs(){
+        buttonSavePref.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String items = (String) parent.getItemAtPosition(position);
-                Toast.makeText(PreferencesActivity.this, "you selected " + items, Toast.LENGTH_SHORT).show();
-                System.out.println(items);
-
-
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onClick(View v) {
+                startActivity(new Intent(PreferencesActivity.this, MainActivity.class));
             }
         });
-
     }
+
+    public void clearPrefs(){
+        buttonClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for(int i = 0; i < listViewPreference.getCheckedItemCount(); i++ ){
+                    listViewPreference.setItemChecked(i,false);
+                }
+               listViewPreference.setChoiceMode(listViewPreference.CHOICE_MODE_MULTIPLE);
+            }
+        });
+    }
+
 }
