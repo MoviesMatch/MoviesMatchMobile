@@ -50,11 +50,11 @@ public class SignUpActivity extends AppCompatActivity {
 
     public void next(View view) {
         try {
-            jsonAccount.put("FirstName", firstName.getText());
-            jsonAccount.put("LastName", lastName.getText());
-            jsonAccount.put("Email", email.getText());
+            jsonAccount.put("FirstName", firstName.getText().toString());
+            jsonAccount.put("LastName", lastName.getText().toString());
+            jsonAccount.put("Email", email.getText().toString());
             jsonAccount.put("Country", country.getSelectedItem().toString());
-            jsonAccount.put("Password", password.getText());
+            jsonAccount.put("Password", password.getText().toString());
             createAccount();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -70,7 +70,7 @@ public class SignUpActivity extends AppCompatActivity {
                 public void onSuccess(JSONArray jsonArray) {
                     System.out.println("START ACTIVITY" + jsonArray);
                     //Check if response contains email already taken error
-                    //startActivity(new Intent(SignUpActivity.this, PreferencesActivity.class));
+                    startActivity(new Intent(SignUpActivity.this, PreferencesActivity.class));
                 }
             });
         }

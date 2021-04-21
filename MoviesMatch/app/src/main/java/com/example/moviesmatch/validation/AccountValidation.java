@@ -18,8 +18,8 @@ public class AccountValidation {
     }
 
     public boolean validateName(String firstName, String lastName) {
-        if (firstName.length() < 4 || lastName.length() < 4) {
-            new AlertDialog.Builder(context).setTitle("Name").setMessage("First name and last name must be at least 4 characters").show();
+        if (firstName.isEmpty() || lastName.isEmpty()) {
+            new AlertDialog.Builder(context).setTitle("Name").setMessage("First name and last name must not be empty").show();
             return false;
         }
         return true;
