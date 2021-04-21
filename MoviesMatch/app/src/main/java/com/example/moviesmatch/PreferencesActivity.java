@@ -29,10 +29,6 @@ public class PreferencesActivity extends AppCompatActivity {
         buttonClear = findViewById(R.id.buttonClear);
         buttonSavePref = findViewById(R.id.buttonSavePref);
 
-        savePrefs();
-        clearPrefs();
-
-
         // code pour la listview
         listViewPreference = findViewById(R.id.listPreferences);
         ArrayList arrayListGenres = new ArrayList<>(Arrays.asList("Action", "Adventure", "Horror", "Comedy", "Thriller", "Science Fiction","Comedy", "Thriller", "Science Fiction"));
@@ -51,25 +47,16 @@ public class PreferencesActivity extends AppCompatActivity {
 
     }
 
-    public void savePrefs(){
-        buttonSavePref.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(PreferencesActivity.this, MainActivity.class));
-            }
-        });
+    public void savePrefs(View view){
+        startActivity(new Intent(PreferencesActivity.this, MainActivity.class));
     }
 
-    public void clearPrefs(){
-        buttonClear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for(int i = 0; i < listViewPreference.getCheckedItemCount(); i++ ){
-                    listViewPreference.setItemChecked(i,false);
-                }
-               listViewPreference.setChoiceMode(listViewPreference.CHOICE_MODE_MULTIPLE);
-            }
-        });
+    public void clearPrefs(View view){
+        for(int i = 0; i < listViewPreference.getCheckedItemCount(); i++ ){
+            listViewPreference.setItemChecked(i,false);
+        }
+        listViewPreference.setChoiceMode(listViewPreference.CHOICE_MODE_MULTIPLE);
     }
+
 
 }
