@@ -16,8 +16,7 @@ import org.json.JSONObject;
 import java.lang.ref.WeakReference;
 
 public class SignupPostTask {
-    private final String URL = "https://my.api.mockaroo.com/Post/users.json?key=86d5d270&__method=POST";
-    protected JSONArray responseFromURL;
+    private final String URL = "https://10.0.2.2:44394/api/user/signUp";
     private RequestQueue queue;
     private WeakReference<SignUpActivity> weakReference;
     private JsonObjectRequest jsonObjectRequest;
@@ -35,12 +34,8 @@ public class SignupPostTask {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        try {
-                            responseFromURL = response.getJSONArray("Users");
-                            postCallback.onSuccess(responseFromURL);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        System.out.println(response);
+                        postCallback.onSuccess(response);
                     }
                 }, new Response.ErrorListener() {
             @Override

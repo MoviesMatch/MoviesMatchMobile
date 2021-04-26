@@ -1,7 +1,7 @@
 package com.example.moviesmatch.interfaces;
 
-import org.json.JSONArray;
+import org.json.JSONObject;
 
 public interface PostCallback {
-    void onSuccess(JSONArray jsonArray);
+    void onSuccess(JSONObject jsonObject);
 }
