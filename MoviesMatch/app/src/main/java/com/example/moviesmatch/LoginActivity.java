@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.example.moviesmatch.async.LoginPost;
+import com.example.moviesmatch.validation.InputsValidation;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,6 +21,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText editTextEmail;
     EditText editTextPsw;
     LoginPost loginPost;
+    InputsValidation validation;
   //  JSONArray jsonArray;
 
 
@@ -32,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPsw = findViewById(R.id.editTextPsw);
         loginPost = new LoginPost(this);
+        validation = new InputsValidation(this);
     }
 
 
@@ -41,7 +44,11 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void login(View view) {
-        loginPost.postRequestLogin(editTextEmail.getText().toString(), editTextPsw.getText().toString());
+
+        if(validation.validateEmail(editTextEmail.getText().toString())){
+            loginPost.postRequestLogin(editTextEmail.getText().toString(), editTextPsw.getText().toString());
+        }
+
        /* if (checkLogin()) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
         }else{
