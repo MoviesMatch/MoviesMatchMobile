@@ -1,5 +1,8 @@
 package com.example.moviesmatch.async;
 
+import android.content.Intent;
+
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -15,35 +18,41 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.Map;
 
-public class LoginGet {
+public class LoginPost {
 
-    String url = "https://my.api.mockaroo.com/users.json?key=86d5d270";
+    String url = "https://my.api.mockaroo.com/test_json_object.json?key=86d5d270&__method=POST";
     private WeakReference<LoginActivity> weakReference;
     protected LoginActivity loginActivity;
     private RequestQueue queue;
 
 
-    public LoginGet(LoginActivity loginActivity) {
+    public LoginPost(LoginActivity loginActivity) {
         weakReference = new WeakReference<LoginActivity>(loginActivity);
         this.loginActivity = weakReference.get();
         queue = Volley.newRequestQueue(loginActivity);
         queue.start();
-        getUsers();
     }
 
-    public void getUsers() {
-        System.out.println("LOOK AT THIS ");
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+    public void postRequestLogin(String email, String password) {
+
+        JSONObject jsonObject = new JSONObject();
+        try{
+            jsonObject.put("email",email);
+            jsonObject.put("password",password);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
-                try {
-                    JSONArray jsonArray = response.getJSONArray("Users");
-                    loginActivity.setJsonArray(jsonArray);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+
+                System.out.println(response);
+                loginActivity.startAct();
             }
 
         }, new Response.ErrorListener() {
@@ -51,7 +60,17 @@ public class LoginGet {
             public void onErrorResponse(VolleyError error) {
                 System.err.println(error);
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getParams() throws AuthFailureError {
+              Map<String, String>params  = new HashMap<>();
+              params.put("email",email);
+              params.put("password",password);
+                return params;
+            }
+
+
+        };
         queue.add(request);
     }
 

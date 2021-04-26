@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-import com.example.moviesmatch.async.LoginGet;
+import com.example.moviesmatch.async.LoginPost;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,8 +19,8 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText editTextEmail;
     EditText editTextPsw;
-    LoginGet loginGet;
-    JSONArray jsonArray;
+    LoginPost loginPost;
+  //  JSONArray jsonArray;
 
 
     @Override
@@ -31,25 +31,28 @@ public class LoginActivity extends AppCompatActivity {
 
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPsw = findViewById(R.id.editTextPsw);
-        loginGet = new LoginGet(this);
+        loginPost = new LoginPost(this);
     }
 
 
-    public void setJsonArray(JSONArray jsonArray) {
+   /* public void setJsonArray(JSONArray jsonArray) {
         this.jsonArray = jsonArray;
-    }
+    }*/
 
 
     public void login(View view) {
-        if (checkLogin()) {
+        loginPost.postRequestLogin(editTextEmail.getText().toString(), editTextPsw.getText().toString());
+       /* if (checkLogin()) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
         }else{
             new AlertDialog.Builder(this).setTitle("Account").setMessage("Your email or password is incorrect.").show();
-        }
+        }*/
     }
 
 
-    public boolean checkLogin() {
+
+
+   /* public boolean checkLogin() {
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject user = null;
             try {
@@ -64,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
         return false;
-    }
+    }*/
 
     public void register(View view) {
         startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
@@ -74,5 +77,9 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //Do nothing
+    }
+
+    public void startAct() {
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
     }
 }
