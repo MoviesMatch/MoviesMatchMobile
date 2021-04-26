@@ -1,6 +1,5 @@
 package com.example.moviesmatch;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -12,14 +11,12 @@ import android.widget.Spinner;
 
 import com.example.moviesmatch.async.SignupPostTask;
 import com.example.moviesmatch.interfaces.PostCallback;
-import com.example.moviesmatch.validation.AccountValidation;
+import com.example.moviesmatch.validation.CountryAbbreviation;
+import com.example.moviesmatch.validation.InputsValidation;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class SignUpActivity extends AppCompatActivity {
     SignupPostTask signupPostTask;
@@ -30,7 +27,8 @@ public class SignUpActivity extends AppCompatActivity {
     EditText password;
     EditText confirmedPassword;
     JSONObject jsonAccount;
-    AccountValidation accountValidation;
+    InputsValidation inputsValidation;
+    CountryAbbreviation countryAbbreviation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +43,8 @@ public class SignUpActivity extends AppCompatActivity {
         password = findViewById(R.id.editTextPassword);
         confirmedPassword = findViewById(R.id.editTextConfirmPassword);
         jsonAccount = new JSONObject();
-        accountValidation = new AccountValidation(this);
+        inputsValidation = new InputsValidation(this);
+        countryAbbreviation = new CountryAbbreviation();
     }
 
     public void next(View view) {
@@ -53,7 +52,7 @@ public class SignUpActivity extends AppCompatActivity {
             jsonAccount.put("FirstName", firstName.getText().toString());
             jsonAccount.put("LastName", lastName.getText().toString());
             jsonAccount.put("Email", email.getText().toString());
-            jsonAccount.put("Country", country.getSelectedItem().toString());
+            jsonAccount.put("Country", countryAbbreviation.getCountryAbbreviation(country.getSelectedItem().toString()));
             jsonAccount.put("Password", password.getText().toString());
             createAccount();
         } catch (JSONException e) {
@@ -62,9 +61,9 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void createAccount() {
-        if (accountValidation.validateName(firstName.getText().toString(), lastName.getText().toString())
-                && accountValidation.validateEmail(email.getText().toString())
-                && accountValidation.validatePassword(password.getText().toString(), confirmedPassword.getText().toString())) {
+        if (inputsValidation.validateName(firstName.getText().toString(), lastName.getText().toString())
+                && inputsValidation.validateEmail(email.getText().toString())
+                && inputsValidation.validatePassword(password.getText().toString(), confirmedPassword.getText().toString())) {
             signupPostTask.postRequest(jsonAccount, new PostCallback() {
                 @Override
                 public void onSuccess(JSONArray jsonArray) {
