@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.moviesmatch.async.SignupPostTask;
+import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.interfaces.PostCallback;
 import com.example.moviesmatch.validation.CountryAbbreviation;
 import com.example.moviesmatch.validation.InputsValidation;
@@ -29,10 +30,13 @@ public class SignUpActivity extends AppCompatActivity {
     JSONObject jsonAccount;
     InputsValidation inputsValidation;
     CountryAbbreviation countryAbbreviation;
+    CertificateByPass certificateByPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        certificateByPass = new CertificateByPass();
+        certificateByPass.IngoreCertificate();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         signupPostTask = new SignupPostTask(this);
@@ -49,11 +53,12 @@ public class SignUpActivity extends AppCompatActivity {
 
     public void next(View view) {
         try {
+            jsonAccount.put("usrEmail", email.getText().toString());
             jsonAccount.put("usrFirstname", firstName.getText().toString());
             jsonAccount.put("usrLastname", lastName.getText().toString());
-            jsonAccount.put("usrEmail", email.getText().toString());
-            jsonAccount.put("usrCountry", countryAbbreviation.getCountryAbbreviation(country.getSelectedItem().toString()));
             jsonAccount.put("usrPassword", password.getText().toString());
+            jsonAccount.put("usrCountry", countryAbbreviation.getCountryAbbreviation(country.getSelectedItem().toString()));
+            System.out.println(jsonAccount);
             createAccount();
         } catch (JSONException e) {
             e.printStackTrace();
