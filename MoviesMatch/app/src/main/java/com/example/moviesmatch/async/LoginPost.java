@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class LoginPost {
 
-    String url = "https://localhost:44394/swagger/v1/swagger.json/api/user/login";
+    String url = "https://10.0.2.2:44394/swagger/v1/swagger.json/api/user/login";
     private WeakReference<LoginActivity> weakReference;
     protected LoginActivity loginActivity;
     private RequestQueue queue;

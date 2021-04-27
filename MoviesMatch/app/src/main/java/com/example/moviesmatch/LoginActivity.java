@@ -45,10 +45,10 @@ public class LoginActivity extends AppCompatActivity {
 
     public void login(View view) {
 
-        if(validation.validateEmail(editTextEmail.getText().toString())){
-            loginPost.postRequestLogin(editTextEmail.getText().toString(), editTextPsw.getText().toString());
-        }
+     /*   if(validation.validateEmail(editTextEmail.getText().toString())){
+        }*/
 
+        loginPost.postRequestLogin(editTextEmail.getText().toString(), editTextPsw.getText().toString());
        /* if (checkLogin()) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
         }else{
