@@ -65,12 +65,10 @@ public class SwipeFragment extends Fragment {
                 //Do something on the left!
                 //You also have access to the original object.
                 //If you want to use it just cast it (String) dataObject
-                Toast.makeText(getContext(), "Left", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onRightCardExit(Object dataObject) {
-                Toast.makeText(getContext(), "Right", Toast.LENGTH_SHORT).show();
             }
 
             @Override
