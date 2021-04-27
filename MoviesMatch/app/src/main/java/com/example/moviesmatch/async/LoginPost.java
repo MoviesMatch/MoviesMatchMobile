@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class LoginPost {
 
-    String url = "https://my.api.mockaroo.com/test_json_object.json?key=86d5d270&__method=POST";
+    String url = "https://localhost:44394/swagger/v1/swagger.json/api/user/login";
     private WeakReference<LoginActivity> weakReference;
     protected LoginActivity loginActivity;
     private RequestQueue queue;
