@@ -1,5 +1,6 @@
 package com.example.moviesmatch.async;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -14,6 +15,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignupPostTask {
     private final String URL = "https://10.0.2.2:44394/api/user/signUp";
@@ -42,7 +45,15 @@ public class SignupPostTask {
             public void onErrorResponse(VolleyError error) {
                 System.err.println(error);
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+
+                Map<String, String> param = new HashMap<String, String>();
+
+                return param;
+            }
+        };
         queue.add(jsonObjectRequest);
     }
 }
