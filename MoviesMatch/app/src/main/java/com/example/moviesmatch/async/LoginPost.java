@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class LoginPost {
 
-    String url = "https://10.0.2.2:44394/swagger/v1/swagger.json/api/user/login";
+    String url = "https://10.0.2.2:44394/api/user/login";
     private WeakReference<LoginActivity> weakReference;
     protected LoginActivity loginActivity;
     private RequestQueue queue;
@@ -40,8 +40,8 @@ public class LoginPost {
 
         JSONObject jsonObject = new JSONObject();
         try{
-            jsonObject.put("email",email);
-            jsonObject.put("password",password);
+            jsonObject.put("usrEmail",email);
+            jsonObject.put("usrPassword",password);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -64,9 +64,21 @@ public class LoginPost {
             @Override
             public Map<String, String> getParams() throws AuthFailureError {
               Map<String, String>params  = new HashMap<>();
-              params.put("email",email);
-              params.put("password",password);
+              params.put("usrEmail",email);
+              params.put("usrPassword",password);
                 return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+              //  headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
             }
 
 

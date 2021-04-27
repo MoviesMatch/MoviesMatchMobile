@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.example.moviesmatch.async.LoginPost;
+import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.validation.InputsValidation;
 
 import org.json.JSONArray;
@@ -22,7 +23,8 @@ public class LoginActivity extends AppCompatActivity {
     EditText editTextPsw;
     LoginPost loginPost;
     InputsValidation validation;
-  //  JSONArray jsonArray;
+    CertificateByPass certificat;
+
 
 
     @Override
@@ -35,25 +37,14 @@ public class LoginActivity extends AppCompatActivity {
         editTextPsw = findViewById(R.id.editTextPsw);
         loginPost = new LoginPost(this);
         validation = new InputsValidation(this);
+        certificat = new CertificateByPass();
+        certificat.IngoreCertificate();
     }
 
 
-   /* public void setJsonArray(JSONArray jsonArray) {
-        this.jsonArray = jsonArray;
-    }*/
-
 
     public void login(View view) {
-
-     /*   if(validation.validateEmail(editTextEmail.getText().toString())){
-        }*/
-
         loginPost.postRequestLogin(editTextEmail.getText().toString(), editTextPsw.getText().toString());
-       /* if (checkLogin()) {
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-        }else{
-            new AlertDialog.Builder(this).setTitle("Account").setMessage("Your email or password is incorrect.").show();
-        }*/
     }
 
 
