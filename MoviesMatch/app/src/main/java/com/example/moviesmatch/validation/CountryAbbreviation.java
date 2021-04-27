@@ -5,7 +5,7 @@ public class CountryAbbreviation {
     public String getCountryAbbreviation(String fullCountryName){
         switch (fullCountryName){
             case "Canada":
-                return "CAN";
+                return "CA";
             default:
                 return fullCountryName;
         }
