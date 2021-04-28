@@ -12,17 +12,18 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class SwipeAdapter extends ArrayAdapter<ImageView> {
+public class SwipeAdapter extends ArrayAdapter<String> {
 
     private Context mContext;
-    private List<ImageView> moviesList;
+    private List<String> moviesList;
 
-    public SwipeAdapter(@NonNull Context context, ArrayList<ImageView> list) {
+    public SwipeAdapter(@NonNull Context context, ArrayList<String> list) {
         super(context, 0, list);
-        moviesList = new ArrayList<>();
         mContext = context;
         moviesList = list;
     }
@@ -30,15 +31,13 @@ public class SwipeAdapter extends ArrayAdapter<ImageView> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View listItem = convertView;
-        if (listItem == null)
-            listItem = LayoutInflater.from(mContext).inflate(R.layout.item, parent, false);
+        String currentMovie = moviesList.get(position);
+        if (convertView == null)
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item, parent, false);
 
-        ImageView currentMovie = moviesList.get(position);
-
-        ImageView image = (ImageView) listItem.findViewById(R.id.image);
-        image.setImageDrawable(currentMovie.getDrawable());
-
-        return listItem;
+        ImageView image = convertView.findViewById(R.id.imageSwipe);
+        Picasso.get().load(currentMovie).into(image);
+        System.out.println(currentMovie);
+        return convertView;
     }
 }
