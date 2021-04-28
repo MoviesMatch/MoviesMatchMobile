@@ -37,7 +37,6 @@ public class SwipeAdapter extends ArrayAdapter<String> {
 
         ImageView image = convertView.findViewById(R.id.imageSwipe);
         Picasso.get().load(currentMovie).into(image);
-        System.out.println(currentMovie);
         return convertView;
     }
 }
