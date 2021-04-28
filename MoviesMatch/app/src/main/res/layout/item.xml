@@ -7,10 +7,9 @@
         android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/image"
+        android:id="@+id/imageSwipe"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:srcCompat="@drawable/logo" />
+        android:layout_height="match_parent"/>
 
         <View
             android:id="@+id/item_swipe_left_indicator"

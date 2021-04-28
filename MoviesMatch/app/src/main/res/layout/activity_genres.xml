@@ -5,21 +5,22 @@
     android:id="@+id/constraintlayoutPreferences"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PreferencesActivity">
+    tools:context=".GenresActivity">
 
     <Button
         android:id="@+id/buttonSavePref"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="savePrefs"
+        android:layout_marginTop="20dp"
         android:text="Save Preferences"
         android:theme="@style/Button.MoviesMatch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonClear" />
+        app:layout_constraintTop_toBottomOf="@+id/listGenres" />
 
     <ListView
-        android:id="@+id/listPreferences"
+        android:id="@+id/listGenres"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="20dp"
@@ -31,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.1" />
+        app:layout_constraintGuide_percent="0.05" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineBot"
@@ -40,17 +41,7 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.8" />
 
-    <Button
-        android:id="@+id/buttonClear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:onClick="clearPrefs"
-        android:text="Clear"
-        android:theme="@style/Button.MoviesMatch"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listPreferences" />
+
 
     <ImageView
         android:id="@+id/imageViewLogo"
@@ -59,8 +50,8 @@
         app:layout_constraintDimensionRatio="1:0.5"
         app:srcCompat="@drawable/logo"
         app:layout_constraintTop_toTopOf="@+id/guidelineTop"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintEnd_toEndOf="@id/guideline2" />
 
     <TextView
         android:id="@+id/textViewTitre"
@@ -70,6 +61,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/imageViewLogo"
-        app:layout_constraintTop_toTopOf="@+id/listPreferences" />
+        app:layout_constraintTop_toTopOf="@+id/listGenres" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
