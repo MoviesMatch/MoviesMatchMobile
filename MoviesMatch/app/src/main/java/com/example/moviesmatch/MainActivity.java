@@ -60,6 +60,9 @@ public class MainActivity extends AppCompatActivity {
                 Fragment frag = null;
                 int itemId = menuItem.getItemId();
                 switch (itemId){
+                    case R.id.groups:
+                        frag = new GroupsFragment();
+                        break;
                     case R.id.account:
                         frag = new AccountFragment();
                         break;
