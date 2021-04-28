@@ -12,14 +12,18 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Switch;
 
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
+    private ImageView imageMatch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.navigation);
         drawerLayout = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.toolbar);
+        imageMatch = findViewById(R.id.imageMatch);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         navSelectedItem();
@@ -57,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
+                imageMatch.setVisibility(View.GONE);
                 Fragment frag = null;
                 int itemId = menuItem.getItemId();
                 switch (itemId){
@@ -90,5 +96,18 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        tellFragments();
+    }
+
+    private void tellFragments(){
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        for(Fragment f : fragments){
+            if(f != null && f instanceof SwipeFragment)
+                ((SwipeFragment)f).onBackPressed();
+        }
     }
 }

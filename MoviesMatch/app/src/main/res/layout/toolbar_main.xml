@@ -15,6 +15,14 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/logotransparent"
-        tools:layout_editor_absoluteX="16dp" />
+        app:srcCompat="@drawable/logotransparent"/>
+
+    <ImageView
+        android:id="@+id/imageMatch"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_baseline_auto_awesome_24"
+        android:layout_gravity="end"
+        android:layout_marginEnd="15dp"
+        android:visibility="gone"/>
 </androidx.appcompat.widget.Toolbar>
