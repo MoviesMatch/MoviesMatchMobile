@@ -1,27 +1,17 @@
 package com.example.moviesmatch.async;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.moviesmatch.SignUpActivity;
 import com.example.moviesmatch.interfaces.PostCallback;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
-import java.util.HashMap;
-import java.util.Map;
 
 public class SignupPostTask {
     private final String URL = "https://10.0.2.2:44394/api/user/signUp";
@@ -48,31 +38,18 @@ public class SignupPostTask {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.err.println(error);
-                NetworkResponse response = error.networkResponse;
-                System.err.println(response);
-                try {
-                    String res = new String(response.data,
-                            HttpHeaderParser.parseCharset(response.headers, "utf-8"));
-                    // Now you can use any deserializer to make sense of data
-                    JSONObject obj = new JSONObject(res);
-                } catch (UnsupportedEncodingException e1) {
-                    // Couldn't properly decode data to string
-                    e1.printStackTrace();
-                } catch (JSONException e2) {
-                    // returned data is not JSONObject?
-                    e2.printStackTrace();
+                try{
+                    System.out.println("Error " + error);
+                    System.out.println("Status Code " + error.networkResponse.statusCode);
+                    System.out.println("Response Data " + error.networkResponse.data);
+                    System.out.println("Cause " + error.getCause());
+                    System.out.println("message" + error.getMessage());
+                } catch (NullPointerException e){
+                    System.out.println(e);
                 }
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
 
-                Map<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json; charset=utf-8");
-                return headers;
             }
-        };
+        });
         queue.add(jsonObjectRequest);
     }
 }

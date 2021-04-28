@@ -9,6 +9,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.moviesmatch.async.SignupPostTask;
 import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.interfaces.PostCallback;
@@ -74,7 +80,7 @@ public class SignUpActivity extends AppCompatActivity {
                 public void onSuccess(JSONObject jsonObject) {
                     System.out.println("START ACTIVITY" + jsonObject);
                     //Check if response contains email already taken error
-                    startActivity(new Intent(SignUpActivity.this, PreferencesActivity.class));
+                    startActivity(new Intent(SignUpActivity.this, GenresActivity.class));
                 }
             });
         }
