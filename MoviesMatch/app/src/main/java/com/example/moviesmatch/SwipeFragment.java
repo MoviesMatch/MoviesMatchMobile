@@ -3,11 +3,13 @@ package com.example.moviesmatch;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
@@ -16,7 +18,9 @@ import java.util.Arrays;
 
 public class SwipeFragment extends Fragment {
     private SwipeAdapter arrayAdapter;
+    private  SwipeFlingAdapterView flingContainer;
     private ArrayList<String> imageUrl;
+    private Button buttonLeft, buttonRight;
     private View view;
 
     @Override
@@ -25,17 +29,32 @@ public class SwipeFragment extends Fragment {
         //TEMP hardcoded images
         imageUrl = new ArrayList<>(Arrays.asList("https://image.tmdb.org/t/p/original/2EiAX4eChSWQHwgIFAZbPgXKCJ6.jpg", "https://image.tmdb.org/t/p/original/hkC4yNDFmW1yQuQhtZydMeRuaAb.jpg",
                 "https://image.tmdb.org/t/p/original/wUXT3KEh6vjDzwYKiYWwdJNfZOW.jpg", "https://image.tmdb.org/t/p/original/yEcfFXEWpuXcfsR9nKESVCFneqV.jpg", "https://image.tmdb.org/t/p/original/q4FQOiSRhTLWulHl5Vpg37FMArH.jpg"));
-
+        buttonLeft = getView().findViewById(R.id.buttonLeft);
+        buttonRight = getView().findViewById(R.id.buttonRight);
         fling();
+
         return view;
     }
+
+    public void swipeRight(View view){
+
+    }
+
+    public void swipeLeft(View view){
+
+    }
+
+
+
+
+
 
     private void fling(){
         arrayAdapter = new SwipeAdapter(getContext(), imageUrl);
 
-        SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) view.findViewById(R.id.frame);
-
+        flingContainer = (SwipeFlingAdapterView) view.findViewById(R.id.frame);
         flingContainer.setAdapter(arrayAdapter);
+
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
             @Override
             public void removeFirstObjectInAdapter() {
@@ -65,6 +84,9 @@ public class SwipeFragment extends Fragment {
             public void onScroll(float v) {
 
             }
+
+
+
         });
     }
 }

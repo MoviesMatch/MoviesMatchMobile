@@ -25,22 +25,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:drawableTop="@drawable/ic_baseline_favorite_24"
         android:background="@android:color/transparent"
-        app:layout_constraintTop_toBottomOf="@id/guidelineBot"
+        android:drawableTop="@drawable/ic_baseline_favorite_24"
+        android:onClick="swipeRight"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/guidelineRight"/>
+        app:layout_constraintEnd_toStartOf="@id/guidelineRight"
+        app:layout_constraintTop_toBottomOf="@id/guidelineBot" />
 
     <Button
         android:id="@+id/buttonRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:drawableTop="@drawable/ic_baseline_clear_24"
         android:background="@android:color/transparent"
-        app:layout_constraintTop_toBottomOf="@id/guidelineBot"
+        android:drawableTop="@drawable/ic_baseline_clear_24"
+        android:onClick="swipeLeft"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/guidelineLeft"/>
+        app:layout_constraintStart_toEndOf="@id/guidelineLeft"
+        app:layout_constraintTop_toBottomOf="@id/guidelineBot" />
 
 
     <androidx.constraintlayout.widget.Guideline
