@@ -31,7 +31,7 @@ public class BrowseActivity extends AppCompatActivity {
         prefs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(BrowseActivity.this, PreferencesActivity.class));
+                startActivity(new Intent(BrowseActivity.this, GenresActivity.class));
             }
         });
     }
