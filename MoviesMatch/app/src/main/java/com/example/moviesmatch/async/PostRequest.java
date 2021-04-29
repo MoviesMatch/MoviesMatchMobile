@@ -41,6 +41,7 @@ public class PostRequest {
             @Override
             public void onErrorResponse(VolleyError error) {
                 System.out.println("Error " + error);
+                //Calls each classes onErrorResponseAlert method that implements IPostActivity to have custom error messages
                 if (activity instanceof IPostActivity){
                     try{
                         ((IPostActivity) activity).onErrorResponseAlert(error.networkResponse.statusCode);

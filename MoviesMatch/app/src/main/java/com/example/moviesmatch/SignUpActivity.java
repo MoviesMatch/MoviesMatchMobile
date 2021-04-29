@@ -68,11 +68,14 @@ public class SignUpActivity extends AppCompatActivity implements IPostActivity {
         if (inputsValidation.validateName(firstName.getText().toString(), lastName.getText().toString())
                 && inputsValidation.validateEmail(email.getText().toString())
                 && inputsValidation.validatePassword(password.getText().toString(), confirmedPassword.getText().toString())) {
-            //Called when postRequest is done
+
             postRequest.postRequest(jsonAccount, URL, new IPostCallback() {
+                //Called when postRequest is done
                 @Override
                 public void onSuccess(JSONObject jsonObject) {
-                    startActivity(new Intent(SignUpActivity.this, GenresActivity.class));
+                    Intent intent = new Intent(SignUpActivity.this, GenresActivity.class);
+                    intent.putExtra("Account", jsonObject.toString());
+                    startActivity(intent);
                     loadingGif.setVisibility(View.GONE);
                     nextButton.setEnabled(true);
                 }
