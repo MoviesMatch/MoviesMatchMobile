@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -20,6 +21,8 @@ import com.example.moviesmatch.validation.InputsValidation;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class SignUpActivity extends AppCompatActivity implements IPostActivity {
     PostRequest postRequest;
     EditText firstName;
@@ -32,6 +35,8 @@ public class SignUpActivity extends AppCompatActivity implements IPostActivity {
     InputsValidation inputsValidation;
     CountryAbbreviation countryAbbreviation;
     CertificateByPass certificateByPass;
+    GifImageView loadingGif;
+    Button nextButton;
 
     private final String URL = "/api/user/signUp";
 
@@ -45,6 +50,8 @@ public class SignUpActivity extends AppCompatActivity implements IPostActivity {
 
     public void next(View view) {
         try {
+            loadingGif.setVisibility(View.VISIBLE);
+            nextButton.setEnabled(false);
             jsonAccount.put("usrEmail", email.getText().toString());
             jsonAccount.put("usrFirstname", firstName.getText().toString());
             jsonAccount.put("usrLastname", lastName.getText().toString());
@@ -66,6 +73,8 @@ public class SignUpActivity extends AppCompatActivity implements IPostActivity {
                 @Override
                 public void onSuccess(JSONObject jsonObject) {
                     startActivity(new Intent(SignUpActivity.this, GenresActivity.class));
+                    loadingGif.setVisibility(View.GONE);
+                    nextButton.setEnabled(true);
                 }
             });
         }
@@ -73,6 +82,8 @@ public class SignUpActivity extends AppCompatActivity implements IPostActivity {
 
     @Override
     public void onErrorResponseAlert(int errorCode) {
+        loadingGif.setVisibility(View.GONE);
+        nextButton.setEnabled(true);
         if (errorCode == 403){
             new AlertDialog.Builder(this).setTitle("Error").setMessage("This email is already taken").show();
         } else {
@@ -93,5 +104,7 @@ public class SignUpActivity extends AppCompatActivity implements IPostActivity {
         jsonAccount = new JSONObject();
         inputsValidation = new InputsValidation(this);
         countryAbbreviation = new CountryAbbreviation();
+        loadingGif = findViewById(R.id.signUpLoadingGif);
+        nextButton = findViewById(R.id.buttonRegister) ;
     }
 }

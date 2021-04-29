@@ -1,6 +1,5 @@
 package com.example.moviesmatch.async;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
@@ -41,18 +40,13 @@ public class PostRequest {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                try{
-                    System.out.println("Error " + error);
-                    System.out.println("Status Code " + error.networkResponse.statusCode);
-                    System.out.println("Response Data " + error.networkResponse.data);
-                    System.out.println("Cause " + error.getCause());
-                    System.out.println("message" + error.getMessage());
-                    if (activity instanceof IPostActivity){
+                System.out.println("Error " + error);
+                if (activity instanceof IPostActivity){
+                    try{
                         ((IPostActivity) activity).onErrorResponseAlert(error.networkResponse.statusCode);
+                    } catch (NullPointerException e){
+                        ((IPostActivity) activity).onErrorResponseAlert(0);
                     }
-                } catch (Exception e){
-                    System.out.println(e);
-                    new AlertDialog.Builder(activity).setTitle("Error").setMessage("Please try again").show();
                 }
             }
         });

@@ -26,10 +26,10 @@
         android:id="@+id/editTextFirstName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="Your First Name"
         android:background="@drawable/custom_rectangle"
+        android:ems="10"
+        android:hint="Your First Name"
+        android:inputType="textPersonName"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
         app:layout_constraintBottom_toTopOf="@+id/editTextLastName"
@@ -42,10 +42,10 @@
         android:id="@+id/editTextLastName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="Your Last Name"
         android:background="@drawable/custom_rectangle"
+        android:ems="10"
+        android:hint="Your Last Name"
+        android:inputType="textPersonName"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
         app:layout_constraintBottom_toTopOf="@+id/editTextEmail"
@@ -59,10 +59,10 @@
         android:id="@+id/editTextEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        android:hint="Your Email"
         android:background="@drawable/custom_rectangle"
+        android:ems="10"
+        android:hint="Your Email"
+        android:inputType="textEmailAddress"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
         app:layout_constraintBottom_toTopOf="@+id/spinnerCountry"
@@ -86,15 +86,14 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
 
 
-
     <EditText
         android:id="@+id/editTextPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/custom_rectangle"
         android:ems="10"
         android:hint="Your Password"
         android:inputType="textPassword"
-        android:background="@drawable/custom_rectangle"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
         app:layout_constraintBottom_toTopOf="@+id/editTextConfirmPassword"
@@ -108,10 +107,10 @@
         android:id="@+id/editTextConfirmPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/custom_rectangle"
         android:ems="10"
         android:hint="Confirm Your Password"
         android:inputType="textPassword"
-        android:background="@drawable/custom_rectangle"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
         app:layout_constraintBottom_toTopOf="@+id/buttonRegister"
@@ -133,7 +132,19 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/editTextConfirmPassword" />
-    
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/signUpLoadingGif"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/loading"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <ImageView
         android:id="@+id/imageViewLogo"
