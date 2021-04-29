@@ -1,5 +1,6 @@
 package com.example.moviesmatch;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -9,24 +10,18 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.example.moviesmatch.async.SignupPostTask;
+import com.example.moviesmatch.async.PostRequest;
 import com.example.moviesmatch.certificate.CertificateByPass;
-import com.example.moviesmatch.interfaces.PostCallback;
+import com.example.moviesmatch.interfaces.IPostActivity;
+import com.example.moviesmatch.interfaces.IPostCallback;
 import com.example.moviesmatch.validation.CountryAbbreviation;
 import com.example.moviesmatch.validation.InputsValidation;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class SignUpActivity extends AppCompatActivity {
-    SignupPostTask signupPostTask;
+public class SignUpActivity extends AppCompatActivity implements IPostActivity {
+    PostRequest postRequest;
     EditText firstName;
     EditText lastName;
     EditText email;
@@ -38,23 +33,14 @@ public class SignUpActivity extends AppCompatActivity {
     CountryAbbreviation countryAbbreviation;
     CertificateByPass certificateByPass;
 
+    private final String URL = "/api/user/signUp";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        certificateByPass = new CertificateByPass();
-        certificateByPass.IngoreCertificate();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        signupPostTask = new SignupPostTask(this);
-        firstName = findViewById(R.id.editTextFirstName);
-        lastName = findViewById(R.id.editTextLastName);
-        email = findViewById(R.id.editTextEmail);
-        country = findViewById(R.id.spinnerCountry);
-        password = findViewById(R.id.editTextPassword);
-        confirmedPassword = findViewById(R.id.editTextConfirmPassword);
-        jsonAccount = new JSONObject();
-        inputsValidation = new InputsValidation(this);
-        countryAbbreviation = new CountryAbbreviation();
+        setup();
     }
 
     public void next(View view) {
@@ -75,14 +61,37 @@ public class SignUpActivity extends AppCompatActivity {
         if (inputsValidation.validateName(firstName.getText().toString(), lastName.getText().toString())
                 && inputsValidation.validateEmail(email.getText().toString())
                 && inputsValidation.validatePassword(password.getText().toString(), confirmedPassword.getText().toString())) {
-            signupPostTask.postRequest(jsonAccount, new PostCallback() {
+            //Called when postRequest is done
+            postRequest.postRequest(jsonAccount, URL, new IPostCallback() {
                 @Override
                 public void onSuccess(JSONObject jsonObject) {
-                    System.out.println("START ACTIVITY" + jsonObject);
-                    //Check if response contains email already taken error
                     startActivity(new Intent(SignUpActivity.this, GenresActivity.class));
                 }
             });
         }
+    }
+
+    @Override
+    public void onErrorResponseAlert(int errorCode) {
+        if (errorCode == 403){
+            new AlertDialog.Builder(this).setTitle("Error").setMessage("This email is already taken").show();
+        } else {
+            new AlertDialog.Builder(this).setTitle("Error").setMessage("Please try again").show();
+        }
+    }
+
+    private void setup(){
+        certificateByPass = new CertificateByPass();
+        certificateByPass.IngoreCertificate();
+        postRequest = new PostRequest(this);
+        firstName = findViewById(R.id.editTextFirstName);
+        lastName = findViewById(R.id.editTextLastName);
+        email = findViewById(R.id.editTextEmail);
+        country = findViewById(R.id.spinnerCountry);
+        password = findViewById(R.id.editTextPassword);
+        confirmedPassword = findViewById(R.id.editTextConfirmPassword);
+        jsonAccount = new JSONObject();
+        inputsValidation = new InputsValidation(this);
+        countryAbbreviation = new CountryAbbreviation();
     }
 }

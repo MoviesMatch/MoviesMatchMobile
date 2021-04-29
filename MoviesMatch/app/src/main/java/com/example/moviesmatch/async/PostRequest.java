@@ -1,34 +1,37 @@
 package com.example.moviesmatch.async;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.moviesmatch.SignUpActivity;
-import com.example.moviesmatch.interfaces.PostCallback;
+import com.example.moviesmatch.interfaces.IPostActivity;
+import com.example.moviesmatch.interfaces.IPostCallback;
 
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 
-public class SignupPostTask {
-    private final String URL = "https://10.0.2.2:44394/api/user/signUp";
+public class PostRequest {
+    private final String API = "https://10.0.2.2:44394";
     private RequestQueue queue;
-    private WeakReference<SignUpActivity> weakReference;
+    private WeakReference<AppCompatActivity> weakReference;
     private JsonObjectRequest jsonObjectRequest;
-    protected SignUpActivity signUpActivity;
+    protected AppCompatActivity activity;
 
-    public SignupPostTask(SignUpActivity signUpActivity) {
-        weakReference = new WeakReference<SignUpActivity>(signUpActivity);
-        this.signUpActivity = weakReference.get();
-        queue = Volley.newRequestQueue(signUpActivity);
+    public PostRequest(AppCompatActivity activity) {
+        weakReference = new WeakReference<AppCompatActivity>(activity);
+        this.activity = weakReference.get();
+        queue = Volley.newRequestQueue(activity);
         queue.start();
     }
 
-    public void postRequest(JSONObject jsonObject, PostCallback postCallback) {
-        jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonObject,
+    public void postRequest(JSONObject jsonObject, String url, IPostCallback postCallback) {
+        jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, API + url, jsonObject,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -44,10 +47,13 @@ public class SignupPostTask {
                     System.out.println("Response Data " + error.networkResponse.data);
                     System.out.println("Cause " + error.getCause());
                     System.out.println("message" + error.getMessage());
-                } catch (NullPointerException e){
+                    if (activity instanceof IPostActivity){
+                        ((IPostActivity) activity).onErrorResponseAlert(error.networkResponse.statusCode);
+                    }
+                } catch (Exception e){
                     System.out.println(e);
+                    new AlertDialog.Builder(activity).setTitle("Error").setMessage("Please try again").show();
                 }
-
             }
         });
         queue.add(jsonObjectRequest);
