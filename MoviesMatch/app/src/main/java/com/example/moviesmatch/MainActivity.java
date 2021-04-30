@@ -110,4 +110,8 @@ public class MainActivity extends AppCompatActivity {
                 ((SwipeFragment)f).onBackPressed();
         }
     }
+
+    public void matchFragment(View view){
+        replaceFrag(new MatchFragment());
+    }
 }
