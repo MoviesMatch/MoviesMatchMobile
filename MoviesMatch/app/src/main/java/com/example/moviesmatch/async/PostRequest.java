@@ -9,7 +9,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.moviesmatch.interfaces.IPostActivity;
-import com.example.moviesmatch.interfaces.IPostCallback;
+import com.example.moviesmatch.interfaces.IRequestCallback;
 
 import org.json.JSONObject;
 
@@ -29,7 +29,7 @@ public class PostRequest {
         queue.start();
     }
 
-    public void postRequest(JSONObject jsonObject, String url, IPostCallback postCallback) {
+    public void postRequest(JSONObject jsonObject, String url, IRequestCallback postCallback) {
         jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, API + url, jsonObject,
                 new Response.Listener<JSONObject>() {
                     @Override

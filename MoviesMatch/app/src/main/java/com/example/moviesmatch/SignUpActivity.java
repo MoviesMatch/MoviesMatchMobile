@@ -14,7 +14,7 @@ import android.widget.Spinner;
 import com.example.moviesmatch.async.PostRequest;
 import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.interfaces.IPostActivity;
-import com.example.moviesmatch.interfaces.IPostCallback;
+import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.validation.CountryAbbreviation;
 import com.example.moviesmatch.validation.InputsValidation;
 
@@ -69,7 +69,7 @@ public class SignUpActivity extends AppCompatActivity implements IPostActivity {
                 && inputsValidation.validateEmail(email.getText().toString())
                 && inputsValidation.validatePassword(password.getText().toString(), confirmedPassword.getText().toString())) {
 
-            postRequest.postRequest(jsonAccount, URL, new IPostCallback() {
+            postRequest.postRequest(jsonAccount, URL, new IRequestCallback() {
                 //Called when postRequest is done
                 @Override
                 public void onSuccess(JSONObject jsonObject) {
