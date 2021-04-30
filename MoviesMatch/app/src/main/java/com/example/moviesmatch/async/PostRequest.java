@@ -29,13 +29,13 @@ public class PostRequest {
         queue.start();
     }
 
-    public void postRequest(JSONObject jsonObject, String url, IRequestCallback postCallback) {
+    public void postRequest(JSONObject jsonObject, String url, IRequestCallback requestCallback) {
         jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, API + url, jsonObject,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         System.out.println(response);
-                        postCallback.onSuccess(response);
+                        requestCallback.onSuccess(response);
                     }
                 }, new Response.ErrorListener() {
             @Override
