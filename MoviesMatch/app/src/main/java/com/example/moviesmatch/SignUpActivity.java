@@ -80,6 +80,9 @@ public class SignUpActivity extends AppCompatActivity implements IPostActivity {
                     nextButton.setEnabled(true);
                 }
             });
+        } else {
+            loadingGif.setVisibility(View.GONE);
+            nextButton.setEnabled(true);
         }
     }
 
