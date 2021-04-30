@@ -87,7 +87,7 @@ public class SignUpActivity extends AppCompatActivity implements IPostActivity {
     }
 
     @Override
-    public void onErrorResponseAlert(int errorCode) {
+    public void onPostErrorResponse(int errorCode) {
         loadingGif.setVisibility(View.GONE);
         nextButton.setEnabled(true);
         if (errorCode == 403){

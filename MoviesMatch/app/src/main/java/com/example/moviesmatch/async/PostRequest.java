@@ -44,9 +44,9 @@ public class PostRequest {
                 //Calls each classes onErrorResponseAlert method that implements IPostActivity to have custom error messages
                 if (activity instanceof IPostActivity){
                     try{
-                        ((IPostActivity) activity).onErrorResponseAlert(error.networkResponse.statusCode);
+                        ((IPostActivity) activity).onPostErrorResponse(error.networkResponse.statusCode);
                     } catch (NullPointerException e){
-                        ((IPostActivity) activity).onErrorResponseAlert(0);
+                        ((IPostActivity) activity).onPostErrorResponse(0);
                     }
                 }
             }
