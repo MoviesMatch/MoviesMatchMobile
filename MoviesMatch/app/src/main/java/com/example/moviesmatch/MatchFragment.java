@@ -9,9 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.example.moviesmatch.interfaces.OnBackPressed;
+import com.example.moviesmatch.interfaces.IOnBackPressed;
 
-public class MatchFragment extends Fragment implements OnBackPressed {
+public class MatchFragment extends Fragment implements IOnBackPressed {
     ImageView imageMatch;
 
     @Override

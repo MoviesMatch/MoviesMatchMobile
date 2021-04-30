@@ -1,5 +1,5 @@
 package com.example.moviesmatch.interfaces;
 
-public interface OnBackPressed {
+public interface IOnBackPressed {
     public void onBackPressed();
 }

@@ -10,13 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.example.moviesmatch.interfaces.OnBackPressed;
+import com.example.moviesmatch.interfaces.IOnBackPressed;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class SwipeFragment extends Fragment implements OnBackPressed {
+public class SwipeFragment extends Fragment implements IOnBackPressed {
     private SwipeAdapter arrayAdapter;
     private ArrayList<String> imageUrl;
     private View view;
