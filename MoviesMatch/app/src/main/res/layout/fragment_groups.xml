@@ -31,6 +31,8 @@
         android:id="@+id/listViewGroups"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/listview_border"
         android:entries="@android:array/imProtocols"
         app:layout_constraintBottom_toTopOf="@+id/guidelineListViewBottom"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,6 +42,8 @@
         android:id="@+id/buttonCreateGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="25dp"
         android:text="Create"
         android:theme="@style/Button.MoviesMatch"
         app:layout_constraintBottom_toBottomOf="@+id/editTextCreateGroup"
@@ -55,12 +59,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/custom_rectangle"
+        android:layout_marginRight="25dp"
         android:ems="5"
         android:hint="Group name"
         android:inputType="textPersonName"
         android:paddingLeft="5dp"
         android:textCursorDrawable="@drawable/color_cursor"
-        android:textSize="22sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/buttonCreateGroup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -72,13 +77,15 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="?android:attr/listDivider"
-        app:layout_constraintTop_toBottomOf="@id/buttonCreateGroup"/>
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="@id/buttonCreateGroup" />
 
     <Button
         android:id="@+id/buttonJoin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
+        android:layout_marginLeft="25dp"
         android:text="Join"
         android:theme="@style/Button.MoviesMatch"
         app:layout_constraintBottom_toBottomOf="@+id/editTextJoinCode"
@@ -93,12 +100,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/custom_rectangle"
+        android:layout_marginRight="25dp"
         android:ems="5"
         android:hint="Group code"
         android:inputType="textPersonName"
         android:paddingLeft="5dp"
         android:textCursorDrawable="@drawable/color_cursor"
-        android:textSize="22sp"
+        android:textSize="20sp"
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -117,7 +125,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.7" />
+        app:layout_constraintGuide_percent="0.75" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

@@ -38,10 +38,9 @@ public class GroupsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Object item = arrayAdapter.getItem(position);
+                System.out.println(item);
                 //Fragment groups_fragment opened when MainActivity is called
-                constraintLayout.setVisibility(View.GONE); //Be gone thot
-                getFragmentManager().beginTransaction().replace(R.id.frameLayoutGroups,
-                        new SwipeFragment()).commit();
+                ((MainActivity)getActivity()).replaceFrag(new SwipeFragment());
             }
         });
     }
