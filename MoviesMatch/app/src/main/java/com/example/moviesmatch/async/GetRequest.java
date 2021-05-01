@@ -8,29 +8,29 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.moviesmatch.interfaces.IPostActivity;
+import com.example.moviesmatch.interfaces.IGetActivity;
 import com.example.moviesmatch.interfaces.IRequestCallback;
 
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 
-public class PostRequest {
+public class GetRequest {
     private final String API = "https://10.0.2.2:44394";
     private RequestQueue queue;
     private WeakReference<AppCompatActivity> weakReference;
     private JsonObjectRequest jsonObjectRequest;
     protected AppCompatActivity activity;
 
-    public PostRequest(AppCompatActivity activity) {
+    public GetRequest(AppCompatActivity activity) {
         weakReference = new WeakReference<AppCompatActivity>(activity);
         this.activity = weakReference.get();
         queue = Volley.newRequestQueue(activity);
         queue.start();
     }
 
-    public void postRequest(JSONObject jsonObject, String url, IRequestCallback requestCallback) {
-        jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, API + url, jsonObject,
+    public void getRequest(String url, IRequestCallback requestCallback) {
+        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, API + url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -41,12 +41,12 @@ public class PostRequest {
             @Override
             public void onErrorResponse(VolleyError error) {
                 System.out.println("Error " + error);
-                //Calls each classes onErrorResponseAlert method that implements IPostActivity to have custom error messages
-                if (activity instanceof IPostActivity){
+                //Calls each classes onErrorResponseAlert method that implements IGetActivity to have custom error messages
+                if (activity instanceof IGetActivity){
                     try{
-                        ((IPostActivity) activity).onPostErrorResponse(error.networkResponse.statusCode);
+                        ((IGetActivity) activity).onGetErrorResponse(error.networkResponse.statusCode);
                     } catch (NullPointerException e){
-                        ((IPostActivity) activity).onPostErrorResponse(0);
+                        ((IGetActivity) activity).onGetErrorResponse(0);
                     }
                 }
             }
@@ -54,4 +54,3 @@ public class PostRequest {
         queue.add(jsonObjectRequest);
     }
 }
-
