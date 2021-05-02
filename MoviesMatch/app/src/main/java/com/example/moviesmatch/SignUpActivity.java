@@ -38,8 +38,7 @@ public class SignUpActivity extends AppCompatActivity implements IPostActivity {
     GifImageView loadingGif;
     Button nextButton;
 
-    private final String URL = "+" +
-            "";
+    private final String URL = "/api/user/signUp";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

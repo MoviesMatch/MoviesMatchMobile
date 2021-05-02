@@ -86,4 +86,9 @@ public class LoginActivity extends AppCompatActivity implements IPostActivity {
         i.putExtra("CurrentUser",jsonObject.toString());
         startActivity(i);
     }
+    @Override
+    public void onBackPressed(){
+        
+    }
+
 }
