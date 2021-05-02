@@ -2,6 +2,7 @@ package com.example.moviesmatch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import androidx.fragment.app.Fragment;
 
 
@@ -13,12 +14,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.moviesmatch.databinding.FragmentSwipeBinding;
+import com.example.moviesmatch.interfaces.IOnBackPressed;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class SwipeFragment extends Fragment {
+public class SwipeFragment extends Fragment implements IOnBackPressed {
     private SwipeAdapter arrayAdapter;
     private SwipeFlingAdapterView flingContainer;
     private ArrayList<String> imageUrl;
@@ -106,7 +108,12 @@ public class SwipeFragment extends Fragment {
 
             }
 
-
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+       // imageMatch.setVisibility(View.GONE);
+        ((MainActivity)getActivity()).replaceFrag(new GroupsFragment());
     }
 }
