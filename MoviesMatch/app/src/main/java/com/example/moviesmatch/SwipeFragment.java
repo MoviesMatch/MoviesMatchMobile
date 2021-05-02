@@ -2,10 +2,9 @@ package com.example.moviesmatch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,7 +23,7 @@ public class SwipeFragment extends Fragment {
     private SwipeFlingAdapterView flingContainer;
     private ArrayList<String> imageUrl;
     private Button buttonLeft, buttonRight;
-    private View view;
+
 
     private FragmentSwipeBinding binding ;
 
