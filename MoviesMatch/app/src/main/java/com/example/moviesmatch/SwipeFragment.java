@@ -1,15 +1,19 @@
 package com.example.moviesmatch;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import androidx.fragment.app.Fragment;
+
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.Button;
 
+import com.example.moviesmatch.databinding.FragmentSwipeBinding;
 import com.example.moviesmatch.interfaces.IOnBackPressed;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
@@ -18,30 +22,62 @@ import java.util.Arrays;
 
 public class SwipeFragment extends Fragment implements IOnBackPressed {
     private SwipeAdapter arrayAdapter;
+    private SwipeFlingAdapterView flingContainer;
     private ArrayList<String> imageUrl;
-    private View view;
-    private ImageView imageMatch;
+    private Button buttonLeft, buttonRight;
+
+
+    private FragmentSwipeBinding binding ;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_swipe, container, false);
-        imageMatch = getActivity().findViewById(R.id.imageMatch);
-        imageMatch.setVisibility(View.VISIBLE);
+        binding = FragmentSwipeBinding.inflate(getLayoutInflater());
+        return binding.getRoot();
+    }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         //TEMP hardcoded images
         imageUrl = new ArrayList<>(Arrays.asList("https://image.tmdb.org/t/p/original/2EiAX4eChSWQHwgIFAZbPgXKCJ6.jpg", "https://image.tmdb.org/t/p/original/hkC4yNDFmW1yQuQhtZydMeRuaAb.jpg",
                 "https://image.tmdb.org/t/p/original/wUXT3KEh6vjDzwYKiYWwdJNfZOW.jpg", "https://image.tmdb.org/t/p/original/yEcfFXEWpuXcfsR9nKESVCFneqV.jpg", "https://image.tmdb.org/t/p/original/q4FQOiSRhTLWulHl5Vpg37FMArH.jpg"));
+        buttonLeft = binding.buttonLeft;
+        buttonRight = binding.buttonRight;
+        setUp();
 
-        fling();
-        return view;
     }
 
-    private void fling(){
+    public void swipeButtons() {
+       buttonRight.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               flingContainer.getTopCardListener().selectLeft();
+           }
+       });
+
+        buttonLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flingContainer.getTopCardListener().selectRight();
+            }
+        });
+
+
+    }
+
+
+    public void setUp(){
+        fling();
+        swipeButtons();
+
+    }
+
+    private void fling() {
         arrayAdapter = new SwipeAdapter(getContext(), imageUrl);
 
-        SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) view.findViewById(R.id.frame);
-
+        flingContainer =binding.frame;
         flingContainer.setAdapter(arrayAdapter);
+
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
             @Override
             public void removeFirstObjectInAdapter() {
@@ -77,7 +113,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
 
     @Override
     public void onBackPressed() {
-        imageMatch.setVisibility(View.GONE);
+       // imageMatch.setVisibility(View.GONE);
         ((MainActivity)getActivity()).replaceFrag(new GroupsFragment());
     }
 }
