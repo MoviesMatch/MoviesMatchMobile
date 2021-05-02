@@ -1,6 +1,8 @@
 package com.example.moviesmatch;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.moviesmatch.databinding.FragmentSwipeBinding;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
@@ -18,41 +21,60 @@ import java.util.Arrays;
 
 public class SwipeFragment extends Fragment {
     private SwipeAdapter arrayAdapter;
-    private  SwipeFlingAdapterView flingContainer;
+    private SwipeFlingAdapterView flingContainer;
     private ArrayList<String> imageUrl;
     private Button buttonLeft, buttonRight;
     private View view;
 
+    private FragmentSwipeBinding binding ;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_swipe, container, false);
+        binding = FragmentSwipeBinding.inflate(getLayoutInflater());
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         //TEMP hardcoded images
         imageUrl = new ArrayList<>(Arrays.asList("https://image.tmdb.org/t/p/original/2EiAX4eChSWQHwgIFAZbPgXKCJ6.jpg", "https://image.tmdb.org/t/p/original/hkC4yNDFmW1yQuQhtZydMeRuaAb.jpg",
                 "https://image.tmdb.org/t/p/original/wUXT3KEh6vjDzwYKiYWwdJNfZOW.jpg", "https://image.tmdb.org/t/p/original/yEcfFXEWpuXcfsR9nKESVCFneqV.jpg", "https://image.tmdb.org/t/p/original/q4FQOiSRhTLWulHl5Vpg37FMArH.jpg"));
-        buttonLeft = getView().findViewById(R.id.buttonLeft);
-        buttonRight = getView().findViewById(R.id.buttonRight);
+        buttonLeft = binding.buttonLeft;
+        buttonRight = binding.buttonRight;
+        setUp();
+
+    }
+
+    public void swipeButtons() {
+       buttonRight.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               flingContainer.getTopCardListener().selectLeft();
+           }
+       });
+
+        buttonLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flingContainer.getTopCardListener().selectRight();
+            }
+        });
+
+
+    }
+
+
+    public void setUp(){
         fling();
-
-        return view;
-    }
-
-    public void swipeRight(View view){
+        swipeButtons();
 
     }
 
-    public void swipeLeft(View view){
-
-    }
-
-
-
-
-
-
-    private void fling(){
+    private void fling() {
         arrayAdapter = new SwipeAdapter(getContext(), imageUrl);
 
-        flingContainer = (SwipeFlingAdapterView) view.findViewById(R.id.frame);
+        flingContainer =binding.frame;
         flingContainer.setAdapter(arrayAdapter);
 
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
@@ -84,7 +106,6 @@ public class SwipeFragment extends Fragment {
             public void onScroll(float v) {
 
             }
-
 
 
         });
