@@ -2,10 +2,10 @@ package com.example.moviesmatch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
+
 import androidx.fragment.app.Fragment;
 
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,12 +19,13 @@ import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class SwipeFragment extends Fragment {
+public class SwipeFragment extends Fragment implements IOnBackPressed {
     private SwipeAdapter arrayAdapter;
     private SwipeFlingAdapterView flingContainer;
     private ArrayList<String> imageUrl;
     private Button buttonLeft, buttonRight;
     private View view;
+    private ImageView imageMatch;
 
     private FragmentSwipeBinding binding ;
 
@@ -107,7 +108,12 @@ public class SwipeFragment extends Fragment {
 
             }
 
-
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        imageMatch.setVisibility(View.GONE);
+        ((MainActivity)getActivity()).replaceFrag(new GroupsFragment());
     }
 }
