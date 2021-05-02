@@ -1,30 +1,35 @@
 package com.example.moviesmatch;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
-import android.app.AlertDialog;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-import com.example.moviesmatch.async.LoginPost;
+import com.example.moviesmatch.async.PostRequest;
 import com.example.moviesmatch.certificate.CertificateByPass;
+import com.example.moviesmatch.interfaces.IPostActivity;
+import com.example.moviesmatch.interfaces.IPostCallback;
 import com.example.moviesmatch.validation.InputsValidation;
 
-import org.json.JSONArray;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements IPostActivity {
 
     EditText editTextEmail;
     EditText editTextPsw;
-    LoginPost loginPost;
+    PostRequest postRequest;
+    JSONObject jsonObject;
     InputsValidation validation;
     CertificateByPass certificat;
 
+    final static String URL = "/api/user/login";
 
 
     @Override
@@ -32,52 +37,53 @@ public class LoginActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        setUp();
+    }
 
+
+    public void login(View view) {
+
+        try {
+            jsonObject.put("usrEmail", editTextEmail.getText().toString());
+            jsonObject.put("usrPassword", editTextPsw.getText().toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        if (validation.validateEmail(editTextEmail.getText().toString())) {
+            postRequest.postRequest(jsonObject, URL, new IPostCallback() {
+                @Override
+                public void onSuccess(JSONObject jsonObject) {
+                    startAct(jsonObject);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onErrorResponseAlert(int errorCode) {
+        new AlertDialog.Builder(this).setTitle("Your email or password are wrong").setMessage("Please change your email or password").show();
+    }
+
+    public void setUp() {
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPsw = findViewById(R.id.editTextPsw);
-        loginPost = new LoginPost(this);
+        jsonObject = new JSONObject();
+        postRequest = new PostRequest(this);
         validation = new InputsValidation(this);
         certificat = new CertificateByPass();
         certificat.IngoreCertificate();
     }
 
 
-
-    public void login(View view) {
-        loginPost.postRequestLogin(editTextEmail.getText().toString(), editTextPsw.getText().toString());
-    }
-
-
-
-
-   /* public boolean checkLogin() {
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject user = null;
-            try {
-                user = jsonArray.getJSONObject(i);
-                String userEmail = user.getString("email");
-                String userPsw = user.getString("password");
-                if (editTextEmail.getText().toString().equals(userEmail) && editTextPsw.getText().toString().equals(userPsw)) {
-                    return true;
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        return false;
-    }*/
-
     public void register(View view) {
         startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
     }
 
 
-    @Override
-    public void onBackPressed() {
-        //Do nothing
-    }
-
-    public void startAct() {
-        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+    public void startAct(JSONObject jsonObject) {
+        Intent i = new Intent(LoginActivity.this, MainActivity.class);
+        i.putExtra("CurrentUser",jsonObject.toString());
+        startActivity(i);
     }
 }
