@@ -13,7 +13,7 @@ import android.widget.EditText;
 import com.example.moviesmatch.async.PostRequest;
 import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.interfaces.IPostActivity;
-import com.example.moviesmatch.interfaces.IPostCallback;
+import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.validation.InputsValidation;
 
 
@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity implements IPostActivity {
         }
 
         if (validation.validateEmail(editTextEmail.getText().toString())) {
-            postRequest.postRequest(jsonObject, URL, new IPostCallback() {
+            postRequest.postRequest(jsonObject, URL, new IRequestCallback() {
                 @Override
                 public void onSuccess(JSONObject jsonObject) {
                     startAct(jsonObject);
@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity implements IPostActivity {
     }
 
     @Override
-    public void onErrorResponseAlert(int errorCode) {
+    public void onPostErrorResponse(int errorCode) {
         new AlertDialog.Builder(this).setTitle("Your email or password are wrong").setMessage("Please change your email or password").show();
     }
 
