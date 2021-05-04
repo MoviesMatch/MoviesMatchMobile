@@ -6,34 +6,40 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.example.moviesmatch.async.PostRequest;
+import com.example.moviesmatch.interfaces.IGetActivity;
+import com.example.moviesmatch.interfaces.IPostActivity;
+import com.example.moviesmatch.interfaces.IRequestCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 
-public class GenresActivity extends AppCompatActivity {
+public class GenresActivity extends AppCompatActivity implements IGetActivity, IPostActivity {
 
     private ListView listViewGenres;
-    private Button  buttonSavePref;
     private ArrayList<Genre> listGenres;
     private GenresListAdapter arrayAdapter;
+    private PostRequest postRequest;
+    private JSONObject selectedGenresJson;
 
-
+    private final String getGenresURL = "api/genre/getGenres";
+    private final String postGenresURL = "api/genre/postGenres";
+    private static int iSelectedGenres = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_genres);
-
-        // code pour les bouttons
-        buttonSavePref = findViewById(R.id.buttonSavePref);
+        postRequest = new PostRequest(this);
+        selectedGenresJson = new JSONObject();
         
-        // code pour la listview
         listViewGenres = findViewById(R.id.listGenres);
         listGenres = new ArrayList<Genre>(Arrays.asList(new Genre("Action", false), new Genre("Adventure", false), new Genre("Horror", false), new Genre("Comedy", false), new Genre("Thriller", false), new Genre("Science-Fiction", false), new Genre("Romance", false)));
         arrayAdapter  = new GenresListAdapter(this, listGenres);
@@ -41,11 +47,12 @@ public class GenresActivity extends AppCompatActivity {
 
     }
 
-    public boolean isFiveChecked(){
+    private boolean isFiveChecked(){
         int numberChecked = 0 ;
         for(int i = 0; i < listGenres.size();i++){
             if(listGenres.get(i).isChecked()){
                 numberChecked++;
+                setSelectedGenresJson(i);
             }
 
             if(numberChecked == 5){
@@ -57,11 +64,35 @@ public class GenresActivity extends AppCompatActivity {
 
     public void savePrefs(View view){
         if(isFiveChecked()){
-            startActivity(new Intent(GenresActivity.this, MainActivity.class));
+            System.out.println(selectedGenresJson);
+            postRequest.postRequest(selectedGenresJson, postGenresURL, new IRequestCallback() {
+                @Override
+                public void onSuccess(JSONObject jsonObject) {
+                    startActivity(new Intent(GenresActivity.this, MainActivity.class));
+                }
+            });
         }else{
             new AlertDialog.Builder(this).setTitle("You didn't check 5 genres").setMessage("Please check exactly 5 genres of movies you like").show();
         }
 
     }
 
+    private void setSelectedGenresJson(int i){
+        try {
+            selectedGenresJson.put("Genre" + iSelectedGenres, listGenres.get(i).ItemString);
+            iSelectedGenres++;
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onGetErrorResponse(int errorCode) {
+        new AlertDialog.Builder(this).setTitle("Error").setMessage("Please try again").show();
+    }
+
+    @Override
+    public void onPostErrorResponse(int errorCode) {
+        new AlertDialog.Builder(this).setTitle("Error").setMessage("Please try again").show();
+    }
 }
