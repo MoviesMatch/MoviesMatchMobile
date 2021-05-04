@@ -11,6 +11,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.moviesmatch.interfaces.IGetActivity;
 import com.example.moviesmatch.interfaces.IRequestCallback;
+import com.example.moviesmatch.interfaces.IRequestCallbackArray;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -57,7 +58,7 @@ public class GetRequest {
         queue.add(jsonObjectRequest);
     }
 
-    public void getRequestArray(String url, IRequestCallback requestCallback) {
+    public void getRequestArray(String url, IRequestCallbackArray requestCallback) {
         jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, API + url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
