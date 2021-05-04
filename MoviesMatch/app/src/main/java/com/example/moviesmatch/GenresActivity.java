@@ -11,10 +11,13 @@ import android.widget.ListView;
 
 import com.example.moviesmatch.async.GetRequest;
 import com.example.moviesmatch.async.PostRequest;
+import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.interfaces.IGetActivity;
 import com.example.moviesmatch.interfaces.IPostActivity;
 import com.example.moviesmatch.interfaces.IRequestCallback;
+import com.example.moviesmatch.interfaces.IRequestCallbackArray;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,9 +33,10 @@ public class GenresActivity extends AppCompatActivity implements IGetActivity, I
     private PostRequest postRequest;
     private GetRequest getRequest;
     private JSONObject selectedGenresJson;
+    private CertificateByPass certificateByPass;
 
-    private final String getGenresURL = "/api/genre/getGenres";
-    private final String postGenresURL = "/api/genre/postGenres";
+    private final String getGenresURL = "/api/genre/getAllGenres";
+    private final String postGenresURL = "/api/genre/addGenresToUser";
     private static int iSelectedGenres = 1;
 
     @Override
@@ -41,6 +45,8 @@ public class GenresActivity extends AppCompatActivity implements IGetActivity, I
         setContentView(R.layout.activity_genres);
         postRequest = new PostRequest(this);
         getRequest = new GetRequest(this);
+        certificateByPass = new CertificateByPass();
+        certificateByPass.IngoreCertificate();
         selectedGenresJson = new JSONObject();
         listViewGenres = findViewById(R.id.listGenres);
         listGenres = new ArrayList<>();
@@ -81,17 +87,12 @@ public class GenresActivity extends AppCompatActivity implements IGetActivity, I
     }
 
     private void getGenres(){
-        getRequest.getRequest(getGenresURL, new IRequestCallback() {
+        getRequest.getRequestArray(getGenresURL, new IRequestCallbackArray() {
             @Override
-            public void onSuccess(JSONObject jsonObject) {
-                listGenres.add(new Genre("Action", false));
-                listGenres.add(new Genre("Adventure", false));
-                listGenres.add(new Genre("Horror", false));
-                listGenres.add(new Genre("Comedy", false));
-                listGenres.add(new Genre("Thriller", false));
-                listGenres.add(new Genre("Science-Fiction", false));
-                listGenres.add(new Genre("Romance", false));
-                listViewGenres.setAdapter(arrayAdapter);
+            public void onSuccess(JSONArray jsonArray) {
+                //listGenres.add(new Genre("Action", false));
+                //listViewGenres.setAdapter(arrayAdapter);
+                System.out.println(jsonArray);
             }
         });
     }

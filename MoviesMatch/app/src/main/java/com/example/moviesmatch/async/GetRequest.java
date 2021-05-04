@@ -80,6 +80,6 @@ public class GetRequest {
                 }
             }
         });
-        queue.add(jsonObjectRequest);
+        queue.add(jsonArrayRequest);
     }
 }
