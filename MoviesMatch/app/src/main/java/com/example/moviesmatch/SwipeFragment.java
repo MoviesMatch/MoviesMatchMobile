@@ -101,6 +101,8 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
             @Override
             public void onAdapterAboutToEmpty(int itemsInAdapter) {
                 // Ask for more data here
+
+                
             }
 
             @Override
