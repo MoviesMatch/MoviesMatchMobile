@@ -29,6 +29,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
 
 
     private GetRequest getReq;
+    final static String URL = "/api/";
 
 
     private FragmentSwipeBinding binding ;
@@ -70,7 +71,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     }
 
     private void fillListFilm(){
-        
+        getReq.getRequestArray();
     }
 
 
