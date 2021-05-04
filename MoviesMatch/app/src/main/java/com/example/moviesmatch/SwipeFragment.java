@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.moviesmatch.async.GetRequest;
 import com.example.moviesmatch.databinding.FragmentSwipeBinding;
 import com.example.moviesmatch.interfaces.IOnBackPressed;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
@@ -25,6 +26,9 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     private SwipeFlingAdapterView flingContainer;
     private ArrayList<String> imageUrl;
     private Button buttonLeft, buttonRight;
+
+
+    private GetRequest getReq;
 
 
     private FragmentSwipeBinding binding ;
@@ -65,8 +69,13 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
 
     }
 
+    private void fillListFilm(){
+        
+    }
+
 
     public void setUp(){
+        getReq = new GetRequest((MainActivity)getActivity());
         fling();
         swipeButtons();
 
