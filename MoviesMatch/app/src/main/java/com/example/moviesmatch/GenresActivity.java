@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.example.moviesmatch.async.GetRequest;
 import com.example.moviesmatch.async.PostRequest;
 import com.example.moviesmatch.interfaces.IGetActivity;
 import com.example.moviesmatch.interfaces.IPostActivity;
@@ -27,10 +28,11 @@ public class GenresActivity extends AppCompatActivity implements IGetActivity, I
     private ArrayList<Genre> listGenres;
     private GenresListAdapter arrayAdapter;
     private PostRequest postRequest;
+    private GetRequest getRequest;
     private JSONObject selectedGenresJson;
 
-    private final String getGenresURL = "api/genre/getGenres";
-    private final String postGenresURL = "api/genre/postGenres";
+    private final String getGenresURL = "/api/genre/getGenres";
+    private final String postGenresURL = "/api/genre/postGenres";
     private static int iSelectedGenres = 1;
 
     @Override
@@ -38,13 +40,14 @@ public class GenresActivity extends AppCompatActivity implements IGetActivity, I
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_genres);
         postRequest = new PostRequest(this);
+        getRequest = new GetRequest(this);
         selectedGenresJson = new JSONObject();
-        
         listViewGenres = findViewById(R.id.listGenres);
-        listGenres = new ArrayList<Genre>(Arrays.asList(new Genre("Action", false), new Genre("Adventure", false), new Genre("Horror", false), new Genre("Comedy", false), new Genre("Thriller", false), new Genre("Science-Fiction", false), new Genre("Romance", false)));
-        arrayAdapter  = new GenresListAdapter(this, listGenres);
-        listViewGenres.setAdapter(arrayAdapter);
+        listGenres = new ArrayList<>();
 
+        getGenres();
+
+        arrayAdapter  = new GenresListAdapter(this, listGenres);
     }
 
     private boolean isFiveChecked(){
@@ -75,6 +78,22 @@ public class GenresActivity extends AppCompatActivity implements IGetActivity, I
             new AlertDialog.Builder(this).setTitle("You didn't check 5 genres").setMessage("Please check exactly 5 genres of movies you like").show();
         }
 
+    }
+
+    private void getGenres(){
+        getRequest.getRequest(getGenresURL, new IRequestCallback() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                listGenres.add(new Genre("Action", false));
+                listGenres.add(new Genre("Adventure", false));
+                listGenres.add(new Genre("Horror", false));
+                listGenres.add(new Genre("Comedy", false));
+                listGenres.add(new Genre("Thriller", false));
+                listGenres.add(new Genre("Science-Fiction", false));
+                listGenres.add(new Genre("Romance", false));
+                listViewGenres.setAdapter(arrayAdapter);
+            }
+        });
     }
 
     private void setSelectedGenresJson(int i){
