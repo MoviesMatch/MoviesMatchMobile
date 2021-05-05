@@ -30,7 +30,6 @@ import java.util.Arrays;
 public class SwipeFragment extends Fragment implements IOnBackPressed {
     private SwipeAdapter arrayAdapter;
     private SwipeFlingAdapterView flingContainer;
-    // private ArrayList<String> imageUrl;
     private Button buttonLeft, buttonRight;
 
 
@@ -52,10 +51,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //TEMP hardcoded images
-       /* imageUrl = new ArrayList<>(Arrays.asList("https://image.tmdb.org/t/p/original/2EiAX4eChSWQHwgIFAZbPgXKCJ6.jpg", "https://image.tmdb.org/t/p/original/hkC4yNDFmW1yQuQhtZydMeRuaAb.jpg",
-                "https://image.tmdb.org/t/p/original/wUXT3KEh6vjDzwYKiYWwdJNfZOW.jpg", "https://image.tmdb.org/t/p/original/yEcfFXEWpuXcfsR9nKESVCFneqV.jpg", "https://image.tmdb.org/t/p/original/q4FQOiSRhTLWulHl5Vpg37FMArH.jpg"));
-        */
+
         buttonLeft = binding.buttonLeft;
         buttonRight = binding.buttonRight;
         flingContainer = binding.frame;
@@ -86,8 +82,6 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
         getReq.getRequestArray(URL, new IRequestCallbackArray() {
             @Override
             public void onSuccess(JSONArray jsonArray) {
-
-
                 for (int i = 0; i < jsonArray.length(); i++) {
                     try {
                         listJsonObjectsFilms.add(jsonArray.getJSONObject(i));
@@ -142,7 +136,6 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
 
     @Override
     public void onBackPressed() {
-        // imageMatch.setVisibility(View.GONE);
         ((MainActivity) getActivity()).replaceFrag(new GroupsFragment());
     }
 
