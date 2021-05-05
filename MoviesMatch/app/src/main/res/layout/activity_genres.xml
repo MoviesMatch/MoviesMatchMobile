@@ -64,7 +64,7 @@
         app:layout_constraintTop_toTopOf="@+id/listGenres" />
 
     <pl.droidsonroids.gif.GifImageView
-        android:id="@+id/signUpLoadingGif"
+        android:id="@+id/genresLoadingGif"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/loading"

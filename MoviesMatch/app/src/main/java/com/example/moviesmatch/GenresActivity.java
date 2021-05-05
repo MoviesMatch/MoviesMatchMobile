@@ -11,6 +11,7 @@ import android.widget.ListView;
 import com.example.moviesmatch.async.GetRequest;
 import com.example.moviesmatch.async.PostRequest;
 import com.example.moviesmatch.certificate.CertificateByPass;
+import com.example.moviesmatch.databinding.ActivityGenresBinding;
 import com.example.moviesmatch.interfaces.IGetActivity;
 import com.example.moviesmatch.interfaces.IPostActivity;
 import com.example.moviesmatch.interfaces.IRequestCallback;
@@ -24,9 +25,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import pl.droidsonroids.gif.GifImageView;
+
 
 public class GenresActivity extends AppCompatActivity implements IGetActivity, IPostActivity {
 
+    private ActivityGenresBinding binding;
     private ListView listViewGenres;
     private ArrayList<Genre> listGenres;
     private GenresListAdapter arrayAdapter;
@@ -36,6 +40,7 @@ public class GenresActivity extends AppCompatActivity implements IGetActivity, I
     private JSONObject jsonAccountWithGenres;
     private JSONArray selectedGenresJson;
     private CertificateByPass certificateByPass;
+    private GifImageView gifLoading;
 
     private final String getGenresURL = "/api/genre/getAllGenres";
     private final String postGenresURL = "/api/genre/addGenresToUser";
@@ -44,7 +49,9 @@ public class GenresActivity extends AppCompatActivity implements IGetActivity, I
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_genres);
+        binding = ActivityGenresBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
         setUp();
         getGenres();
     }
@@ -127,6 +134,7 @@ public class GenresActivity extends AppCompatActivity implements IGetActivity, I
         }
         jsonAccountWithGenres = new JSONObject();
         selectedGenresJson = new JSONArray();
-        listViewGenres = findViewById(R.id.listGenres);
+        listViewGenres = binding.listGenres;
+        gifLoading = binding.genresLoadingGif;
     }
 }
