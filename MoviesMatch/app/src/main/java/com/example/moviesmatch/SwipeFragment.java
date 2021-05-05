@@ -29,13 +29,13 @@ import java.util.Arrays;
 public class SwipeFragment extends Fragment implements IOnBackPressed {
     private SwipeAdapter arrayAdapter;
     private SwipeFlingAdapterView flingContainer;
-    private ArrayList<String> imageUrl;
+   // private ArrayList<String> imageUrl;
     private Button buttonLeft, buttonRight;
 
 
     private GetRequest getReq;
     private ArrayList<JSONObject> listJsonObjectsFilms;
-    final static String URL = "/api/";
+    final static String URL = "/api/movie/GetMoviesTest";
 
 
     private FragmentSwipeBinding binding ;
@@ -50,8 +50,9 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //TEMP hardcoded images
-        imageUrl = new ArrayList<>(Arrays.asList("https://image.tmdb.org/t/p/original/2EiAX4eChSWQHwgIFAZbPgXKCJ6.jpg", "https://image.tmdb.org/t/p/original/hkC4yNDFmW1yQuQhtZydMeRuaAb.jpg",
+       /* imageUrl = new ArrayList<>(Arrays.asList("https://image.tmdb.org/t/p/original/2EiAX4eChSWQHwgIFAZbPgXKCJ6.jpg", "https://image.tmdb.org/t/p/original/hkC4yNDFmW1yQuQhtZydMeRuaAb.jpg",
                 "https://image.tmdb.org/t/p/original/wUXT3KEh6vjDzwYKiYWwdJNfZOW.jpg", "https://image.tmdb.org/t/p/original/yEcfFXEWpuXcfsR9nKESVCFneqV.jpg", "https://image.tmdb.org/t/p/original/q4FQOiSRhTLWulHl5Vpg37FMArH.jpg"));
+        */
         buttonLeft = binding.buttonLeft;
         buttonRight = binding.buttonRight;
         setUp();
@@ -101,7 +102,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     }
 
     private void fling() {
-        arrayAdapter = new SwipeAdapter(getContext(), imageUrl);
+        arrayAdapter = new SwipeAdapter(getContext(), listJsonObjectsFilms);
 
         flingContainer =binding.frame;
         flingContainer.setAdapter(arrayAdapter);
@@ -111,7 +112,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
             public void removeFirstObjectInAdapter() {
                 // this is the simplest way to delete an object from the Adapter (/AdapterView)
                 Log.d("LIST", "removed object!");
-                imageUrl.remove(0);
+                listJsonObjectsFilms.remove(0);
                 arrayAdapter.notifyDataSetChanged();
             }
 
