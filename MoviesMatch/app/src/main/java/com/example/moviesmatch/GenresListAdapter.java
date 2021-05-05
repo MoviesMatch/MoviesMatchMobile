@@ -96,7 +96,6 @@ public class GenresListAdapter extends BaseAdapter {
                     numberChecked--;
                 }
                 if (numberChecked >= 6) {
-                    Toast.makeText(context, "Error = " + numberChecked, Toast.LENGTH_LONG).show();
                     checkboxView.setChecked(false);
                     numberChecked--;
                 }
