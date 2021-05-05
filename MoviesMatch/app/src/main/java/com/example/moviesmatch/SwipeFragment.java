@@ -16,7 +16,11 @@ import android.widget.Button;
 import com.example.moviesmatch.async.GetRequest;
 import com.example.moviesmatch.databinding.FragmentSwipeBinding;
 import com.example.moviesmatch.interfaces.IOnBackPressed;
+import com.example.moviesmatch.interfaces.IRequestCallbackArray;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +33,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
 
 
     private GetRequest getReq;
+    private ArrayList listArray;
     final static String URL = "/api/";
 
 
@@ -71,7 +76,12 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     }
 
     private void fillListFilm(){
-        getReq.getRequestArray();
+        getReq.getRequestArray(URL, new IRequestCallbackArray() {
+            @Override
+            public void onSuccess(JSONArray jsonArray) {
+               
+            }
+        });
     }
 
 
