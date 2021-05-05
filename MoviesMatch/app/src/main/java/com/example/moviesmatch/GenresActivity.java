@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.moviesmatch.async.GetRequest;
@@ -16,13 +15,14 @@ import com.example.moviesmatch.interfaces.IGetActivity;
 import com.example.moviesmatch.interfaces.IPostActivity;
 import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.interfaces.IRequestCallbackArray;
+import com.example.moviesmatch.validation.JSONArrayManipulator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 
 
 public class GenresActivity extends AppCompatActivity implements IGetActivity, IPostActivity {
@@ -32,7 +32,9 @@ public class GenresActivity extends AppCompatActivity implements IGetActivity, I
     private GenresListAdapter arrayAdapter;
     private PostRequest postRequest;
     private GetRequest getRequest;
-    private JSONObject selectedGenresJson;
+    private JSONObject account;
+    private JSONObject jsonAccountWithGenres;
+    private JSONArray selectedGenresJson;
     private CertificateByPass certificateByPass;
 
     private final String getGenresURL = "/api/genre/getAllGenres";
@@ -43,17 +45,8 @@ public class GenresActivity extends AppCompatActivity implements IGetActivity, I
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_genres);
-        postRequest = new PostRequest(this);
-        getRequest = new GetRequest(this);
-        certificateByPass = new CertificateByPass();
-        certificateByPass.IngoreCertificate();
-        selectedGenresJson = new JSONObject();
-        listViewGenres = findViewById(R.id.listGenres);
-        listGenres = new ArrayList<>();
-
+        setUp();
         getGenres();
-
-        arrayAdapter  = new GenresListAdapter(this, listGenres);
     }
 
     private boolean isFiveChecked(){
@@ -73,8 +66,14 @@ public class GenresActivity extends AppCompatActivity implements IGetActivity, I
 
     public void savePrefs(View view){
         if(isFiveChecked()){
-            System.out.println(selectedGenresJson);
-            postRequest.postRequest(selectedGenresJson, postGenresURL, new IRequestCallback() {
+            try{
+                jsonAccountWithGenres.put("idUser", account.get("usrId"));
+                jsonAccountWithGenres.put("genreIds", selectedGenresJson);
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+            System.out.println(jsonAccountWithGenres);
+            postRequest.postRequest(jsonAccountWithGenres, postGenresURL, new IRequestCallback() {
                 @Override
                 public void onSuccess(JSONObject jsonObject) {
                     startActivity(new Intent(GenresActivity.this, MainActivity.class));
@@ -83,36 +82,51 @@ public class GenresActivity extends AppCompatActivity implements IGetActivity, I
         }else{
             new AlertDialog.Builder(this).setTitle("You didn't check 5 genres").setMessage("Please check exactly 5 genres of movies you like").show();
         }
-
     }
 
     private void getGenres(){
         getRequest.getRequestArray(getGenresURL, new IRequestCallbackArray() {
             @Override
             public void onSuccess(JSONArray jsonArray) {
-                //listGenres.add(new Genre("Action", false));
-                //listViewGenres.setAdapter(arrayAdapter);
-                System.out.println(jsonArray);
+                listGenres = new JSONArrayManipulator().toGenreList(jsonArray);
+                Collections.sort(listGenres);
+                setArrayAdapter();
             }
         });
     }
 
+    private void setArrayAdapter(){
+        arrayAdapter  = new GenresListAdapter(this, listGenres);
+        listViewGenres.setAdapter(arrayAdapter);
+    }
+
     private void setSelectedGenresJson(int i){
-        try {
-            selectedGenresJson.put("Genre" + iSelectedGenres, listGenres.get(i).ItemString);
-            iSelectedGenres++;
-        } catch (JSONException e){
-            e.printStackTrace();
-        }
+        selectedGenresJson.put(listGenres.get(i).getId());
+        iSelectedGenres++;
     }
 
     @Override
     public void onGetErrorResponse(int errorCode) {
-        new AlertDialog.Builder(this).setTitle("Error").setMessage("Please try again").show();
+        new AlertDialog.Builder(this).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
     }
 
     @Override
     public void onPostErrorResponse(int errorCode) {
         new AlertDialog.Builder(this).setTitle("Error").setMessage("Please try again").show();
+    }
+
+    private void setUp(){
+        postRequest = new PostRequest(this);
+        getRequest = new GetRequest(this);
+        certificateByPass = new CertificateByPass();
+        certificateByPass.IngoreCertificate();
+        try {
+            account = new JSONObject(getIntent().getStringExtra("Account"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        jsonAccountWithGenres = new JSONObject();
+        selectedGenresJson = new JSONArray();
+        listViewGenres = findViewById(R.id.listGenres);
     }
 }
