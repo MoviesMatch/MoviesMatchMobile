@@ -20,6 +20,7 @@ import com.example.moviesmatch.interfaces.IRequestCallbackArray;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
 
 
     private GetRequest getReq;
-    private ArrayList listArray;
+    private ArrayList<JSONObject> listJsonObjectsFilms;
     final static String URL = "/api/";
 
 
@@ -79,7 +80,14 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
         getReq.getRequestArray(URL, new IRequestCallbackArray() {
             @Override
             public void onSuccess(JSONArray jsonArray) {
-               
+                listJsonObjectsFilms = new ArrayList<>();
+                for (int i = 0; i < jsonArray.length(); i++){
+                    try {
+                        listJsonObjectsFilms.add(jsonArray.getJSONObject(i));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
     }
@@ -89,7 +97,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
         getReq = new GetRequest((MainActivity)getActivity());
         fling();
         swipeButtons();
-
+        fillListFilm();
     }
 
     private void fling() {
