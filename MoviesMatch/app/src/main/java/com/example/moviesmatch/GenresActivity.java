@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.moviesmatch.async.GetRequest;
@@ -41,6 +42,7 @@ public class GenresActivity extends AppCompatActivity implements IGetActivity, I
     private JSONArray selectedGenresJson;
     private CertificateByPass certificateByPass;
     private GifImageView gifLoading;
+    private Button buttonSavePreferences;
 
     private final String getGenresURL = "/api/genre/getAllGenres";
     private final String postGenresURL = "/api/genre/addGenresToUser";
@@ -73,13 +75,16 @@ public class GenresActivity extends AppCompatActivity implements IGetActivity, I
 
     public void savePrefs(View view){
         if(isFiveChecked()){
+            gifLoading.setVisibility(View.VISIBLE);
+            buttonSavePreferences.setEnabled(false);
+            
             try{
                 jsonAccountWithGenres.put("idUser", account.get("usrId"));
                 jsonAccountWithGenres.put("genreIds", selectedGenresJson);
             } catch (JSONException e){
                 e.printStackTrace();
             }
-            System.out.println(jsonAccountWithGenres);
+
             postRequest.postRequest(jsonAccountWithGenres, postGenresURL, new IRequestCallback() {
                 @Override
                 public void onSuccess(JSONObject jsonObject) {
@@ -87,6 +92,8 @@ public class GenresActivity extends AppCompatActivity implements IGetActivity, I
                 }
             });
         }else{
+            gifLoading.setVisibility(View.GONE);
+            buttonSavePreferences.setEnabled(true);
             new AlertDialog.Builder(this).setTitle("You didn't check 5 genres").setMessage("Please check exactly 5 genres of movies you like").show();
         }
     }
@@ -136,5 +143,6 @@ public class GenresActivity extends AppCompatActivity implements IGetActivity, I
         selectedGenresJson = new JSONArray();
         listViewGenres = binding.listGenres;
         gifLoading = binding.genresLoadingGif;
+        buttonSavePreferences = binding.buttonSavePref;
     }
 }
