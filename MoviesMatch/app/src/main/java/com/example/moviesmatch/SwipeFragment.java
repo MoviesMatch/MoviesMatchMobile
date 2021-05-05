@@ -106,6 +106,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     private void fling() {
         arrayAdapter = new SwipeAdapter(getContext(), listJsonObjectsFilms);
         flingContainer.setAdapter(arrayAdapter);
+        arrayAdapter.notifyDataSetChanged();
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
             @Override
             public void removeFirstObjectInAdapter() {
