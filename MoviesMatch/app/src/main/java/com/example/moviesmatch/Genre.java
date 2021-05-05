@@ -1,15 +1,37 @@
 package com.example.moviesmatch;
 
-public class Genre {
-    boolean checked;
-    String ItemString;
+import java.util.Comparator;
 
-    public Genre(String t, boolean b){
-        ItemString = t;
-        checked = b;
+public class Genre implements Comparator<Genre>, Comparable<Genre> {
+    int id;
+    String ItemString;
+    boolean checked;
+
+    public Genre(int id, String ItemString, boolean checked) {
+        this.id = id;
+        this.ItemString = ItemString;
+        this.checked = checked;
     }
 
-    public boolean isChecked(){
-        return checked;
+    public int getId() {
+        return this.id;
+    }
+
+    public String getItemString() {
+        return this.ItemString;
+    }
+
+    public boolean isChecked() {
+        return this.checked;
+    }
+
+    @Override
+    public int compare(Genre o1, Genre o2) {
+        return o1.ItemString.compareTo(o2.ItemString);
+    }
+
+    @Override
+    public int compareTo(Genre o) {
+        return this.ItemString.compareTo(o.getItemString());
     }
 }
