@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.moviesmatch.async.GetRequest;
+import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.databinding.FragmentSwipeBinding;
 import com.example.moviesmatch.interfaces.IOnBackPressed;
 import com.example.moviesmatch.interfaces.IRequestCallbackArray;
@@ -29,22 +30,24 @@ import java.util.Arrays;
 public class SwipeFragment extends Fragment implements IOnBackPressed {
     private SwipeAdapter arrayAdapter;
     private SwipeFlingAdapterView flingContainer;
-   // private ArrayList<String> imageUrl;
+    // private ArrayList<String> imageUrl;
     private Button buttonLeft, buttonRight;
 
 
     private GetRequest getReq;
     private ArrayList<JSONObject> listJsonObjectsFilms;
+    private FragmentSwipeBinding binding;
+
+    CertificateByPass certificat;
     final static String URL = "/api/movie/GetMoviesTest";
 
-
-    private FragmentSwipeBinding binding ;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentSwipeBinding.inflate(getLayoutInflater());
         return binding.getRoot();
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -55,17 +58,19 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
         */
         buttonLeft = binding.buttonLeft;
         buttonRight = binding.buttonRight;
+        flingContainer = binding.frame;
+
         setUp();
 
     }
 
     public void swipeButtons() {
-       buttonRight.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               flingContainer.getTopCardListener().selectLeft();
-           }
-       });
+        buttonRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flingContainer.getTopCardListener().selectLeft();
+            }
+        });
 
         buttonLeft.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,36 +82,30 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
 
     }
 
-    private void fillListFilm(){
+    private void getRequestListFilm() {
         getReq.getRequestArray(URL, new IRequestCallbackArray() {
             @Override
             public void onSuccess(JSONArray jsonArray) {
-                listJsonObjectsFilms = new ArrayList<>();
-                for (int i = 0; i < jsonArray.length(); i++){
+
+
+                for (int i = 0; i < jsonArray.length(); i++) {
                     try {
                         listJsonObjectsFilms.add(jsonArray.getJSONObject(i));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
+                fling();
             }
         });
-    }
 
 
-    public void setUp(){
-        getReq = new GetRequest((MainActivity)getActivity());
-        fling();
-        swipeButtons();
-        fillListFilm();
     }
+
 
     private void fling() {
         arrayAdapter = new SwipeAdapter(getContext(), listJsonObjectsFilms);
-
-        flingContainer =binding.frame;
         flingContainer.setAdapter(arrayAdapter);
-
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
             @Override
             public void removeFirstObjectInAdapter() {
@@ -142,7 +141,18 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
 
     @Override
     public void onBackPressed() {
-       // imageMatch.setVisibility(View.GONE);
-        ((MainActivity)getActivity()).replaceFrag(new GroupsFragment());
+        // imageMatch.setVisibility(View.GONE);
+        ((MainActivity) getActivity()).replaceFrag(new GroupsFragment());
     }
+
+    public void setUp() {
+
+        listJsonObjectsFilms = new ArrayList<>();
+        getReq = new GetRequest((MainActivity) getActivity());
+        certificat = new CertificateByPass();
+        certificat.IngoreCertificate();
+        getRequestListFilm();
+        swipeButtons();
+    }
+
 }

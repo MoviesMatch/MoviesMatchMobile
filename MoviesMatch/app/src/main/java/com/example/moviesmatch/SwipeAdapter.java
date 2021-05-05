@@ -35,13 +35,19 @@ public class SwipeAdapter extends ArrayAdapter<JSONObject> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        JSONObject currentMovie = moviesList.get(position);
-        if (convertView == null)
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item, parent, false);
+        View row;
 
-        ImageView image = convertView.findViewById(R.id.imageSwipe);
-        TextView title = convertView.findViewById(R.id.textViewTitre);
-        TextView date = convertView.findViewById(R.id.textViewDate);
+        if (convertView == null){
+            row = LayoutInflater.from(getContext()).inflate(R.layout.item, parent, false);
+            } else{
+            row = convertView;
+        }
+
+        JSONObject currentMovie = moviesList.get(position);
+
+        ImageView image = row.findViewById(R.id.imageSwipe);
+        TextView title = row.findViewById(R.id.textViewTitle);
+        TextView date = row.findViewById(R.id.textViewDate);
 
         try {
             Picasso.get().load(currentMovie.getString("movPosterUrl")).into(image);
@@ -50,6 +56,6 @@ public class SwipeAdapter extends ArrayAdapter<JSONObject> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return convertView;
+        return row;
     }
 }
