@@ -7,23 +7,21 @@ public class Genre implements Comparator<Genre>, Comparable<Genre> {
     String ItemString;
     boolean checked;
 
-    public Genre(int id, String ItemString, boolean checked){
+    public Genre(int id, String ItemString, boolean checked) {
         this.id = id;
         this.ItemString = ItemString;
         this.checked = checked;
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public String getItemString() {
         return this.ItemString;
     }
 
-    public boolean isChecked(){
-        return checked;
-    }
+    public boolean isChecked() { return this.checked; }
 
     @Override
     public int compare(Genre o1, Genre o2) {
