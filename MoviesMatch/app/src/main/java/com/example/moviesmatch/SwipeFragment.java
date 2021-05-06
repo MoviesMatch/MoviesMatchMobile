@@ -130,7 +130,14 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
             public void onScroll(float v) {
 
             }
+            
+        });
 
+        flingContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClicked(int i, Object o) {
+                ((MainActivity)getActivity()).replaceFrag(new MovieInfosFragment());
+            }
         });
     }
 
