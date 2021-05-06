@@ -1,4 +1,4 @@
-package com.example.moviesmatch;
+package com.example.moviesmatch.layouts.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.example.moviesmatch.R;
 
 public class AccountFragment extends Fragment {
     @Override

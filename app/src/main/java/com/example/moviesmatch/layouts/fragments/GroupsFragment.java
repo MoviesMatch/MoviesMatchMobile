@@ -1,4 +1,4 @@
-package com.example.moviesmatch;
+package com.example.moviesmatch.layouts.fragments;
 
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.example.moviesmatch.R;
+import com.example.moviesmatch.layouts.activities.MainActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;

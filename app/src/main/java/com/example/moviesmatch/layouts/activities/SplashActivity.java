@@ -1,4 +1,4 @@
-package com.example.moviesmatch;
+package com.example.moviesmatch.layouts.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -9,6 +9,8 @@ import android.os.Handler;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
+
+import com.example.moviesmatch.R;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -30,7 +32,7 @@ public class SplashActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent=new Intent(SplashActivity.this,BrowseActivity.class);
+                Intent intent=new Intent(SplashActivity.this, BrowseActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 finish();

@@ -1,4 +1,4 @@
-package com.example.moviesmatch;
+package com.example.moviesmatch.layouts.activities;
 
 import android.os.Bundle;
 import android.view.View;
@@ -8,11 +8,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.moviesmatch.layouts.fragments.GenresFragment;
+import com.example.moviesmatch.R;
+import com.example.moviesmatch.layouts.fragments.SignUpFragment;
 import com.example.moviesmatch.databinding.ActivityCreateAccountBinding;
 import com.example.moviesmatch.interfaces.IGetActivity;
 import com.example.moviesmatch.interfaces.IPostActivity;
-
-import pl.droidsonroids.gif.GifImageView;
 
 public class CreateAccountActivity extends AppCompatActivity implements IPostActivity, IGetActivity {
     private ActivityCreateAccountBinding binding;

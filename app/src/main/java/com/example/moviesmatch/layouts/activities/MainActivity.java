@@ -1,4 +1,4 @@
-package com.example.moviesmatch;
+package com.example.moviesmatch.layouts.activities;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,11 +15,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.moviesmatch.layouts.fragments.DonateFragment;
+import com.example.moviesmatch.layouts.fragments.GenresFragment;
+import com.example.moviesmatch.layouts.fragments.GroupsFragment;
+import com.example.moviesmatch.layouts.fragments.MatchFragment;
+import com.example.moviesmatch.R;
+import com.example.moviesmatch.layouts.fragments.SettingsFragment;
+import com.example.moviesmatch.layouts.fragments.SwipeFragment;
 import com.example.moviesmatch.interfaces.IGetActivity;
+import com.example.moviesmatch.layouts.fragments.AccountFragment;
 import com.google.android.material.navigation.NavigationView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.List;
 
