@@ -96,7 +96,7 @@ public class SignUpFragment extends Fragment {
         }
     }
 
-    public void onErrorResponse() {
+    public void loadingGone() {
         loadingGif.setVisibility(View.GONE);
         nextButton.setEnabled(true);
     }

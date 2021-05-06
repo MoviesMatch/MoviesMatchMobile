@@ -32,7 +32,7 @@ import java.util.Collections;
 import pl.droidsonroids.gif.GifImageView;
 
 
-public class GenresFragment extends Fragment implements IGetActivity, IPostActivity {
+public class GenresFragment extends Fragment {
 
     private FragmentGenresBinding binding;
     private ListView listViewGenres;
@@ -113,6 +113,8 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
      * Get all available genres from the server
      */
     private void getGenres(){
+        gifLoading.setVisibility(View.VISIBLE);
+        buttonSavePreferences.setEnabled(false);
         getRequest.getRequest(getGenresURL, new IRequestCallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
@@ -123,6 +125,8 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
                     if (parent.equals("MainActivity")){
                         getUserGenres();
                     }
+                    gifLoading.setVisibility(View.GONE);
+                    buttonSavePreferences.setEnabled(true);
                 } catch (JSONException e){
                     e.printStackTrace();
                 }
@@ -179,14 +183,9 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
         selectedGenresJson.put(listGenres.get(i).getId());
     }
 
-    @Override
-    public void onGetErrorResponse(int errorCode) {
-        new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
-    }
-
-    @Override
-    public void onPostErrorResponse(int errorCode) {
-        new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Please try again").show();
+    public void loadingGone(){
+        gifLoading.setVisibility(View.GONE);
+        buttonSavePreferences.setEnabled(true);
     }
 
     private void setUp(){

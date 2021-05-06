@@ -1,5 +1,6 @@
 package com.example.moviesmatch;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.moviesmatch.interfaces.IGetActivity;
 import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONException;
@@ -21,12 +23,13 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements IGetActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
     private ImageView imageMatch;
     private String account;
+    private Fragment frag = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +70,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 imageMatch.setVisibility(View.GONE);
-                Fragment frag = null;
                 int itemId = menuItem.getItemId();
-                switch (itemId){
+                switch (itemId) {
                     case R.id.groups:
                         frag = new GroupsFragment();
                         break;
@@ -94,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public boolean replaceFrag(Fragment frag){
+    public boolean replaceFrag(Fragment frag) {
         if (frag != null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             Bundle accountBundle = new Bundle();
@@ -114,15 +116,23 @@ public class MainActivity extends AppCompatActivity {
         tellFragments();
     }
 
-    private void tellFragments(){
+    private void tellFragments() {
         List<Fragment> fragments = getSupportFragmentManager().getFragments();
-        for(Fragment f : fragments){
-            if(f != null && f instanceof SwipeFragment)
-                ((SwipeFragment)f).onBackPressed();
+        for (Fragment f : fragments) {
+            if (f != null && f instanceof SwipeFragment)
+                ((SwipeFragment) f).onBackPressed();
         }
     }
 
-    public void matchFragment(View view){
+    public void matchFragment(View view) {
         replaceFrag(new MatchFragment());
+    }
+
+    @Override
+    public void onGetErrorResponse(int errorCode) {
+        if (frag instanceof GenresFragment) {
+            ((GenresFragment) frag).loadingGone();
+            new AlertDialog.Builder(this).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
+        }
     }
 }
