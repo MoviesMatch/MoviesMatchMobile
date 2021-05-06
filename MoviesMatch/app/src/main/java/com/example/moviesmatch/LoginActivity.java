@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity implements IPostActivity {
 
 
     public void register(View view) {
-        startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+        startActivity(new Intent(LoginActivity.this, SignUpFragment.class));
     }
 
 
