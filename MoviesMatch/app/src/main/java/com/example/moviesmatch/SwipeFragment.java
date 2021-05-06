@@ -17,6 +17,7 @@ import com.example.moviesmatch.async.GetRequest;
 import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.databinding.FragmentSwipeBinding;
 import com.example.moviesmatch.interfaces.IOnBackPressed;
+import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.interfaces.IRequestCallbackArray;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
@@ -51,13 +52,10 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         buttonLeft = binding.buttonLeft;
         buttonRight = binding.buttonRight;
         flingContainer = binding.frame;
-
         setUp();
-
     }
 
     public void swipeButtons() {
@@ -79,16 +77,18 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     }
 
     private void getRequestListFilm() {
-        getReq.getRequestArray(URL, new IRequestCallbackArray() {
+        getReq.getRequest(URL, new IRequestCallback() {
             @Override
-            public void onSuccess(JSONArray jsonArray) {
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    try {
+            public void onSuccess(JSONObject jsonObject) {
+                try {
+                    JSONArray jsonArray = jsonObject.getJSONArray("$values");
+                    for (int i = 0; i < jsonArray.length(); i++) {
                         listJsonObjectsFilms.add(jsonArray.getJSONObject(i));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+
                 fling();
             }
         });
@@ -128,9 +128,14 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
 
             @Override
             public void onScroll(float v) {
-
             }
+        });
 
+        flingContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClicked(int i, Object o) {
+                ((MainActivity) getActivity()).replaceFrag(new MovieInfosFragment());
+            }
         });
     }
 
@@ -140,7 +145,6 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     }
 
     public void setUp() {
-
         listJsonObjectsFilms = new ArrayList<>();
         getReq = new GetRequest((MainActivity) getActivity());
         certificat = new CertificateByPass();
