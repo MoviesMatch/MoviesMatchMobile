@@ -17,8 +17,6 @@ public class JSONArrayManipulator {
                 listGenres.add(new Genre(jsonObject.getJSONArray("$values").getJSONObject(i).getInt("genId"),
                         jsonObject.getJSONArray("$values").getJSONObject(i).getString("genName"),
                         false));
-                System.out.println("GENRE ID: " + jsonObject.getJSONArray("$values").getJSONObject(i).getInt("genId"));
-                System.out.println("GENRE NAME: " + jsonObject.getJSONArray("$values").getJSONObject(i).getString("genName"));
             } catch (JSONException e){
                 e.printStackTrace();
             }

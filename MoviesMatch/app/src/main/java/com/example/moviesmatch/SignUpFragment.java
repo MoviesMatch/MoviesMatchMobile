@@ -88,7 +88,10 @@ public class SignUpFragment extends Fragment implements IPostActivity {
                 //Called when postRequest is done
                 @Override
                 public void onSuccess(JSONObject jsonObject) {
-                    ((CreateAccountActivity)getActivity()).replaceFrag(new GenresFragment(), jsonObject.toString());
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Account", jsonObject.toString());
+                    bundle.putString("Parent", "CreateAccountActivity");
+                    ((CreateAccountActivity)getActivity()).replaceFrag(new GenresFragment(), bundle);
                     loadingGif.setVisibility(View.GONE);
                     nextButton.setEnabled(true);
                 }
@@ -101,6 +104,7 @@ public class SignUpFragment extends Fragment implements IPostActivity {
 
     @Override
     public void onPostErrorResponse(int errorCode) {
+        System.out.println("ERROR---------------------------------------------");
         loadingGif.setVisibility(View.GONE);
         nextButton.setEnabled(true);
         if (errorCode == 403){

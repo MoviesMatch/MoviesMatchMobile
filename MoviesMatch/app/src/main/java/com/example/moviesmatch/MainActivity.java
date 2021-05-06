@@ -16,6 +16,9 @@ import android.widget.ImageView;
 
 import com.google.android.material.navigation.NavigationView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private Toolbar toolbar;
     private ImageView imageMatch;
+    private String account;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.toolbar);
         imageMatch = findViewById(R.id.imageMatch);
+        account = getIntent().getStringExtra("Account");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         navSelectedItem();
@@ -71,6 +76,9 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.account:
                         frag = new AccountFragment();
                         break;
+                    case R.id.genres:
+                        frag = new GenresFragment();
+                        break;
                     case R.id.settings:
                         frag = new SettingsFragment();
                         break;
@@ -86,9 +94,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public boolean replaceFrag( Fragment frag){
+    public boolean replaceFrag(Fragment frag){
         if (frag != null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            Bundle accountBundle = new Bundle();
+            accountBundle.putString("Account", account);
+            accountBundle.putString("Parent", "MainActivity");
+            frag.setArguments(accountBundle);
             transaction.replace(R.id.frame, frag);
             transaction.commit();
             drawerLayout.closeDrawers();

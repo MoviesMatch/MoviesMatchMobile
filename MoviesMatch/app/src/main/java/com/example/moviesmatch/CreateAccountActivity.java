@@ -26,12 +26,10 @@ public class CreateAccountActivity extends AppCompatActivity {
         }
     }
 
-    public boolean replaceFrag(Fragment frag, String account){
+    public boolean replaceFrag(Fragment frag, Bundle infoToPass){
         if (frag != null) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            Bundle bundle = new Bundle();
-            bundle.putString("Account", account);
-            frag.setArguments(bundle);
+            frag.setArguments(infoToPass);
             transaction.replace(R.id.frameCreateAccountActivity, frag);
             transaction.commit();
             return true;

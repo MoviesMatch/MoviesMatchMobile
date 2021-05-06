@@ -46,9 +46,11 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     private CertificateByPass certificateByPass;
     private GifImageView gifLoading;
     private Button buttonSavePreferences;
+    private String parent;
 
     private final String getGenresURL = "/api/genre/getAllGenres";
     private final String postGenresURL = "/api/genre/addGenresToUser";
+    private String getUserGenreURL = "/api/genre/getUserGenres";
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -93,7 +95,9 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
                     postRequest.postRequest(jsonAccountWithGenres, postGenresURL, new IRequestCallback() {
                         @Override
                         public void onSuccess(JSONObject jsonObject) {
-                            startActivity(new Intent(getContext(), MainActivity.class));
+                            Intent intent = new Intent(getContext(), MainActivity.class);
+                            intent.putExtra("Account", account.toString());
+                            startActivity(intent);
                         }
                     });
                 }else{
@@ -112,7 +116,10 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
                 try{
                     listGenres = new JSONArrayManipulator().toGenreList(jsonObject);
                     Collections.sort(listGenres);
-                    setArrayAdapter();
+                    setArrayAdapter(listGenres);
+                    if (parent.equals("MainActivity")){
+                        getUserGenres();
+                    }
                 } catch (JSONException e){
                     e.printStackTrace();
                 }
@@ -120,9 +127,39 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
         });
     }
 
-    private void setArrayAdapter(){
+    private void getUserGenres(){
+        String usrId = "";
+        try{
+            usrId = account.getString("usrId");
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+        getUserGenreURL += "?idUser=" + usrId;
+        getRequest.getRequest(getUserGenreURL, new IRequestCallback() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                try{
+                    ArrayList<Genre> userGenre = new JSONArrayManipulator().toGenreList(jsonObject);
+                    Collections.sort(userGenre);
+                    for (Genre genres : listGenres){
+                        for (Genre userGenres : userGenre){
+                            if (genres.getId() == userGenres.getId()){
+                                genres.setChecked(true);
+                            }
+                        }
+                    }
+                    setArrayAdapter(listGenres);
+                } catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void setArrayAdapter(ArrayList<Genre> listGenres){
         arrayAdapter  = new GenresListAdapter(getContext(), listGenres);
         listViewGenres.setAdapter(arrayAdapter);
+        arrayAdapter.notifyDataSetChanged();
     }
 
     private void setSelectedGenresJson(int i){
@@ -140,8 +177,16 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     }
 
     private void setUp(){
-        postRequest = new PostRequest((CreateAccountActivity)getActivity());
-        getRequest = new GetRequest((CreateAccountActivity)getActivity());
+        if (this.getArguments().getString("Parent").equals("CreateAccountActivity")){
+            parent = "CreateAccountActivity";
+            postRequest = new PostRequest((CreateAccountActivity)getActivity());
+            getRequest = new GetRequest((CreateAccountActivity)getActivity());
+        } else {
+            parent = "MainActivity";
+            postRequest = new PostRequest((MainActivity)getActivity());
+            getRequest = new GetRequest((MainActivity)getActivity());
+        }
+
         certificateByPass = new CertificateByPass();
         certificateByPass.IngoreCertificate();
         try {
