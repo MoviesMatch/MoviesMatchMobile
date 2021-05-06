@@ -17,6 +17,7 @@ import com.example.moviesmatch.async.GetRequest;
 import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.databinding.FragmentSwipeBinding;
 import com.example.moviesmatch.interfaces.IOnBackPressed;
+import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.interfaces.IRequestCallbackArray;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
@@ -79,16 +80,19 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     }
 
     private void getRequestListFilm() {
-        getReq.getRequestArray(URL, new IRequestCallbackArray() {
+        getReq.getRequest(URL, new IRequestCallback() {
             @Override
-            public void onSuccess(JSONArray jsonArray) {
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    try {
+            public void onSuccess(JSONObject jsonObject)  {
+                try {
+                    JSONArray jsonArray = jsonObject.getJSONArray("$values");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+
                         listJsonObjectsFilms.add(jsonArray.getJSONObject(i));
+                    }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }
+
                 fling();
             }
         });
