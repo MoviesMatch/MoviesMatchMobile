@@ -52,13 +52,10 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         buttonLeft = binding.buttonLeft;
         buttonRight = binding.buttonRight;
         flingContainer = binding.frame;
-
         setUp();
-
     }
 
     public void swipeButtons() {
@@ -82,16 +79,15 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     private void getRequestListFilm() {
         getReq.getRequest(URL, new IRequestCallback() {
             @Override
-            public void onSuccess(JSONObject jsonObject)  {
+            public void onSuccess(JSONObject jsonObject) {
                 try {
                     JSONArray jsonArray = jsonObject.getJSONArray("$values");
                     for (int i = 0; i < jsonArray.length(); i++) {
-
                         listJsonObjectsFilms.add(jsonArray.getJSONObject(i));
                     }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
                 fling();
             }
@@ -132,14 +128,13 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
 
             @Override
             public void onScroll(float v) {
-
             }
         });
 
         flingContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
             @Override
             public void onItemClicked(int i, Object o) {
-                ((MainActivity)getActivity()).replaceFrag(new MovieInfosFragment());
+                ((MainActivity) getActivity()).replaceFrag(new MovieInfosFragment());
             }
         });
     }
@@ -150,7 +145,6 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     }
 
     public void setUp() {
-
         listJsonObjectsFilms = new ArrayList<>();
         getReq = new GetRequest((MainActivity) getActivity());
         certificat = new CertificateByPass();
