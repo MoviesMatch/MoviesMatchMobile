@@ -11,14 +11,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.moviesmatch.R;
 import com.example.moviesmatch.databinding.ActivityLoginBinding;
 import com.example.moviesmatch.requests.PostRequest;
 import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.interfaces.IPostActivity;
 import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.validation.InputsValidation;
-
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,6 +48,7 @@ public class LoginActivity extends AppCompatActivity implements IPostActivity {
 
 
     public void login(View view) {
+        loading();
         try {
             jsonObject.put("usrEmail", editTextEmail.getText().toString());
             jsonObject.put("usrPassword", editTextPsw.getText().toString());
@@ -64,17 +63,26 @@ public class LoginActivity extends AppCompatActivity implements IPostActivity {
                     startAct(jsonObject);
                 }
             });
+        } else{
+            loadingGone();
         }
     }
 
     @Override
     public void onPostErrorResponse(int errorCode) {
-        new AlertDialog.Builder(this).setTitle("Your email or password are wrong").setMessage("Please change your email or password").show();
+        loadingGone();
+        if (errorCode == 401) {
+            new AlertDialog.Builder(this).setTitle("Your email or password are wrong").setMessage("Please change your email or password").show();
+        } else {
+            new AlertDialog.Builder(this).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
+        }
     }
 
     public void setUp() {
         editTextEmail = binding.editTextEmail;
         editTextPsw = binding.editTextPsw;
+        loadingGif = binding.loginLoadingGif;
+        loginButton = binding.buttonLogin;
         jsonObject = new JSONObject();
         postRequest = new PostRequest(this);
         validation = new InputsValidation(this);
@@ -90,12 +98,23 @@ public class LoginActivity extends AppCompatActivity implements IPostActivity {
 
     public void startAct(JSONObject jsonObject) {
         Intent i = new Intent(LoginActivity.this, MainActivity.class);
-        i.putExtra("Account",jsonObject.toString());
+        i.putExtra("Account", jsonObject.toString());
         startActivity(i);
     }
+
+    private void loading() {
+        loadingGif.setVisibility(View.VISIBLE);
+        loginButton.setEnabled(false);
+    }
+
+    private void loadingGone() {
+        loadingGif.setVisibility(View.GONE);
+        loginButton.setEnabled(true);
+    }
+
     @Override
-    public void onBackPressed(){
-        
+    public void onBackPressed() {
+
     }
 
 }
