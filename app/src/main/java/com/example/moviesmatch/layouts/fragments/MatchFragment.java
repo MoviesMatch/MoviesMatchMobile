@@ -1,4 +1,4 @@
-package com.example.moviesmatch;
+package com.example.moviesmatch.layouts.fragments;
 
 import android.os.Bundle;
 
@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.moviesmatch.R;
 import com.example.moviesmatch.interfaces.IOnBackPressed;
 
 public class MatchFragment extends Fragment implements IOnBackPressed {

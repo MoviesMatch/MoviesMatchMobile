@@ -1,4 +1,4 @@
-package com.example.moviesmatch;
+package com.example.moviesmatch.layouts.fragments;
 
 import android.os.Bundle;
 
@@ -7,14 +7,14 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.moviesmatch.adapters.RecyclerViewAdapter;
+import com.example.moviesmatch.R;
+import com.example.moviesmatch.layouts.adapters.RecyclerViewAdapter;
 
 import java.util.ArrayList;
 

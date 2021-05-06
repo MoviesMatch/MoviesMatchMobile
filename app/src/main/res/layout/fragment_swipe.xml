@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SwipeFragment">
+    tools:context=".layouts.fragments.SwipeFragment">
 
     <com.lorentzos.flingswipe.SwipeFlingAdapterView
         android:id="@+id/frame"
@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/guidelineBot"
         app:rotation_degrees="15.5"
-        tools:context=".SwipeFragment" >
+        tools:context=".layouts.fragments.SwipeFragment" >
 
     </com.lorentzos.flingswipe.SwipeFlingAdapterView>
 

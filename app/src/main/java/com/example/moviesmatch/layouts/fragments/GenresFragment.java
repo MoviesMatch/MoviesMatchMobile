@@ -1,4 +1,4 @@
-package com.example.moviesmatch;
+package com.example.moviesmatch.layouts.fragments;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -12,14 +12,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.example.moviesmatch.async.GetRequest;
-import com.example.moviesmatch.async.PostRequest;
+import com.example.moviesmatch.layouts.adapters.GenresListAdapter;
+import com.example.moviesmatch.requests.GetRequest;
+import com.example.moviesmatch.requests.PostRequest;
 import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.databinding.FragmentGenresBinding;
-import com.example.moviesmatch.interfaces.IGetActivity;
-import com.example.moviesmatch.interfaces.IPostActivity;
 import com.example.moviesmatch.interfaces.IRequestCallback;
-import com.example.moviesmatch.interfaces.IRequestCallbackArray;
+import com.example.moviesmatch.layouts.activities.CreateAccountActivity;
+import com.example.moviesmatch.layouts.activities.MainActivity;
+import com.example.moviesmatch.models.Genre;
 import com.example.moviesmatch.validation.JSONArrayManipulator;
 
 import org.json.JSONArray;

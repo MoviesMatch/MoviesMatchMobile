@@ -1,8 +1,7 @@
 package com.example.moviesmatch.validation;
 
-import com.example.moviesmatch.Genre;
+import com.example.moviesmatch.models.Genre;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 

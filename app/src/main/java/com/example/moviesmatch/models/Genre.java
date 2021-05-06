@@ -1,11 +1,11 @@
-package com.example.moviesmatch;
+package com.example.moviesmatch.models;
 
 import java.util.Comparator;
 
 public class Genre implements Comparator<Genre>, Comparable<Genre> {
     int id;
     String ItemString;
-    boolean checked;
+    public boolean checked;
 
     public Genre(int id, String ItemString, boolean checked) {
         this.id = id;
