@@ -77,13 +77,13 @@ public class LoginActivity extends AppCompatActivity implements IPostActivity {
 
 
     public void register(View view) {
-        startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+        startActivity(new Intent(LoginActivity.this, SignUpFragment.class));
     }
 
 
     public void startAct(JSONObject jsonObject) {
         Intent i = new Intent(LoginActivity.this, MainActivity.class);
-        i.putExtra("CurrentUser",jsonObject.toString());
+        i.putExtra("Account",jsonObject.toString());
         startActivity(i);
     }
     @Override

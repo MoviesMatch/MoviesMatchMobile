@@ -25,6 +25,10 @@ public class Genre implements Comparator<Genre>, Comparable<Genre> {
         return this.checked;
     }
 
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+
     @Override
     public int compare(Genre o1, Genre o2) {
         return o1.ItemString.compareTo(o2.ItemString);

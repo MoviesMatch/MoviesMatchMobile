@@ -72,9 +72,9 @@ public class GenresListAdapter extends BaseAdapter {
             viewHolder = (GenresListViewHolder) rowView.getTag();
         }
 
-        viewHolder.checkBox.setChecked(list.get(position).checked);
+        viewHolder.checkBox.setChecked(list.get(position).isChecked());
 
-        final String itemStr = list.get(position).ItemString;
+        final String itemStr = list.get(position).getItemString();
         viewHolder.text.setText(itemStr);
         viewHolder.checkBox.setTag(position);
 
