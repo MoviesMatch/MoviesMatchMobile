@@ -109,6 +109,9 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
         });
     }
 
+    /**
+     * Get all available genres from the server
+     */
     private void getGenres(){
         getRequest.getRequest(getGenresURL, new IRequestCallback() {
             @Override
@@ -127,14 +130,11 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
         });
     }
 
+    /**
+     * Gets the loggedIn users selected Genres to be checked in the listView
+     */
     private void getUserGenres(){
-        String usrId = "";
-        try{
-            usrId = account.getString("usrId");
-        } catch (JSONException e){
-            e.printStackTrace();
-        }
-        getUserGenreURL += "?idUser=" + usrId;
+        setUserGenreURL();
         getRequest.getRequest(getUserGenreURL, new IRequestCallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
@@ -154,6 +154,19 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
                 }
             }
         });
+    }
+
+    /**
+     * Sets the URL with the loggedIn user id in parameter
+     */
+    private void setUserGenreURL(){
+        String usrId = "";
+        try{
+            usrId = account.getString("usrId");
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+        getUserGenreURL += "?idUser=" + usrId;
     }
 
     private void setArrayAdapter(ArrayList<Genre> listGenres){
@@ -177,6 +190,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     }
 
     private void setUp(){
+        //Gets the parent since this fragment is used in 2 activities
         if (this.getArguments().getString("Parent").equals("CreateAccountActivity")){
             parent = "CreateAccountActivity";
             postRequest = new PostRequest((CreateAccountActivity)getActivity());

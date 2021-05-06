@@ -3,14 +3,19 @@ package com.example.moviesmatch;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.moviesmatch.databinding.ActivityCreateAccountBinding;
+import com.example.moviesmatch.interfaces.IPostActivity;
 
-public class CreateAccountActivity extends AppCompatActivity {
+import pl.droidsonroids.gif.GifImageView;
+
+public class CreateAccountActivity extends AppCompatActivity implements IPostActivity {
     private ActivityCreateAccountBinding binding;
+    private SignUpFragment signUpFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,8 +26,9 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         //Fragment signUpFragment opened when CreateAccountActivity is called
         if (savedInstanceState == null) {
+            signUpFragment = new SignUpFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.frameCreateAccountActivity,
-                    new SignUpFragment()).commit();
+                    signUpFragment).commit();
         }
     }
 
@@ -35,5 +41,15 @@ public class CreateAccountActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onPostErrorResponse(int errorCode) {
+        signUpFragment.onErrorResponse();
+        if (errorCode == 403){
+            new AlertDialog.Builder(this).setTitle("Error").setMessage("This email is already taken").show();
+        } else {
+            new AlertDialog.Builder(this).setTitle("Error").setMessage("Please try again").show();
+        }
     }
 }

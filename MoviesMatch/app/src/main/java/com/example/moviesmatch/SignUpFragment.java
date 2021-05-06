@@ -1,12 +1,8 @@
 package com.example.moviesmatch;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,9 +14,7 @@ import android.widget.Spinner;
 
 import com.example.moviesmatch.async.PostRequest;
 import com.example.moviesmatch.certificate.CertificateByPass;
-import com.example.moviesmatch.databinding.FragmentGenresBinding;
 import com.example.moviesmatch.databinding.FragmentSignUpBinding;
-import com.example.moviesmatch.interfaces.IPostActivity;
 import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.validation.CountryAbbreviation;
 import com.example.moviesmatch.validation.InputsValidation;
@@ -30,7 +24,7 @@ import org.json.JSONObject;
 
 import pl.droidsonroids.gif.GifImageView;
 
-public class SignUpFragment extends Fragment implements IPostActivity {
+public class SignUpFragment extends Fragment {
     FragmentSignUpBinding binding;
     PostRequest postRequest;
     EditText firstName;
@@ -102,21 +96,15 @@ public class SignUpFragment extends Fragment implements IPostActivity {
         }
     }
 
-    @Override
-    public void onPostErrorResponse(int errorCode) {
-        System.out.println("ERROR---------------------------------------------");
+    public void onErrorResponse() {
         loadingGif.setVisibility(View.GONE);
         nextButton.setEnabled(true);
-        if (errorCode == 403){
-            new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("This email is already taken").show();
-        } else {
-            new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Please try again").show();
-        }
     }
 
     private void setup(){
         certificateByPass = new CertificateByPass();
         certificateByPass.IngoreCertificate();
+        loadingGif = binding.signUpLoadingGif;
         postRequest = new PostRequest((CreateAccountActivity)getActivity());
         firstName = binding.editTextFirstName;
         lastName = binding.editTextLastName;
@@ -127,7 +115,6 @@ public class SignUpFragment extends Fragment implements IPostActivity {
         jsonAccount = new JSONObject();
         inputsValidation = new InputsValidation(getContext());
         countryAbbreviation = new CountryAbbreviation();
-        loadingGif = binding.signUpLoadingGif;
         nextButton = binding.buttonRegister;
         constraintLayout = binding.layoutSignUp;
     }
