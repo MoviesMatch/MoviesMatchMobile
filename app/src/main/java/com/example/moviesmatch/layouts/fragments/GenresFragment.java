@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.moviesmatch.interfaces.IGetActivity;
@@ -50,6 +51,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     private GifImageView gifLoading;
     private Button buttonSavePreferences;
     private String parent;
+    private ImageView imageLogo;
 
     private final String getGenresURL = "/api/genre/getAllGenres";
     private final String postGenresURL = "/api/genre/addGenresToUser";
@@ -124,10 +126,10 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
                     if (parent.equals("MainActivity")){
                         getUserGenres();
                     }
-                    loadingGone();
                 } catch (JSONException e){
                     e.printStackTrace();
                 }
+                loadingGone();
             }
         });
     }
@@ -150,7 +152,8 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
                             }
                         }
                     }
-                    setArrayAdapter(listGenres);
+                    listViewGenres.setAdapter(arrayAdapter);
+                    arrayAdapter.notifyDataSetChanged();
                 } catch (JSONException e){
                     e.printStackTrace();
                 }
@@ -191,7 +194,13 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
         buttonSavePreferences.setEnabled(true);
     }
 
-    private void setUp(){
+    private void imageGone(){
+        if (parent.equals("MainActivity")){
+            imageLogo.setVisibility(View.GONE);
+        }
+    }
+
+    private void setParent(){
         //Gets the parent since this fragment is used in 2 activities
         if (this.getArguments().getString("Parent").equals("CreateAccountActivity")){
             parent = "CreateAccountActivity";
@@ -202,7 +211,10 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
             postRequest = new PostRequest((MainActivity)getActivity());
             getRequest = new GetRequest((MainActivity)getActivity());
         }
+    }
 
+    private void setUp(){
+        setParent();
         certificateByPass = new CertificateByPass();
         certificateByPass.IngoreCertificate();
         try {
@@ -215,6 +227,8 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
         listViewGenres = binding.listGenres;
         gifLoading = binding.genresLoadingGif;
         buttonSavePreferences = binding.buttonSavePref;
+        imageLogo = binding.imageViewLogo;
+        imageGone();
     }
 
     @Override
