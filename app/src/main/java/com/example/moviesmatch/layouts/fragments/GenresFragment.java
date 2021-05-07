@@ -10,11 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.example.moviesmatch.interfaces.IGetActivity;
 import com.example.moviesmatch.interfaces.IPostActivity;
+import com.example.moviesmatch.layouts.adapters.GenreCheckboxAdapter;
 import com.example.moviesmatch.layouts.adapters.GenresListAdapter;
 import com.example.moviesmatch.requests.GetRequest;
 import com.example.moviesmatch.requests.PostRequest;
@@ -52,7 +55,8 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     private Button buttonSavePreferences;
     private String parent;
     private ImageView imageLogo;
-    private LayoutInflater inflater;
+    private LinearLayout linearLayout;
+    private GenreCheckboxAdapter genreCheckboxAdapter;
 
     private final String getGenresURL = "/api/genre/getAllGenres";
     private final String postGenresURL = "/api/genre/addGenresToUser";
@@ -62,38 +66,22 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = FragmentGenresBinding.inflate(getLayoutInflater());
-        this.inflater = inflater;
         setUp();
         getGenres();
         savePrefs();
         return binding.getRoot();
     }
 
-    private boolean isFiveChecked(){
-        int numberChecked = 0 ;
-        for(int i = 0; i < listGenres.size();i++){
-            if(listGenres.get(i).isChecked()){
-                numberChecked++;
-                setSelectedGenresJson(i);
-            }
-
-            if(numberChecked == 5){
-              return true;
-            }
-        }
-        return  false;
-    }
-
-    public void savePrefs(){
+    public void savePrefs() {
         buttonSavePreferences.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isFiveChecked()){
+                if (genreCheckboxAdapter.isFiveChecked()) {
                     loading();
-                    try{
+                    try {
                         jsonAccountWithGenres.put("idUser", account.get("usrId"));
-                        jsonAccountWithGenres.put("genreIds", selectedGenresJson);
-                    } catch (JSONException e){
+                        jsonAccountWithGenres.put("genreIds", genreCheckboxAdapter.getSelectedGenres());
+                    } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
@@ -105,7 +93,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
                             startActivity(intent);
                         }
                     });
-                }else{
+                } else {
                     loadingGone();
                     new AlertDialog.Builder(getContext()).setTitle("You didn't check 5 genres").setMessage("Please check exactly 5 genres of movies you like").show();
                 }
@@ -116,23 +104,23 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     /**
      * Get all available genres from the server
      */
-    private void getGenres(){
+    private void getGenres() {
         loading();
         getRequest.getRequest(getGenresURL, new IRequestCallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
-                try{
+                try {
                     listGenres = new JSONArrayManipulator().toGenreList(jsonObject);
-                    if (parent.equals("MainActivity")){
+                    genreCheckboxAdapter = new GenreCheckboxAdapter(getContext(), listGenres);
+                    if (parent.equals("MainActivity")) {
                         getUserGenres();
                     } else {
-                        setArrayAdapter(listGenres);
+                        genreCheckboxAdapter.setCheckboxesGenres(linearLayout);
                     }
-                } catch (JSONException e){
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 loadingGone();
-                System.out.println("getGenres fini");
             }
         });
     }
@@ -140,25 +128,24 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     /**
      * Gets the loggedIn users selected Genres to be checked in the listView
      */
-    private void getUserGenres(){
+    private void getUserGenres() {
         setUserGenreURL();
         getRequest.getRequest(getUserGenreURL, new IRequestCallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
-                try{
+                try {
                     ArrayList<Genre> userGenre = new JSONArrayManipulator().toGenreList(jsonObject);
-                    for (Genre genres : listGenres){
-                        for (Genre userGenres : userGenre){
-                            if (genres.getId() == userGenres.getId()){
+                    for (Genre genres : listGenres) {
+                        for (Genre userGenres : userGenre) {
+                            if (genres.getId() == userGenres.getId()) {
                                 genres.setChecked(true);
                             }
                         }
                     }
-                    setArrayAdapter(listGenres);
-                } catch (JSONException e){
+                    genreCheckboxAdapter.setCheckboxesGenres(linearLayout);
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                System.out.println("getUserGenres fini");
             }
         });
     }
@@ -166,58 +153,53 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     /**
      * Sets the URL with the loggedIn user id in parameter
      */
-    private void setUserGenreURL(){
+    private void setUserGenreURL() {
         String usrId = "";
-        try{
+        try {
             usrId = account.getString("usrId");
-        } catch (JSONException e){
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         getUserGenreURL += "?idUser=" + usrId;
     }
 
-    private void setArrayAdapter(ArrayList<Genre> listGenres){
+    private void setArrayAdapter(ArrayList<Genre> listGenres) {
         Collections.sort(listGenres);
-        arrayAdapter  = new GenresListAdapter(getContext(), listGenres);
+        arrayAdapter = new GenresListAdapter(getContext(), listGenres);
         listViewGenres.setAdapter(arrayAdapter);
         arrayAdapter.notifyDataSetChanged();
     }
 
-    private void setSelectedGenresJson(int i){
-        selectedGenresJson.put(listGenres.get(i).getId());
-        System.out.println("Selected : " + listGenres.get(i).getItemString());
-    }
-
-    private void loading(){
+    private void loading() {
         gifLoading.setVisibility(View.VISIBLE);
         buttonSavePreferences.setEnabled(false);
     }
 
-    private void loadingGone(){
+    private void loadingGone() {
         gifLoading.setVisibility(View.GONE);
         buttonSavePreferences.setEnabled(true);
     }
 
-    private void imageGone(){
-        if (parent.equals("MainActivity")){
+    private void imageGone() {
+        if (parent.equals("MainActivity")) {
             imageLogo.setVisibility(View.GONE);
         }
     }
 
-    private void setParent(){
+    private void setParent() {
         //Gets the parent since this fragment is used in 2 activities
-        if (this.getArguments().getString("Parent").equals("CreateAccountActivity")){
+        if (this.getArguments().getString("Parent").equals("CreateAccountActivity")) {
             parent = "CreateAccountActivity";
-            postRequest = new PostRequest((CreateAccountActivity)getActivity());
-            getRequest = new GetRequest((CreateAccountActivity)getActivity());
+            postRequest = new PostRequest((CreateAccountActivity) getActivity());
+            getRequest = new GetRequest((CreateAccountActivity) getActivity());
         } else {
             parent = "MainActivity";
-            postRequest = new PostRequest((MainActivity)getActivity());
-            getRequest = new GetRequest((MainActivity)getActivity());
+            postRequest = new PostRequest((MainActivity) getActivity());
+            getRequest = new GetRequest((MainActivity) getActivity());
         }
     }
 
-    private void setUp(){
+    private void setUp() {
         setParent();
         certificateByPass = new CertificateByPass();
         certificateByPass.IngoreCertificate();
@@ -232,6 +214,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
         gifLoading = binding.genresLoadingGif;
         buttonSavePreferences = binding.buttonSavePref;
         imageLogo = binding.imageViewLogo;
+        linearLayout = binding.linearLayoutGenres;
         imageGone();
     }
 
