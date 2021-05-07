@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -18,7 +17,6 @@ import android.widget.ListView;
 import com.example.moviesmatch.interfaces.IGetActivity;
 import com.example.moviesmatch.interfaces.IPostActivity;
 import com.example.moviesmatch.layouts.adapters.GenreCheckboxAdapter;
-import com.example.moviesmatch.layouts.adapters.GenresListAdapter;
 import com.example.moviesmatch.requests.GetRequest;
 import com.example.moviesmatch.requests.PostRequest;
 import com.example.moviesmatch.certificate.CertificateByPass;
@@ -44,12 +42,10 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     private FragmentGenresBinding binding;
     private ListView listViewGenres;
     private ArrayList<Genre> listGenres;
-    private GenresListAdapter arrayAdapter;
     private PostRequest postRequest;
     private GetRequest getRequest;
     private JSONObject account;
     private JSONObject jsonAccountWithGenres;
-    private JSONArray selectedGenresJson;
     private CertificateByPass certificateByPass;
     private GifImageView gifLoading;
     private Button buttonSavePreferences;
@@ -163,13 +159,6 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
         getUserGenreURL += "?idUser=" + usrId;
     }
 
-    private void setArrayAdapter(ArrayList<Genre> listGenres) {
-        Collections.sort(listGenres);
-        arrayAdapter = new GenresListAdapter(getContext(), listGenres);
-        listViewGenres.setAdapter(arrayAdapter);
-        arrayAdapter.notifyDataSetChanged();
-    }
-
     private void loading() {
         gifLoading.setVisibility(View.VISIBLE);
         buttonSavePreferences.setEnabled(false);
@@ -209,7 +198,6 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
             e.printStackTrace();
         }
         jsonAccountWithGenres = new JSONObject();
-        selectedGenresJson = new JSONArray();
         listViewGenres = binding.listGenres;
         gifLoading = binding.genresLoadingGif;
         buttonSavePreferences = binding.buttonSavePref;

@@ -2,14 +2,12 @@ package com.example.moviesmatch.layouts.adapters;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 
 import com.example.moviesmatch.models.Genre;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,7 +37,7 @@ public class GenreCheckboxAdapter {
         }
         return false;
     }
-
+    
     public void setCheckboxesGenres(LinearLayout linearLayout) {
         Collections.sort(listGenres);
         for (Genre genre : listGenres) {
