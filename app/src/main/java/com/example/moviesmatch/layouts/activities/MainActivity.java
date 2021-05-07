@@ -24,6 +24,7 @@ import com.example.moviesmatch.layouts.fragments.SettingsFragment;
 import com.example.moviesmatch.layouts.fragments.SwipeFragment;
 import com.example.moviesmatch.interfaces.IGetActivity;
 import com.example.moviesmatch.layouts.fragments.AccountFragment;
+import com.example.moviesmatch.validation.OnErrorResponse;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.List;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements IGetActivity, IPo
     private ImageView imageMatch;
     private String account;
     private Fragment frag = null;
+    private OnErrorResponse onErrorResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements IGetActivity, IPo
         toolbar = findViewById(R.id.toolbar);
         imageMatch = findViewById(R.id.imageMatch);
         account = getIntent().getStringExtra("Account");
+        onErrorResponse = new OnErrorResponse();
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         navSelectedItem();
@@ -135,19 +138,11 @@ public class MainActivity extends AppCompatActivity implements IGetActivity, IPo
 
     @Override
     public void onGetErrorResponse(int errorCode) {
-        List<Fragment> fragments = getSupportFragmentManager().getFragments();
-        for (Fragment f : fragments) {
-            if (f != null && f instanceof IGetActivity)
-                ((IGetActivity) f).onGetErrorResponse(errorCode);
-        }
+        onErrorResponse.onGetErrorResponse(errorCode, this);
     }
 
     @Override
     public void onPostErrorResponse(int errorCode) {
-        List<Fragment> fragments = getSupportFragmentManager().getFragments();
-        for (Fragment f : fragments) {
-            if (f != null && f instanceof IPostActivity)
-                ((IPostActivity) f).onPostErrorResponse(errorCode);
-        }
+        onErrorResponse.onPostErrorResponse(errorCode, this);
     }
 }
