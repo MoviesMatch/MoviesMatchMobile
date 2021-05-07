@@ -1,6 +1,5 @@
 package com.example.moviesmatch.layouts.activities;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
@@ -15,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.moviesmatch.interfaces.IPostActivity;
 import com.example.moviesmatch.layouts.fragments.DonateFragment;
 import com.example.moviesmatch.layouts.fragments.GenresFragment;
 import com.example.moviesmatch.layouts.fragments.GroupsFragment;
@@ -24,17 +24,19 @@ import com.example.moviesmatch.layouts.fragments.SettingsFragment;
 import com.example.moviesmatch.layouts.fragments.SwipeFragment;
 import com.example.moviesmatch.interfaces.IGetActivity;
 import com.example.moviesmatch.layouts.fragments.AccountFragment;
+import com.example.moviesmatch.validation.OnErrorResponse;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements IGetActivity {
+public class MainActivity extends AppCompatActivity implements IGetActivity, IPostActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
     private ImageView imageMatch;
     private String account;
     private Fragment frag = null;
+    private OnErrorResponse onErrorResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements IGetActivity {
         toolbar = findViewById(R.id.toolbar);
         imageMatch = findViewById(R.id.imageMatch);
         account = getIntent().getStringExtra("Account");
+        onErrorResponse = new OnErrorResponse();
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         navSelectedItem();
@@ -135,9 +138,11 @@ public class MainActivity extends AppCompatActivity implements IGetActivity {
 
     @Override
     public void onGetErrorResponse(int errorCode) {
-        if (frag instanceof GenresFragment) {
-            ((GenresFragment) frag).loadingGone();
-            new AlertDialog.Builder(this).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
-        }
+        onErrorResponse.onGetErrorResponse(errorCode, this);
+    }
+
+    @Override
+    public void onPostErrorResponse(int errorCode) {
+        onErrorResponse.onPostErrorResponse(errorCode, this);
     }
 }

@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.example.moviesmatch.interfaces.IGetActivity;
+import com.example.moviesmatch.interfaces.IPostActivity;
 import com.example.moviesmatch.layouts.adapters.GenresListAdapter;
 import com.example.moviesmatch.requests.GetRequest;
 import com.example.moviesmatch.requests.PostRequest;
@@ -33,7 +35,7 @@ import java.util.Collections;
 import pl.droidsonroids.gif.GifImageView;
 
 
-public class GenresFragment extends Fragment {
+public class GenresFragment extends Fragment implements IGetActivity, IPostActivity {
 
     private FragmentGenresBinding binding;
     private ListView listViewGenres;
@@ -83,9 +85,7 @@ public class GenresFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(isFiveChecked()){
-                    gifLoading.setVisibility(View.VISIBLE);
-                    buttonSavePreferences.setEnabled(false);
-
+                    loading();
                     try{
                         jsonAccountWithGenres.put("idUser", account.get("usrId"));
                         jsonAccountWithGenres.put("genreIds", selectedGenresJson);
@@ -102,8 +102,7 @@ public class GenresFragment extends Fragment {
                         }
                     });
                 }else{
-                    gifLoading.setVisibility(View.GONE);
-                    buttonSavePreferences.setEnabled(true);
+                    loadingGone();
                     new AlertDialog.Builder(getContext()).setTitle("You didn't check 5 genres").setMessage("Please check exactly 5 genres of movies you like").show();
                 }
             }
@@ -114,8 +113,7 @@ public class GenresFragment extends Fragment {
      * Get all available genres from the server
      */
     private void getGenres(){
-        gifLoading.setVisibility(View.VISIBLE);
-        buttonSavePreferences.setEnabled(false);
+        loading();
         getRequest.getRequest(getGenresURL, new IRequestCallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
@@ -126,8 +124,7 @@ public class GenresFragment extends Fragment {
                     if (parent.equals("MainActivity")){
                         getUserGenres();
                     }
-                    gifLoading.setVisibility(View.GONE);
-                    buttonSavePreferences.setEnabled(true);
+                    loadingGone();
                 } catch (JSONException e){
                     e.printStackTrace();
                 }
@@ -184,7 +181,12 @@ public class GenresFragment extends Fragment {
         selectedGenresJson.put(listGenres.get(i).getId());
     }
 
-    public void loadingGone(){
+    private void loading(){
+        gifLoading.setVisibility(View.VISIBLE);
+        buttonSavePreferences.setEnabled(false);
+    }
+
+    private void loadingGone(){
         gifLoading.setVisibility(View.GONE);
         buttonSavePreferences.setEnabled(true);
     }
@@ -213,5 +215,17 @@ public class GenresFragment extends Fragment {
         listViewGenres = binding.listGenres;
         gifLoading = binding.genresLoadingGif;
         buttonSavePreferences = binding.buttonSavePref;
+    }
+
+    @Override
+    public void onGetErrorResponse(int errorCode) {
+        loadingGone();
+        new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
+    }
+
+    @Override
+    public void onPostErrorResponse(int errorCode) {
+        loadingGone();
+        new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
     }
 }

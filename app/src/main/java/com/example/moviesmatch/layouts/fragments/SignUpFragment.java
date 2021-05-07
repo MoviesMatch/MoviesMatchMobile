@@ -1,6 +1,7 @@
 package com.example.moviesmatch.layouts.fragments;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
@@ -12,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.example.moviesmatch.interfaces.IGetActivity;
+import com.example.moviesmatch.interfaces.IPostActivity;
 import com.example.moviesmatch.requests.PostRequest;
 import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.databinding.FragmentSignUpBinding;
@@ -25,7 +28,7 @@ import org.json.JSONObject;
 
 import pl.droidsonroids.gif.GifImageView;
 
-public class SignUpFragment extends Fragment {
+public class SignUpFragment extends Fragment implements IPostActivity {
     FragmentSignUpBinding binding;
     PostRequest postRequest;
     EditText firstName;
@@ -58,8 +61,7 @@ public class SignUpFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 try {
-                    loadingGif.setVisibility(View.VISIBLE);
-                    nextButton.setEnabled(false);
+                    loading();
                     jsonAccount.put("usrEmail", email.getText().toString());
                     jsonAccount.put("usrFirstname", firstName.getText().toString());
                     jsonAccount.put("usrLastname", lastName.getText().toString());
@@ -87,17 +89,20 @@ public class SignUpFragment extends Fragment {
                     bundle.putString("Account", jsonObject.toString());
                     bundle.putString("Parent", "CreateAccountActivity");
                     ((CreateAccountActivity)getActivity()).replaceFrag(new GenresFragment(), bundle);
-                    loadingGif.setVisibility(View.GONE);
-                    nextButton.setEnabled(true);
+                    loadingGone();
                 }
             });
         } else {
-            loadingGif.setVisibility(View.GONE);
-            nextButton.setEnabled(true);
+            loadingGone();
         }
     }
 
-    public void loadingGone() {
+    private void loading(){
+        loadingGif.setVisibility(View.VISIBLE);
+        nextButton.setEnabled(false);
+    }
+
+    private void loadingGone() {
         loadingGif.setVisibility(View.GONE);
         nextButton.setEnabled(true);
     }
@@ -118,5 +123,15 @@ public class SignUpFragment extends Fragment {
         countryAbbreviation = new CountryAbbreviation();
         nextButton = binding.buttonRegister;
         constraintLayout = binding.layoutSignUp;
+    }
+
+    @Override
+    public void onPostErrorResponse(int errorCode) {
+        loadingGone();
+        if (errorCode == 403){
+            new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("This email is already taken").show();
+        } else {
+            new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
+        }
     }
 }
