@@ -52,6 +52,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     private Button buttonSavePreferences;
     private String parent;
     private ImageView imageLogo;
+    private LayoutInflater inflater;
 
     private final String getGenresURL = "/api/genre/getAllGenres";
     private final String postGenresURL = "/api/genre/addGenresToUser";
@@ -61,6 +62,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = FragmentGenresBinding.inflate(getLayoutInflater());
+        this.inflater = inflater;
         setUp();
         getGenres();
         savePrefs();
@@ -121,15 +123,16 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
             public void onSuccess(JSONObject jsonObject) {
                 try{
                     listGenres = new JSONArrayManipulator().toGenreList(jsonObject);
-                    Collections.sort(listGenres);
-                    setArrayAdapter(listGenres);
                     if (parent.equals("MainActivity")){
                         getUserGenres();
+                    } else {
+                        setArrayAdapter(listGenres);
                     }
                 } catch (JSONException e){
                     e.printStackTrace();
                 }
                 loadingGone();
+                System.out.println("getGenres fini");
             }
         });
     }
@@ -144,7 +147,6 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
             public void onSuccess(JSONObject jsonObject) {
                 try{
                     ArrayList<Genre> userGenre = new JSONArrayManipulator().toGenreList(jsonObject);
-                    Collections.sort(userGenre);
                     for (Genre genres : listGenres){
                         for (Genre userGenres : userGenre){
                             if (genres.getId() == userGenres.getId()){
@@ -152,11 +154,11 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
                             }
                         }
                     }
-                    listViewGenres.setAdapter(arrayAdapter);
-                    arrayAdapter.notifyDataSetChanged();
+                    setArrayAdapter(listGenres);
                 } catch (JSONException e){
                     e.printStackTrace();
                 }
+                System.out.println("getUserGenres fini");
             }
         });
     }
@@ -175,6 +177,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     }
 
     private void setArrayAdapter(ArrayList<Genre> listGenres){
+        Collections.sort(listGenres);
         arrayAdapter  = new GenresListAdapter(getContext(), listGenres);
         listViewGenres.setAdapter(arrayAdapter);
         arrayAdapter.notifyDataSetChanged();
@@ -182,6 +185,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
 
     private void setSelectedGenresJson(int i){
         selectedGenresJson.put(listGenres.get(i).getId());
+        System.out.println("Selected : " + listGenres.get(i).getItemString());
     }
 
     private void loading(){
