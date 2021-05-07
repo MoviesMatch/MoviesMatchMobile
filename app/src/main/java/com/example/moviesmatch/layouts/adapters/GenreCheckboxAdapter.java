@@ -17,6 +17,7 @@ public class GenreCheckboxAdapter {
     private int nbrCheckedGenres;
     private JSONArray selectedGenres;
     private ArrayList<Genre> listGenres;
+    private final int MAX_AMOUNT_OF_GENRES = 5;
 
     public GenreCheckboxAdapter(Context context, ArrayList<Genre> listGenres){
         this.context = context;
@@ -37,7 +38,11 @@ public class GenreCheckboxAdapter {
         }
         return false;
     }
-    
+
+    /**
+     * Create a checkbox for each genre in the listview and adds it to the linearlayout
+     * @param linearLayout
+     */
     public void setCheckboxesGenres(LinearLayout linearLayout) {
         Collections.sort(listGenres);
         for (Genre genre : listGenres) {
@@ -51,6 +56,10 @@ public class GenreCheckboxAdapter {
         }
     }
 
+    /**
+     * The conditions to not select more than 5 genres
+     * @param checkBox
+     */
     private void checkBoxOnClick(CheckBox checkBox) {
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +70,7 @@ public class GenreCheckboxAdapter {
                         nbrCheckedGenres++;
                     }
                 }
-                if (nbrCheckedGenres < 5) {
+                if (nbrCheckedGenres < MAX_AMOUNT_OF_GENRES) {
                     ((Genre) checkBox.getTag()).setChecked(true);
                 } else {
                     ((Genre) checkBox.getTag()).setChecked(false);
