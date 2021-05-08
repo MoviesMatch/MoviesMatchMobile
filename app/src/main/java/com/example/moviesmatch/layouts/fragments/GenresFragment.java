@@ -47,7 +47,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     private JSONObject jsonAccountWithGenres;
     private CertificateByPass certificateByPass;
     private GifImageView gifLoading;
-    private Button buttonSavePreferences;
+    private Button button;
     private String parent;
     private ImageView imageLogo;
     private LinearLayout linearLayout;
@@ -68,7 +68,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     }
 
     public void savePrefs() {
-        buttonSavePreferences.setOnClickListener(new View.OnClickListener() {
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (genreCheckboxAdapter.isFiveChecked()) {
@@ -160,12 +160,12 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
 
     private void loading() {
         gifLoading.setVisibility(View.VISIBLE);
-        buttonSavePreferences.setEnabled(false);
+        button.setEnabled(false);
     }
 
     private void loadingGone() {
         gifLoading.setVisibility(View.GONE);
-        buttonSavePreferences.setEnabled(true);
+        button.setEnabled(true);
     }
 
     private void imageGone() {
@@ -180,6 +180,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
             parent = "CreateAccountActivity";
             postRequest = new PostRequest((CreateAccountActivity) getActivity());
             getRequest = new GetRequest((CreateAccountActivity) getActivity());
+            button.setText("Finish");
         } else {
             parent = "MainActivity";
             postRequest = new PostRequest((MainActivity) getActivity());
@@ -188,7 +189,6 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     }
 
     private void setUp() {
-        setParent();
         certificateByPass = new CertificateByPass();
         certificateByPass.IngoreCertificate();
         try {
@@ -198,9 +198,10 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
         }
         jsonAccountWithGenres = new JSONObject();
         gifLoading = binding.genresLoadingGif;
-        buttonSavePreferences = binding.buttonSavePref;
+        button = binding.buttonGenre;
         imageLogo = binding.imageViewLogo;
         linearLayout = binding.linearLayoutGenres;
+        setParent();
         imageGone();
     }
 
