@@ -38,13 +38,4 @@ public class Genre implements Comparator<Genre>, Comparable<Genre> {
     public int compareTo(Genre o) {
         return this.ItemString.compareTo(o.getItemString());
     }
-
-    @Override
-    public String toString() {
-        return "Genre{" +
-                "id=" + id +
-                ", ItemString='" + ItemString + '\'' +
-                ", checked=" + checked +
-                '}';
-    }
 }

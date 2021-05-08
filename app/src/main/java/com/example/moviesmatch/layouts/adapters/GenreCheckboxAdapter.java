@@ -41,7 +41,7 @@ public class GenreCheckboxAdapter {
     }
 
     /**
-     * Create a checkbox for each genre in the listview and adds it to the linearlayout
+     * Create a checkbox for each genre in the listGenres and adds it to the linearlayout
      * @param linearLayout
      */
     public void setCheckboxesGenres(LinearLayout linearLayout) {

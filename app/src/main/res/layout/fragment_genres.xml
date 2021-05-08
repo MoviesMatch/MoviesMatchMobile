@@ -68,7 +68,7 @@
         android:id="@+id/textViewTitre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select 5 different genres:"
+        android:text="Select 5 genres"
         android:textColor="@color/light_black"
         android:textSize="24dp"
         android:textStyle="bold"
