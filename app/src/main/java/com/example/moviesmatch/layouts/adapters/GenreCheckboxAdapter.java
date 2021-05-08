@@ -1,6 +1,7 @@
 package com.example.moviesmatch.layouts.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -48,7 +49,7 @@ public class GenreCheckboxAdapter {
         for (Genre genre : listGenres) {
             CheckBox checkBox = new CheckBox(context);
             checkBox.setTag(genre);
-            checkBox.setPadding(0, 15, 0, 15);
+            checkBox.setPadding(0, 40, 0, 40);
             checkBox.setText(genre.getItemString());
             checkBox.setChecked(genre.isChecked());
             linearLayout.addView(checkBox);

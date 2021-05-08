@@ -40,7 +40,6 @@ import pl.droidsonroids.gif.GifImageView;
 public class GenresFragment extends Fragment implements IGetActivity, IPostActivity {
 
     private FragmentGenresBinding binding;
-    private ListView listViewGenres;
     private ArrayList<Genre> listGenres;
     private PostRequest postRequest;
     private GetRequest getRequest;
@@ -198,7 +197,6 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
             e.printStackTrace();
         }
         jsonAccountWithGenres = new JSONObject();
-        listViewGenres = binding.listGenres;
         gifLoading = binding.genresLoadingGif;
         buttonSavePreferences = binding.buttonSavePref;
         imageLogo = binding.imageViewLogo;
