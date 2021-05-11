@@ -39,15 +39,18 @@ public class GroupsFragment extends Fragment {
     private  ArrayList arrayListGroups;
     private GroupsAdapter adapter;
 
+    private String currentAccount;
+
 
     private GetRequest getReq;
     CertificateByPass certificat;
-    static String URL = "/api/movie/GetUserGroups";
+    private String URL;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentGroupsBinding.inflate(getLayoutInflater());
+        currentAccount = getArguments().getString("Account");
         return binding.getRoot();
     }
 
@@ -60,8 +63,8 @@ public class GroupsFragment extends Fragment {
 
     private void displayGroups(){
         getGrpUser();
-        adapter = new GroupsAdapter(getContext(), arrayListGroups);
-        listViewGroups.setAdapter(adapter);
+
+
         listViewGroups.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -77,21 +80,6 @@ public class GroupsFragment extends Fragment {
 
     }
 
-    private void onClickGroup() {
-      /*  arrayListGroups = new ArrayList<>(Arrays.asList("GROUPE 1", "GROUPE 2", "GROUPE 3", "GROUPE 1", "GROUPE 2", "GROUPE 3", "GROUPE 1", "GROUPE 2", "GROUPE 3", "GROUPE 1", "GROUPE 2", "GROUPE 3"));
-        ArrayAdapter arrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, android.R.id.text1, arrayListGroups);
-        listViewGroups.setAdapter(arrayAdapter);
-        listViewGroups.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Object item = arrayAdapter.getItem(position);
-                System.out.println(item);
-                //Fragment groups_fragment opened when MainActivity is called
-                ((MainActivity)getActivity()).replaceFrag(new SwipeFragment());
-            }
-        });*/
-    }
-
     private void setUp(){
         listViewGroups = binding.listViewGroups;
         arrayListGroups = new ArrayList<JSONObject>();
@@ -101,19 +89,20 @@ public class GroupsFragment extends Fragment {
     }
 
     private void setUserGenreURL() {
+        URL = "/api/user/getUserGroups/";
         String usrId = "";
         try {
+
             usrId = account.getString("usrId");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        URL += "?idUser=" + usrId;
+        URL +=  usrId;
     }
 
     private void getGrpUser(){
         try {
-            System.out.println(getArguments().getString("Account"));
-            account = new JSONObject(getArguments().getString("Account"));
+            account = new JSONObject(currentAccount);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -132,7 +121,11 @@ public class GroupsFragment extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                adapter = new GroupsAdapter(getContext(), arrayListGroups);
+                listViewGroups.setAdapter(adapter);
             }
         });
+
+
     }
 }
