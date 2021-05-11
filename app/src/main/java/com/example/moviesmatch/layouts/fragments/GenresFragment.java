@@ -52,6 +52,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     private ImageView imageLogo;
     private LinearLayout linearLayout;
     private GenreCheckboxAdapter genreCheckboxAdapter;
+    private String token;
 
     private final String getGenresURL = "/api/genre/getAllGenres";
     private final String postGenresURL = "/api/genre/addGenresToUser";
@@ -80,7 +81,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
                         e.printStackTrace();
                     }
 
-                    postRequest.postRequest(jsonAccountWithGenres, postGenresURL, new IRequestCallback() {
+                    postRequest.postRequest(jsonAccountWithGenres, postGenresURL, token, new IRequestCallback() {
                         @Override
                         public void onSuccess(JSONObject jsonObject) {
                             Intent intent = new Intent(getContext(), MainActivity.class);
@@ -101,7 +102,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
      */
     private void getGenres() {
         loading();
-        getRequest.getRequest(getGenresURL, new IRequestCallback() {
+        getRequest.getRequest(getGenresURL, token, new IRequestCallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
                 try {
@@ -125,7 +126,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
      */
     private void getUserGenres() {
         setUserGenreURL();
-        getRequest.getRequest(getUserGenreURL, new IRequestCallback() {
+        getRequest.getRequest(getUserGenreURL, token, new IRequestCallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
                 try {
@@ -151,7 +152,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     private void setUserGenreURL() {
         String usrId = "";
         try {
-            usrId = account.getString("usrId");
+            usrId = account.getJSONObject("userDB").getString("usrId");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -193,6 +194,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
         certificateByPass.IngoreCertificate();
         try {
             account = new JSONObject(this.getArguments().getString("Account"));
+            token = account.getString("token");
         } catch (JSONException e) {
             e.printStackTrace();
         }
