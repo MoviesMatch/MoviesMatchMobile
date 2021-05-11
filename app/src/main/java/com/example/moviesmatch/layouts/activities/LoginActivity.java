@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity implements IPostActivity {
         }
 
         if (validation.validateEmail(editTextEmail.getText().toString())) {
-            postRequest.postRequest(jsonObject, URL, new IRequestCallback() {
+            postRequest.postRequest(jsonObject, URL, null, new IRequestCallback() {
                 @Override
                 public void onSuccess(JSONObject jsonObject) {
                     startAct(jsonObject);

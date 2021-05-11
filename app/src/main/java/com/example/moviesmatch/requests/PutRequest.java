@@ -2,6 +2,7 @@ package com.example.moviesmatch.requests;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -14,6 +15,8 @@ import com.example.moviesmatch.interfaces.IRequestCallback;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PutRequest {
     private final String API = "https://10.0.2.2:44394";
@@ -29,7 +32,7 @@ public class PutRequest {
         queue.start();
     }
 
-    public void putRequest(JSONObject jsonObject, String url, IRequestCallback requestCallback) {
+    public void putRequest(JSONObject jsonObject, String url, String token, IRequestCallback requestCallback) {
         jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, API + url, jsonObject,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -50,7 +53,15 @@ public class PutRequest {
                     }
                 }
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/json; charset=UTF-8");
+                params.put("token", token);
+                return params;
+            }
+        };
         queue.add(jsonObjectRequest);
     }
 }

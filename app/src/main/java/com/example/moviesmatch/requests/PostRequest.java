@@ -2,6 +2,7 @@ package com.example.moviesmatch.requests;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -18,6 +19,8 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PostRequest {
     private final String API = "https://10.0.2.2:44394";
@@ -34,7 +37,7 @@ public class PostRequest {
         queue.start();
     }
 
-    public void postRequest(JSONObject jsonObject, String url, IRequestCallback requestCallback) {
+    public void postRequest(JSONObject jsonObject, String url, String token, IRequestCallback requestCallback) {
         jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, API + url, jsonObject,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -56,6 +59,15 @@ public class PostRequest {
                 }
             }
         }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/json; charset=UTF-8");
+                params.put("token", token);
+                return params;
+            }
+
             @Override
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
                 try {
