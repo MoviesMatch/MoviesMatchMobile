@@ -33,18 +33,17 @@ import java.util.Arrays;
 public class GroupsFragment extends Fragment {
     private ListView listViewGroups;
     private FragmentGroupsBinding binding;
-
-
+    
     private JSONObject account;
     private  ArrayList arrayListGroups;
     private GroupsAdapter adapter;
 
     private String currentAccount;
 
-
     private GetRequest getReq;
-    CertificateByPass certificat;
+    private CertificateByPass certificat;
     private String URL;
+    private String token;
 
 
     @Override
@@ -92,8 +91,8 @@ public class GroupsFragment extends Fragment {
         URL = "/api/user/getUserGroups/";
         String usrId = "";
         try {
-
             usrId = account.getString("usrId");
+            token = account.getString("token");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -108,7 +107,7 @@ public class GroupsFragment extends Fragment {
         }
         setUserGenreURL();
 
-        getReq.getRequest(URL, new IRequestCallback() {
+        getReq.getRequest(URL, token ,new IRequestCallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
                 try {
