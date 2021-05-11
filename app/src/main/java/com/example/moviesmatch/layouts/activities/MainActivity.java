@@ -20,6 +20,7 @@ import com.example.moviesmatch.layouts.fragments.GenresFragment;
 import com.example.moviesmatch.layouts.fragments.GroupsFragment;
 import com.example.moviesmatch.layouts.fragments.MatchFragment;
 import com.example.moviesmatch.R;
+import com.example.moviesmatch.layouts.fragments.MovieInfosFragment;
 import com.example.moviesmatch.layouts.fragments.SettingsFragment;
 import com.example.moviesmatch.layouts.fragments.SwipeFragment;
 import com.example.moviesmatch.interfaces.IGetActivity;
@@ -126,8 +127,11 @@ public class MainActivity extends AppCompatActivity implements IGetActivity, IPo
     private void tellFragments() {
         List<Fragment> fragments = getSupportFragmentManager().getFragments();
         for (Fragment f : fragments) {
-            if (f != null && f instanceof SwipeFragment)
+            if (f != null && f instanceof SwipeFragment) {
                 ((SwipeFragment) f).onBackPressed();
+            } else if (f != null && f instanceof MovieInfosFragment) {
+                ((MovieInfosFragment) f).onBackPressed();
+            }
         }
     }
 

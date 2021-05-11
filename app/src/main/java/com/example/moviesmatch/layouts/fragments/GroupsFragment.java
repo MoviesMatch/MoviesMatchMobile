@@ -65,7 +65,8 @@ public class GroupsFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Object group = adapter.getItem(position);
                 Bundle bundle = new Bundle();
-                bundle.putString("currentGroup", group.toString());
+                bundle.putString("Group", group.toString());
+                bundle.putString("Account", currentAccount);
                 SwipeFragment swipeFragment = new SwipeFragment();
                 swipeFragment.setArguments(bundle);
                 getFragmentManager().beginTransaction().replace(R.id.frame, swipeFragment).commit();
@@ -81,7 +82,7 @@ public class GroupsFragment extends Fragment {
         certificat.IngoreCertificate();
     }
 
-    private void setUserGenreURL() {
+    private void setUserGroupURL() {
         URL = "/api/user/getUserGroups/";
         String usrId = "";
         try {
@@ -100,7 +101,7 @@ public class GroupsFragment extends Fragment {
             e.printStackTrace();
         }
 
-        setUserGenreURL();
+        setUserGroupURL();
 
         getReq.getRequestArray(URL, token, new IRequestCallbackArray() {
             @Override
