@@ -57,8 +57,7 @@ public class MainActivity extends AppCompatActivity implements IGetActivity, IPo
 
         //Fragment groups_fragment opened when MainActivity is called
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame,
-                    new GroupsFragment()).commit();
+            replaceFrag(new GroupsFragment());
             navigationView.setCheckedItem(R.id.groups);
         }
     }

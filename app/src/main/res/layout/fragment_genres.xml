@@ -8,24 +8,34 @@
     tools:context=".layouts.fragments.GenresFragment">
 
     <Button
-        android:id="@+id/buttonSavePref"
+        android:id="@+id/buttonGenre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="savePrefs"
         android:layout_marginTop="20dp"
-        android:text="Save Preferences"
-        android:theme="@style/Button.MoviesMatch"
+        android:text="Save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listGenres" />
+        app:layout_constraintTop_toBottomOf="@+id/scrollViewGenre" />
 
-    <ListView
-        android:id="@+id/listGenres"
+    <ScrollView
+        android:id="@+id/scrollViewGenre"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/listview_border"
         app:layout_constraintBottom_toTopOf="@id/guidelineBot"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTitre" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitre">
+
+        <LinearLayout
+            android:id="@+id/linearLayoutGenres"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@drawable/horizontal_divider"
+            android:showDividers="middle"
+            android:orientation="vertical" />
+    </ScrollView>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineTop"
@@ -42,26 +52,29 @@
         app:layout_constraintGuide_percent="0.8" />
 
 
-
     <ImageView
         android:id="@+id/imageViewLogo"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:visibility="visible"
         app:layout_constraintDimensionRatio="1:0.5"
-        app:srcCompat="@drawable/logo"
-        app:layout_constraintTop_toTopOf="@+id/guidelineTop"
+        app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintEnd_toEndOf="@id/guideline2" />
+        app:layout_constraintTop_toTopOf="@+id/guidelineTop"
+        app:srcCompat="@drawable/logo" />
 
     <TextView
         android:id="@+id/textViewTitre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select 5 different genres:"
-        app:layout_constraintStart_toStartOf="parent"
+        android:text="Select 5 genres"
+        android:textColor="@color/light_black"
+        android:textSize="24dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/imageViewLogo"
-        app:layout_constraintTop_toTopOf="@+id/listGenres" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageViewLogo"
+        app:layout_constraintBottom_toTopOf="@id/scrollViewGenre"/>
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/genresLoadingGif"

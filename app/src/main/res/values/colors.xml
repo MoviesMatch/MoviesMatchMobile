@@ -14,5 +14,6 @@
     <color name="mv_darkRed">#851625</color>
     <color name="mv_orange">#FABD15</color>
     <color name="mv_yellow">#F3EF15</color>
+    <color name="light_black">#323232</color>
 
 </resources>

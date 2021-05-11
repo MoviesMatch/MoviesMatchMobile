@@ -81,7 +81,7 @@ public class SignUpFragment extends Fragment implements IPostActivity {
                 && inputsValidation.validateEmail(email.getText().toString())
                 && inputsValidation.validatePassword(password.getText().toString(), confirmedPassword.getText().toString())) {
 
-            postRequest.postRequest(jsonAccount, URL, new IRequestCallback() {
+            postRequest.postRequest(jsonAccount, URL, null, new IRequestCallback() {
                 //Called when postRequest is done
                 @Override
                 public void onSuccess(JSONObject jsonObject) {

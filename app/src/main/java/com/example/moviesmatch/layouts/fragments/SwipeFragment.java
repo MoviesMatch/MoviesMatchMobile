@@ -79,7 +79,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     }
 
     private void getRequestListFilm() {
-        getReq.getRequest(URL, new IRequestCallback() {
+        getReq.getRequest(URL, null,new IRequestCallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
                 try {
