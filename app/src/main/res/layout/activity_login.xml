@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:onClick="login"
         android:text="Login"
-        android:theme="@style/Button.MoviesMatch"
         app:layout_constraintBottom_toTopOf="@+id/textViewRegister"
         app:layout_constraintEnd_toEndOf="@id/guidelineRight"
         app:layout_constraintHorizontal_bias="0.5"

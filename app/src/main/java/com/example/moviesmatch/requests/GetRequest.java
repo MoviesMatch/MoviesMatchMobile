@@ -2,6 +2,7 @@ package com.example.moviesmatch.requests;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -17,6 +18,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GetRequest {
     private final String API = "https://10.0.2.2:44394";
@@ -33,7 +36,7 @@ public class GetRequest {
         queue.start();
     }
 
-    public void getRequest(String url, IRequestCallback requestCallback) {
+    public void getRequest(String url, String token, IRequestCallback requestCallback) {
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, API + url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -54,11 +57,18 @@ public class GetRequest {
                     }
                 }
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + token);
+                return headers;
+            }
+        };
         queue.add(jsonObjectRequest);
     }
 
-    public void getRequestArray(String url, IRequestCallbackArray requestCallback) {
+    public void getRequestArray(String url, String token, IRequestCallbackArray requestCallback) {
         jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, API + url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -79,7 +89,14 @@ public class GetRequest {
                     }
                 }
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + token);
+                return headers;
+            }
+        };
         queue.add(jsonArrayRequest);
     }
 }
