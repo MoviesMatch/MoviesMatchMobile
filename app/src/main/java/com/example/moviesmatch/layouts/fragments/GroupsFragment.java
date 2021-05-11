@@ -66,7 +66,7 @@ public class GroupsFragment extends Fragment {
                 Object group = adapter.getItem(position);
                 Bundle bundle = new Bundle();
                 bundle.putString("Group", group.toString());
-                bundle.putString("Acc", currentAccount);
+                bundle.putString("Account", currentAccount);
                 SwipeFragment swipeFragment = new SwipeFragment();
                 swipeFragment.setArguments(bundle);
                 getFragmentManager().beginTransaction().replace(R.id.frame, swipeFragment).commit();

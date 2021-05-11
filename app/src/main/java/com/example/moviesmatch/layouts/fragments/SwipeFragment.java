@@ -50,7 +50,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentSwipeBinding.inflate(getLayoutInflater());
-        currentAccount = getArguments().getString("Acc");
+        currentAccount = getArguments().getString("Account");
         currentGroup = getArguments().getString("Group");
         return binding.getRoot();
     }
