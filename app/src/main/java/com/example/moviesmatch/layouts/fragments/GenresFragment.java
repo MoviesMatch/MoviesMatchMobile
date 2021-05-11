@@ -152,7 +152,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     private void setUserGenreURL() {
         String usrId = "";
         try {
-            usrId = account.getString("usrId");
+            usrId = account.getJSONObject("userDB").getString("usrId");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -194,7 +194,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
         certificateByPass.IngoreCertificate();
         try {
             account = new JSONObject(this.getArguments().getString("Account"));
-            token = account.getString("Token");
+            token = account.getString("token");
         } catch (JSONException e) {
             e.printStackTrace();
         }
