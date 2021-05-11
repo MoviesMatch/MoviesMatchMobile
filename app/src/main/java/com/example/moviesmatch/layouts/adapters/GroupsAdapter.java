@@ -41,7 +41,6 @@ public class GroupsAdapter extends ArrayAdapter<JSONObject> {
         }
 
         JSONObject currentGroup = groupsList.get(position);
-
         TextView nameGroup = row.findViewById(R.id.textViewNameGroup);
         TextView joinCode = row.findViewById(R.id.textViewJoinCode);
 
