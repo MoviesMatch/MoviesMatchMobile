@@ -59,7 +59,7 @@ public class GroupsFragment extends Fragment {
     }
 
     private void displayGroups(){
-        getFilmUser();
+        getGrpUser();
         adapter = new GroupsAdapter(getContext(), arrayListGroups);
         listViewGroups.setAdapter(adapter);
         listViewGroups.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -68,6 +68,9 @@ public class GroupsFragment extends Fragment {
                 Object group = adapter.getItem(position);
                 Bundle bundle = new Bundle();
                 bundle.putString("currentGroup",group.toString());
+                SwipeFragment swipeFragment = new SwipeFragment();
+                swipeFragment.setArguments(bundle);
+                getFragmentManager().beginTransaction().replace(R.id.frame, swipeFragment).commit();
 
             }
         });
@@ -107,9 +110,10 @@ public class GroupsFragment extends Fragment {
         URL += "?idUser=" + usrId;
     }
 
-    private void getFilmUser(){
+    private void getGrpUser(){
         try {
-            account = new JSONObject(getArguments().getString("account"));
+            System.out.println(getArguments().getString("Account"));
+            account = new JSONObject(getArguments().getString("Account"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
