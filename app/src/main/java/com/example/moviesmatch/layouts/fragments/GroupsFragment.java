@@ -20,6 +20,7 @@ import com.example.moviesmatch.databinding.FragmentMovieInfosBinding;
 import com.example.moviesmatch.databinding.FragmentSwipeBinding;
 import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.layouts.activities.MainActivity;
+import com.example.moviesmatch.layouts.adapters.GroupsAdapter;
 import com.example.moviesmatch.requests.GetRequest;
 
 import org.json.JSONArray;
@@ -36,6 +37,7 @@ public class GroupsFragment extends Fragment {
 
     private JSONObject account;
     private  ArrayList arrayListGroups;
+    private GroupsAdapter adapter;
 
 
     private GetRequest getReq;
@@ -53,11 +55,27 @@ public class GroupsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
         setUp();
-        onClickGroup();
+        displayGroups();
+    }
+
+    private void displayGroups(){
+        getFilmUser();
+        adapter = new GroupsAdapter(getContext(), arrayListGroups);
+        listViewGroups.setAdapter(adapter);
+        listViewGroups.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Object group = adapter.getItem(position);
+                Bundle bundle = new Bundle();
+                bundle.putString("currentGroup",group.toString());
+
+            }
+        });
+
     }
 
     private void onClickGroup() {
-        arrayListGroups = new ArrayList<>(Arrays.asList("GROUPE 1", "GROUPE 2", "GROUPE 3", "GROUPE 1", "GROUPE 2", "GROUPE 3", "GROUPE 1", "GROUPE 2", "GROUPE 3", "GROUPE 1", "GROUPE 2", "GROUPE 3"));
+      /*  arrayListGroups = new ArrayList<>(Arrays.asList("GROUPE 1", "GROUPE 2", "GROUPE 3", "GROUPE 1", "GROUPE 2", "GROUPE 3", "GROUPE 1", "GROUPE 2", "GROUPE 3", "GROUPE 1", "GROUPE 2", "GROUPE 3"));
         ArrayAdapter arrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, android.R.id.text1, arrayListGroups);
         listViewGroups.setAdapter(arrayAdapter);
         listViewGroups.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -68,11 +86,12 @@ public class GroupsFragment extends Fragment {
                 //Fragment groups_fragment opened when MainActivity is called
                 ((MainActivity)getActivity()).replaceFrag(new SwipeFragment());
             }
-        });
+        });*/
     }
 
     private void setUp(){
         listViewGroups = binding.listViewGroups;
+        arrayListGroups = new ArrayList<JSONObject>();
         getReq = new GetRequest((MainActivity) getActivity());
         certificat = new CertificateByPass();
         certificat.IngoreCertificate();
@@ -88,9 +107,12 @@ public class GroupsFragment extends Fragment {
         URL += "?idUser=" + usrId;
     }
 
-
-    private void getFilmUser() throws JSONException {
-        account = new JSONObject(getArguments().getString("account"));
+    private void getFilmUser(){
+        try {
+            account = new JSONObject(getArguments().getString("account"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         setUserGenreURL();
 
         getReq.getRequest(URL, new IRequestCallback() {
@@ -98,6 +120,10 @@ public class GroupsFragment extends Fragment {
             public void onSuccess(JSONObject jsonObject) {
                 try {
                     JSONArray jsonArray = jsonObject.getJSONArray("$values");
+
+                    for(int i = 0; i < jsonArray.length(); i++){
+                        arrayListGroups.add(jsonArray.getJSONObject(i));
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
