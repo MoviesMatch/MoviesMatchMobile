@@ -35,10 +35,9 @@ public class SwipeAdapter extends ArrayAdapter<JSONObject> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View row;
-
-        if (convertView == null){
+        if (convertView == null) {
             row = LayoutInflater.from(getContext()).inflate(R.layout.item, parent, false);
-            } else{
+        } else {
             row = convertView;
         }
 
