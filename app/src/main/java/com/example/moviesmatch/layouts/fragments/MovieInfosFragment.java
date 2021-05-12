@@ -21,6 +21,8 @@ import com.example.moviesmatch.databinding.FragmentMovieInfosBinding;
 import com.example.moviesmatch.interfaces.IOnBackPressed;
 import com.example.moviesmatch.layouts.activities.MainActivity;
 import com.example.moviesmatch.layouts.adapters.RecyclerViewAdapter;
+import com.example.moviesmatch.validation.Calculator;
+import com.example.moviesmatch.validation.JSONManipulator;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -29,7 +31,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class MovieInfosFragment extends Fragment  implements IOnBackPressed {
+public class MovieInfosFragment extends Fragment implements IOnBackPressed {
 
     private FragmentMovieInfosBinding binding;
 
@@ -42,6 +44,9 @@ public class MovieInfosFragment extends Fragment  implements IOnBackPressed {
 
     private JSONObject movieJson;
     private JSONArray movieGenreJson;
+
+    private JSONManipulator jsonManipulator;
+    private Calculator calculator;
 
     private ArrayList<String> genres;
 
@@ -63,6 +68,8 @@ public class MovieInfosFragment extends Fragment  implements IOnBackPressed {
 
     public void setUp() {
         genres = new ArrayList<>();
+        jsonManipulator = new JSONManipulator();
+        calculator = new Calculator();
 
         recyclerView = binding.recyclerView;
         layoutManager = new GridLayoutManager(getContext(), 2);
@@ -81,35 +88,25 @@ public class MovieInfosFragment extends Fragment  implements IOnBackPressed {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             String movieString = (String) bundle.get("movie");
-            System.out.println(bundle);
-            System.out.println(movieString);
-
-            movieJson = new JSONObject();
-            try {
-                movieJson = new JSONObject(movieString);
-                movieGenreJson = movieJson.getJSONArray("movieGenreMgrs");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            movieJson = jsonManipulator.newJSONObject(movieString);
+            movieGenreJson = jsonManipulator.getJSONArrayFromJSONObject(movieJson, "movieGenreMgrs");
         }
     }
 
     public void addInfos() {
-        try {
-            textViewInfoTitle.setText(movieJson.getString("movTitle"));
-            textViewInfoDate.setText(movieJson.getString("movReleaseYear"));
-            textViewInfoOverview.setText(movieJson.getString("movOverview"));
-            textViewRating.setText(movieJson.getString("movImdbRating")+"/100");
-            textViewRunTime.setText(movieJson.getString("movRuntime") + " Minutes");
-            textViewUrl.setText(movieJson.getString("movUrl"));
-            Picasso.get().load(movieJson.getString("movPosterUrl")).into(poster);
 
-            for(int i= 0; i< movieGenreJson.length(); i++){
-                genres.add(movieGenreJson.getJSONObject(i).getString("genName"));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
+        textViewInfoTitle.setText(jsonManipulator.getString(movieJson, "movTitle"));
+        textViewInfoDate.setText(jsonManipulator.getString(movieJson, "movReleaseYear"));
+        textViewInfoOverview.setText(jsonManipulator.getString(movieJson, "movOverview"));
+        textViewRating.setText( calculator.rating(jsonManipulator.getString(movieJson, "movImdbRating")));
+        textViewRunTime.setText(calculator.runTime(jsonManipulator.getString(movieJson, "movRuntime")));
+        textViewUrl.setText(jsonManipulator.getString(movieJson, "movUrl"));
+        Picasso.get().load(jsonManipulator.getString(movieJson, "movPosterUrl")).into(poster);
+
+        for (int i = 0; i < movieGenreJson.length(); i++) {
+            genres.add(jsonManipulator.getStringFromJSONArrayAtPosition(movieGenreJson,"genName", i));
         }
+
         initRecyclerView();
     }
 
@@ -119,6 +116,7 @@ public class MovieInfosFragment extends Fragment  implements IOnBackPressed {
         recyclerView.setAdapter(recyclerViewAdapter);
         recyclerViewAdapter.notifyDataSetChanged();
     }
+
 
     @Override
     public void onBackPressed() {
