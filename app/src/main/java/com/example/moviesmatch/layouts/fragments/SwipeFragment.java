@@ -40,7 +40,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     private ArrayList<JSONObject> listJsonObjectsFilms;
     private FragmentSwipeBinding binding;
     private CertificateByPass certificat;
-    private String currentAccount, currentGroup, URL, token;
+    private String URL, token;
     private JSONManipulator jsonManipulator;
     private JSONObject account, group;
 
@@ -48,8 +48,6 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentSwipeBinding.inflate(getLayoutInflater());
-        currentAccount = getArguments().getString("Account");
-        currentGroup = getArguments().getString("Group");
         return binding.getRoot();
     }
 
@@ -79,8 +77,8 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     }
 
     private void getRequestListFilm() {
-        account =  jsonManipulator.newJSONObject(currentAccount);
-        group = jsonManipulator.newJSONObject(currentGroup);
+        account =  jsonManipulator.newJSONObject(getArguments().getString("Account"));
+        group = jsonManipulator.newJSONObject(getArguments().getString("Group"));
 
         setUserSwipeURL();
 
