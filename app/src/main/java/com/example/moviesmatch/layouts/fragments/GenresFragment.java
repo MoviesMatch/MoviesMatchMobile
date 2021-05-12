@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 
 import com.example.moviesmatch.interfaces.IGetActivity;
 import com.example.moviesmatch.interfaces.IPostActivity;
+import com.example.moviesmatch.interfaces.IRequestCallbackArray;
 import com.example.moviesmatch.layouts.adapters.GenreCheckboxAdapter;
 import com.example.moviesmatch.requests.GetRequest;
 import com.example.moviesmatch.requests.PostRequest;
@@ -26,6 +27,7 @@ import com.example.moviesmatch.layouts.activities.MainActivity;
 import com.example.moviesmatch.models.Genre;
 import com.example.moviesmatch.validation.JSONManipulator;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,7 +51,9 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     private ImageView imageLogo;
     private LinearLayout linearLayout;
     private GenreCheckboxAdapter genreCheckboxAdapter;
+    private JSONManipulator jsonManipulator;
     private String token;
+    String usrId;
 
     private final String getGenresURL = "/api/genre/getAllGenres";
     private final String postGenresURL = "/api/genre/addGenresToUser";
@@ -71,13 +75,8 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
             public void onClick(View view) {
                 if (genreCheckboxAdapter.isFiveChecked()) {
                     loading();
-                    try {
-                        jsonAccountWithGenres.put("idUser", account.get("usrId"));
-                        jsonAccountWithGenres.put("genreIds", genreCheckboxAdapter.getSelectedGenres());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
+                    jsonAccountWithGenres = jsonManipulator.put(jsonAccountWithGenres, "idUser", usrId);
+                    jsonAccountWithGenres = jsonManipulator.put(jsonAccountWithGenres, "genreIds", genreCheckboxAdapter.getSelectedGenres());
                     postRequest.postRequest(jsonAccountWithGenres, postGenresURL, token, new IRequestCallback() {
                         @Override
                         public void onSuccess(JSONObject jsonObject) {
@@ -99,19 +98,15 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
      */
     private void getGenres() {
         loading();
-        getRequest.getRequest(getGenresURL, token, new IRequestCallback() {
+        getRequest.getRequestArray(getGenresURL, token, new IRequestCallbackArray() {
             @Override
-            public void onSuccess(JSONObject jsonObject) {
-                try {
-                    listGenres = new JSONManipulator().toGenreList(jsonObject);
-                    genreCheckboxAdapter = new GenreCheckboxAdapter(getContext(), listGenres);
-                    if (parent.equals("MainActivity")) {
-                        getUserGenres();
-                    } else {
-                        genreCheckboxAdapter.setCheckboxesGenres(linearLayout);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            public void onSuccess(JSONArray jsonArray) {
+                listGenres = new JSONManipulator().toGenreList(jsonArray);
+                genreCheckboxAdapter = new GenreCheckboxAdapter(getContext(), listGenres);
+                if (parent.equals("MainActivity")) {
+                    getUserGenres();
+                } else {
+                    genreCheckboxAdapter.setCheckboxesGenres(linearLayout);
                 }
                 loadingGone();
             }
@@ -122,23 +117,18 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
      * Gets the loggedIn users selected Genres to be checked in the listView
      */
     private void getUserGenres() {
-        setUserGenreURL();
-        getRequest.getRequest(getUserGenreURL, token, new IRequestCallback() {
+        getRequest.getRequestArray(getUserGenreURL, token, new IRequestCallbackArray() {
             @Override
-            public void onSuccess(JSONObject jsonObject) {
-                try {
-                    ArrayList<Genre> userGenre = new JSONManipulator().toGenreList(jsonObject);
-                    for (Genre genres : listGenres) {
-                        for (Genre userGenres : userGenre) {
-                            if (genres.getId() == userGenres.getId()) {
-                                genres.setChecked(true);
-                            }
+            public void onSuccess(JSONArray jsonArray) {
+                ArrayList<Genre> userGenre = new JSONManipulator().toGenreList(jsonArray);
+                for (Genre genres : listGenres) {
+                    for (Genre userGenres : userGenre) {
+                        if (genres.getId() == userGenres.getId()) {
+                            genres.setChecked(true);
                         }
                     }
-                    genreCheckboxAdapter.setCheckboxesGenres(linearLayout);
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
+                genreCheckboxAdapter.setCheckboxesGenres(linearLayout);
             }
         });
     }
@@ -147,12 +137,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
      * Sets the URL with the loggedIn user id in parameter
      */
     private void setUserGenreURL() {
-        String usrId = "";
-        try {
-            usrId = account.getJSONObject("userDB").getString("usrId");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        usrId = jsonManipulator.getJSONObjectGetString(account,"userDB", "usrId");
         getUserGenreURL += "?idUser=" + usrId;
     }
 
@@ -189,12 +174,10 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     private void setUp() {
         certificateByPass = new CertificateByPass();
         certificateByPass.IngoreCertificate();
-        try {
-            account = new JSONObject(this.getArguments().getString("Account"));
-            token = account.getString("token");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        jsonManipulator = new JSONManipulator();
+        account = jsonManipulator.newJSONObject(this.getArguments().getString("Account"));
+        token = jsonManipulator.getString(account, "token");
+        setUserGenreURL();
         jsonAccountWithGenres = new JSONObject();
         gifLoading = binding.genresLoadingGif;
         button = binding.buttonGenre;
