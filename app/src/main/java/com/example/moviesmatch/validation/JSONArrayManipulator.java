@@ -23,17 +23,17 @@ public class JSONArrayManipulator {
         return listGenres;
     }
 
-    public JSONObject setJSONObject(String jsonObject){
+    public JSONObject newJSONObject(String string){
         JSONObject value = new JSONObject();
         try {
-            value = new JSONObject(jsonObject);
+            value = new JSONObject(string);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return value;
     }
 
-    public String getJSONObjectString(JSONObject jsonObject, String objectName, String columnName){
+    public String getJSONObjectGetString(JSONObject jsonObject, String objectName, String columnName){
         String value = "";
         try{
             value = jsonObject.getJSONObject(objectName).getString(columnName);
@@ -43,7 +43,7 @@ public class JSONArrayManipulator {
         return value;
     }
 
-    public String getJSONString(JSONObject jsonObject, String columnName){
+    public String getString(JSONObject jsonObject, String columnName){
         String value = "";
         try{
             value = jsonObject.getString(columnName);
@@ -53,7 +53,7 @@ public class JSONArrayManipulator {
         return value;
     }
 
-    public JSONObject putJSONObject(JSONObject jsonObject, String columnName, String value){
+    public JSONObject put(JSONObject jsonObject, String columnName, String value){
         try{
             jsonObject.put(columnName, value);
         } catch (JSONException e){

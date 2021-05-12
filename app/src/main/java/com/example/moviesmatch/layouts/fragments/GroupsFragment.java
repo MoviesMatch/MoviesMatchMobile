@@ -103,8 +103,8 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
 
     private void createGroup(){
         JSONObject createGroupJSON = new JSONObject();
-        createGroupJSON = jsonArrayManipulator.putJSONObject(createGroupJSON, "groupName", createGroupEditText.getText().toString());
-        createGroupJSON = jsonArrayManipulator.putJSONObject(createGroupJSON, "userId", userId);
+        createGroupJSON = jsonArrayManipulator.put(createGroupJSON, "groupName", createGroupEditText.getText().toString());
+        createGroupJSON = jsonArrayManipulator.put(createGroupJSON, "userId", userId);
         postRequest.postRequest(createGroupJSON, createGroupURL, token, new IRequestCallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
@@ -115,7 +115,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
     }
 
     private void setUserIdToURL() {
-        userId = jsonArrayManipulator.getJSONObjectString(account, "userDB", "usrId");
+        userId = jsonArrayManipulator.getJSONObjectGetString(account, "userDB", "usrId");
         userGroupsURL += userId;
     }
 
@@ -129,9 +129,9 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
         jsonArrayManipulator = new JSONArrayManipulator();
         certificat = new CertificateByPass();
         certificat.IngoreCertificate();
-        account = jsonArrayManipulator.setJSONObject(getArguments().getString("Account"));
+        account = jsonArrayManipulator.newJSONObject(getArguments().getString("Account"));
         setUserIdToURL();
-        token = jsonArrayManipulator.getJSONString(account, "token");
+        token = jsonArrayManipulator.getString(account, "token");
     }
 
     @Override
