@@ -22,4 +22,43 @@ public class JSONArrayManipulator {
         }
         return listGenres;
     }
+
+    public JSONObject newJSONObject(String string){
+        JSONObject value = new JSONObject();
+        try {
+            value = new JSONObject(string);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return value;
+    }
+
+    public String getJSONObjectGetString(JSONObject jsonObject, String objectName, String columnName){
+        String value = "";
+        try{
+            value = jsonObject.getJSONObject(objectName).getString(columnName);
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+        return value;
+    }
+
+    public String getString(JSONObject jsonObject, String columnName){
+        String value = "";
+        try{
+            value = jsonObject.getString(columnName);
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+        return value;
+    }
+
+    public JSONObject put(JSONObject jsonObject, String columnName, String value){
+        try{
+            jsonObject.put(columnName, value);
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
 }
