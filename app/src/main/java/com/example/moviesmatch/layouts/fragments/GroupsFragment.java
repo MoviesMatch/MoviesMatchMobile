@@ -42,7 +42,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
     private GetRequest getRequest;
     private PostRequest postRequest;
     private CertificateByPass certificat;
-    private String userGroupsURL = "/api/user/getUserGroups/";
+    private String userGroupsURL ;
     private String createGroupURL = "/api/group/createGroup";
     private String joinGroupURL = "/api/group/joinGroup";
     private String token;
@@ -147,6 +147,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
     }
 
     private void setUserIdToURL() {
+        userGroupsURL = "/api/user/getUserGroups/";
         userId = jsonManipulator.getJSONObjectGetString(account, "userDB", "usrId");
         userGroupsURL += userId;
     }
