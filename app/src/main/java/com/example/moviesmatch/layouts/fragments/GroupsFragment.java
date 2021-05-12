@@ -24,7 +24,8 @@ import com.example.moviesmatch.layouts.activities.MainActivity;
 import com.example.moviesmatch.layouts.adapters.GroupsAdapter;
 import com.example.moviesmatch.requests.GetRequest;
 import com.example.moviesmatch.requests.PostRequest;
-import com.example.moviesmatch.validation.JSONArrayManipulator;
+import com.example.moviesmatch.validation.InputsValidation;
+import com.example.moviesmatch.validation.JSONManipulator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,7 +47,8 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
     private String joinGroupURL = "/api/group/joinGroup";
     private String token;
     private String userId;
-    private JSONArrayManipulator jsonArrayManipulator;
+    private JSONManipulator jsonManipulator;
+    private InputsValidation validation;
     private Button createGroupButton, joinGroupButton;
     private EditText createGroupEditText, joinGroupEditText;
 
@@ -99,7 +101,9 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
         createGroupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createGroup();
+                if (validation.validateInputNotEmpty(createGroupEditText.getText().toString(), "Create Group", "You must give a name to your group")) {
+                    createGroup();
+                }
             }
         });
     }
@@ -108,7 +112,9 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
         joinGroupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                joinGroup();
+                if (validation.validateInputNotEmpty(joinGroupEditText.getText().toString(), "Join Group", "You must write a valid code")) {
+                    joinGroup();
+                }
             }
         });
     }
@@ -116,8 +122,8 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
 
     private void createGroup() {
         JSONObject createGroupJSON = new JSONObject();
-        createGroupJSON = jsonArrayManipulator.put(createGroupJSON, "groupName", createGroupEditText.getText().toString());
-        createGroupJSON = jsonArrayManipulator.put(createGroupJSON, "userId", userId);
+        createGroupJSON = jsonManipulator.put(createGroupJSON, "groupName", createGroupEditText.getText().toString());
+        createGroupJSON = jsonManipulator.put(createGroupJSON, "userId", userId);
         postRequest.postRequest(createGroupJSON, createGroupURL, token, new IRequestCallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
@@ -129,8 +135,8 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
 
     private void joinGroup() {
         JSONObject joinGroupJSON = new JSONObject();
-        joinGroupJSON = jsonArrayManipulator.put(joinGroupJSON, "joinCode", joinGroupEditText.getText().toString());
-        joinGroupJSON = jsonArrayManipulator.put(joinGroupJSON, "userId", userId);
+        joinGroupJSON = jsonManipulator.put(joinGroupJSON, "joinCode", joinGroupEditText.getText().toString());
+        joinGroupJSON = jsonManipulator.put(joinGroupJSON, "userId", userId);
         postRequest.postRequest(joinGroupJSON, joinGroupURL, token, new IRequestCallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
@@ -141,7 +147,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
     }
 
     private void setUserIdToURL() {
-        userId = jsonArrayManipulator.getJSONObjectGetString(account, "userDB", "usrId");
+        userId = jsonManipulator.getJSONObjectGetString(account, "userDB", "usrId");
         userGroupsURL += userId;
     }
 
@@ -154,12 +160,13 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
         arrayListGroups = new ArrayList<JSONObject>();
         getRequest = new GetRequest((MainActivity) getActivity());
         postRequest = new PostRequest((MainActivity) getActivity());
-        jsonArrayManipulator = new JSONArrayManipulator();
+        jsonManipulator = new JSONManipulator();
+        validation = new InputsValidation(getContext());
         certificat = new CertificateByPass();
         certificat.IngoreCertificate();
-        account = jsonArrayManipulator.newJSONObject(getArguments().getString("Account"));
+        account = jsonManipulator.newJSONObject(getArguments().getString("Account"));
         setUserIdToURL();
-        token = jsonArrayManipulator.getString(account, "token");
+        token = jsonManipulator.getString(account, "token");
     }
 
     @Override

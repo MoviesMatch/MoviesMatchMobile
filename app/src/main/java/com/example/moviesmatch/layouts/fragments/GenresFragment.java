@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import com.example.moviesmatch.interfaces.IGetActivity;
 import com.example.moviesmatch.interfaces.IPostActivity;
@@ -25,14 +24,12 @@ import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.layouts.activities.CreateAccountActivity;
 import com.example.moviesmatch.layouts.activities.MainActivity;
 import com.example.moviesmatch.models.Genre;
-import com.example.moviesmatch.validation.JSONArrayManipulator;
+import com.example.moviesmatch.validation.JSONManipulator;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import pl.droidsonroids.gif.GifImageView;
 
@@ -106,7 +103,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
             @Override
             public void onSuccess(JSONObject jsonObject) {
                 try {
-                    listGenres = new JSONArrayManipulator().toGenreList(jsonObject);
+                    listGenres = new JSONManipulator().toGenreList(jsonObject);
                     genreCheckboxAdapter = new GenreCheckboxAdapter(getContext(), listGenres);
                     if (parent.equals("MainActivity")) {
                         getUserGenres();
@@ -130,7 +127,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
             @Override
             public void onSuccess(JSONObject jsonObject) {
                 try {
-                    ArrayList<Genre> userGenre = new JSONArrayManipulator().toGenreList(jsonObject);
+                    ArrayList<Genre> userGenre = new JSONManipulator().toGenreList(jsonObject);
                     for (Genre genres : listGenres) {
                         for (Genre userGenres : userGenre) {
                             if (genres.getId() == userGenres.getId()) {
