@@ -8,13 +8,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.moviesmatch.R;
-import com.example.moviesmatch.layouts.fragments.SignUpFragment;
+import com.example.moviesmatch.layouts.fragments.signup.SignUpNameFragment;
+import com.example.moviesmatch.layouts.fragments.signup.SignUpPasswordFragment;
 import com.example.moviesmatch.databinding.ActivityCreateAccountBinding;
 import com.example.moviesmatch.interfaces.IGetActivity;
 import com.example.moviesmatch.interfaces.IPostActivity;
 import com.example.moviesmatch.validation.OnErrorResponse;
-
-import java.util.List;
 
 public class CreateAccountActivity extends AppCompatActivity implements IPostActivity, IGetActivity {
     private ActivityCreateAccountBinding binding;
@@ -31,7 +30,7 @@ public class CreateAccountActivity extends AppCompatActivity implements IPostAct
         //Fragment signUpFragment opened when CreateAccountActivity is called
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.frameCreateAccountActivity,
-                    new SignUpFragment()).commit();
+                    new SignUpNameFragment()).commit();
         }
     }
 

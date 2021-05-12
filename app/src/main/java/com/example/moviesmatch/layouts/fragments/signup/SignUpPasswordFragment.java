@@ -1,4 +1,4 @@
-package com.example.moviesmatch.layouts.fragments;
+package com.example.moviesmatch.layouts.fragments.signup;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -6,35 +6,36 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.TextView;
 
-import com.example.moviesmatch.interfaces.IGetActivity;
+import com.example.moviesmatch.databinding.FragmentSignUpPasswordBinding;
 import com.example.moviesmatch.interfaces.IPostActivity;
+import com.example.moviesmatch.layouts.fragments.GenresFragment;
 import com.example.moviesmatch.requests.PostRequest;
 import com.example.moviesmatch.certificate.CertificateByPass;
-import com.example.moviesmatch.databinding.FragmentSignUpBinding;
 import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.layouts.activities.CreateAccountActivity;
 import com.example.moviesmatch.validation.CountryAbbreviation;
 import com.example.moviesmatch.validation.InputsValidation;
+import com.example.moviesmatch.validation.PasswordsEye;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import pl.droidsonroids.gif.GifImageView;
 
-public class SignUpFragment extends Fragment implements IPostActivity {
-    FragmentSignUpBinding binding;
+public class SignUpPasswordFragment extends Fragment implements IPostActivity {
+    FragmentSignUpPasswordBinding binding;
     PostRequest postRequest;
-    EditText firstName;
-    EditText lastName;
+    TextView step;
     EditText email;
-    Spinner country;
     EditText password;
     EditText confirmedPassword;
     JSONObject jsonAccount;
@@ -44,15 +45,17 @@ public class SignUpFragment extends Fragment implements IPostActivity {
     GifImageView loadingGif;
     Button nextButton;
     ConstraintLayout constraintLayout;
+    PasswordsEye passwordsEye;
 
     private final String URL = "/api/user/signUp";
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = FragmentSignUpBinding.inflate(getLayoutInflater());
+        binding = FragmentSignUpPasswordBinding.inflate(getLayoutInflater());
         setup();
         next();
+        passwordsEye();
         return binding.getRoot();
     }
 
@@ -63,10 +66,10 @@ public class SignUpFragment extends Fragment implements IPostActivity {
                 try {
                     loading();
                     jsonAccount.put("usrEmail", email.getText().toString());
-                    jsonAccount.put("usrFirstname", firstName.getText().toString());
-                    jsonAccount.put("usrLastname", lastName.getText().toString());
+                    jsonAccount.put("usrFirstname", getArguments().getString("Firstname"));
+                    jsonAccount.put("usrLastname", getArguments().getString("Lastname"));
                     jsonAccount.put("usrPassword", password.getText().toString());
-                    jsonAccount.put("usrCountry", countryAbbreviation.getCountryAbbreviation(country.getSelectedItem().toString()));
+                    jsonAccount.put("usrCountry", getArguments().getString("Country"));
                     System.out.println(jsonAccount);
                     createAccount();
                 } catch (JSONException e) {
@@ -77,10 +80,7 @@ public class SignUpFragment extends Fragment implements IPostActivity {
     }
 
     private void createAccount() {
-        if (inputsValidation.validateName(firstName.getText().toString(), lastName.getText().toString())
-                && inputsValidation.validateEmail(email.getText().toString())
-                && inputsValidation.validatePassword(password.getText().toString(), confirmedPassword.getText().toString())) {
-
+        if (inputsValidation.validateEmail(email.getText().toString()) && inputsValidation.validatePassword(password.getText().toString(), confirmedPassword.getText().toString())) {
             postRequest.postRequest(jsonAccount, URL, null, new IRequestCallback() {
                 //Called when postRequest is done
                 @Override
@@ -88,7 +88,7 @@ public class SignUpFragment extends Fragment implements IPostActivity {
                     Bundle bundle = new Bundle();
                     bundle.putString("Account", jsonObject.toString());
                     bundle.putString("Parent", "CreateAccountActivity");
-                    ((CreateAccountActivity)getActivity()).replaceFrag(new GenresFragment(), bundle);
+                    ((CreateAccountActivity) getActivity()).replaceFrag(new GenresFragment(), bundle);
                     loadingGone();
                 }
             });
@@ -97,7 +97,12 @@ public class SignUpFragment extends Fragment implements IPostActivity {
         }
     }
 
-    private void loading(){
+    private void passwordsEye() {
+        passwordsEye.passwordEye(password);
+        passwordsEye.passwordEye(confirmedPassword);
+    }
+
+    private void loading() {
         loadingGif.setVisibility(View.VISIBLE);
         nextButton.setEnabled(false);
     }
@@ -107,28 +112,34 @@ public class SignUpFragment extends Fragment implements IPostActivity {
         nextButton.setEnabled(true);
     }
 
-    private void setup(){
+    private void underline(){
+        SpannableString content = new SpannableString("Step 2 of 3");
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        step.setText(content);
+    }
+
+    private void setup() {
         certificateByPass = new CertificateByPass();
         certificateByPass.IngoreCertificate();
         loadingGif = binding.signUpLoadingGif;
-        postRequest = new PostRequest((CreateAccountActivity)getActivity());
-        firstName = binding.editTextFirstName;
-        lastName = binding.editTextLastName;
-        email = binding.editTextEmail;
-        country = binding.spinnerCountry;
-        password = binding.editTextPassword;
-        confirmedPassword = binding.editTextConfirmPassword;
+        postRequest = new PostRequest((CreateAccountActivity) getActivity());
         jsonAccount = new JSONObject();
         inputsValidation = new InputsValidation(getContext());
         countryAbbreviation = new CountryAbbreviation();
-        nextButton = binding.buttonRegister;
+        passwordsEye = new PasswordsEye();
         constraintLayout = binding.layoutSignUp;
+        step = binding.textViewStep2of3;
+        email = binding.editTextSignupEmail;
+        password = binding.editTextPassword;
+        confirmedPassword = binding.editTextConfirmPassword;
+        nextButton = binding.buttonNextPassword;
+        underline();
     }
 
     @Override
     public void onPostErrorResponse(int errorCode) {
         loadingGone();
-        if (errorCode == 403){
+        if (errorCode == 403) {
             new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("This email is already taken").show();
         } else {
             new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
