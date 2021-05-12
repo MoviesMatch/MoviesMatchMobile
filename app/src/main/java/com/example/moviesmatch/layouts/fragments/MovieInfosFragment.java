@@ -54,7 +54,7 @@ public class MovieInfosFragment extends Fragment implements IOnBackPressed {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentMovieInfosBinding.inflate(getLayoutInflater());
-        getJsonObject();
+
         return binding.getRoot();
     }
 
@@ -62,6 +62,7 @@ public class MovieInfosFragment extends Fragment implements IOnBackPressed {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setUp();
+        getJsonObject();
         addInfos();
     }
 

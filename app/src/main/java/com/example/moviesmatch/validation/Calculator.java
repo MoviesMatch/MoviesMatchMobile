@@ -8,7 +8,7 @@ public class Calculator {
 
     public String runTime(String time) {
         int hours = 0;
-        double minutes = Double.valueOf(time);
+        int minutes = Integer.valueOf(time);
         while (minutes > 60) {
             minutes -= 60;
             hours++;
