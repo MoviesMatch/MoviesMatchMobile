@@ -40,7 +40,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     private ArrayList<JSONObject> listJsonObjectsFilms;
     private FragmentSwipeBinding binding;
     private CertificateByPass certificat;
-    private String URL, token;
+    private String getMovieURL, token;
     private JSONManipulator jsonManipulator;
     private JSONObject account, group;
 
@@ -82,7 +82,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
 
         setUserSwipeURL();
 
-        getReq.getRequestArray(URL, token,new IRequestCallbackArray() {
+        getReq.getRequestArray(getMovieURL, token,new IRequestCallbackArray() {
             @Override
             public void onSuccess(JSONArray jsonArray) {
                 try {
@@ -99,11 +99,11 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
 
 
     private void setUserSwipeURL() {
-        URL = "/api/movie/GetMovies";
+        getMovieURL = "/api/movie/GetMovies";
         String  usrId = "&userId=" + jsonManipulator.getJSONObjectGetString(account, "userDB","usrId");
         String  grpId = "?groupId="+ jsonManipulator.getString(group,"grpId");
         token = jsonManipulator.getString(account,"token");
-        URL += grpId + usrId;
+        getMovieURL += grpId + usrId;
     }
 
 
