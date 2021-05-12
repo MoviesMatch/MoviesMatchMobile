@@ -15,6 +15,21 @@
         app:srcCompat="@drawable/logo" />
 
     <TextView
+        android:id="@+id/textViewStep1of3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Step 1 of 3"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        android:ems="10"
+        app:layout_constraintTop_toBottomOf="@id/imageViewLogoSignupName"
+        app:layout_constraintBottom_toTopOf="@id/textViewCreateAccountName"
+        app:layout_constraintStart_toStartOf="@id/guidelineSignupNameLeft"
+        app:layout_constraintEnd_toEndOf="@id/guidelineSignupNameRight"/>
+
+    <TextView
         android:id="@+id/textViewCreateAccountName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,7 +42,7 @@
         app:layout_constraintEnd_toEndOf="@id/guidelineSignupNameRight"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@id/guidelineSignupNameLeft"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewLogoSignupName" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewStep1of3" />
 
     <EditText
         android:id="@+id/editTextSignupFirstName"
@@ -48,10 +63,23 @@
         android:background="@drawable/custom_rectangle"
         android:hint="Last Name"
         android:theme="@style/Inputs"
-        app:layout_constraintBottom_toTopOf="@id/buttonSignupNextName"
+        app:layout_constraintBottom_toTopOf="@id/spinnerCountry"
         app:layout_constraintEnd_toEndOf="@id/guidelineSignupNameRight"
         app:layout_constraintStart_toStartOf="@id/guidelineSignupNameLeft"
         app:layout_constraintTop_toBottomOf="@id/editTextSignupFirstName" />
+
+    <Spinner
+        android:id="@+id/spinnerCountry"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_rectangle"
+        android:entries="@array/country"
+        android:paddingVertical="5dp"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@id/buttonSignupNextName"
+        app:layout_constraintEnd_toEndOf="@id/guidelineSignupNameRight"
+        app:layout_constraintStart_toStartOf="@id/guidelineSignupNameLeft"
+        app:layout_constraintTop_toBottomOf="@id/editTextSignupLastName" />
 
     <Button
         android:id="@+id/buttonSignupNextName"
@@ -61,7 +89,7 @@
         app:layout_constraintBottom_toTopOf="@id/guidelineSignupNameBot"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextSignupLastName" />
+        app:layout_constraintTop_toBottomOf="@id/spinnerCountry" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineSignupNameRight"
@@ -75,7 +103,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.25" />
+        app:layout_constraintGuide_percent="0.15" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineSignupNameLeft"
@@ -89,5 +117,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.75" />
+        app:layout_constraintGuide_percent="0.85" />
 </androidx.constraintlayout.widget.ConstraintLayout>

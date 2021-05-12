@@ -6,11 +6,14 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.moviesmatch.databinding.FragmentSignUpPasswordBinding;
 import com.example.moviesmatch.interfaces.IPostActivity;
@@ -31,6 +34,8 @@ import pl.droidsonroids.gif.GifImageView;
 public class SignUpPasswordFragment extends Fragment implements IPostActivity {
     FragmentSignUpPasswordBinding binding;
     PostRequest postRequest;
+    TextView step;
+    EditText email;
     EditText password;
     EditText confirmedPassword;
     JSONObject jsonAccount;
@@ -60,7 +65,7 @@ public class SignUpPasswordFragment extends Fragment implements IPostActivity {
             public void onClick(View view) {
                 try {
                     loading();
-                    jsonAccount.put("usrEmail", getArguments().getString("Email"));
+                    jsonAccount.put("usrEmail", email.getText().toString());
                     jsonAccount.put("usrFirstname", getArguments().getString("Firstname"));
                     jsonAccount.put("usrLastname", getArguments().getString("Lastname"));
                     jsonAccount.put("usrPassword", password.getText().toString());
@@ -75,7 +80,7 @@ public class SignUpPasswordFragment extends Fragment implements IPostActivity {
     }
 
     private void createAccount() {
-        if (inputsValidation.validatePassword(password.getText().toString(), confirmedPassword.getText().toString())) {
+        if (inputsValidation.validateEmail(email.getText().toString()) && inputsValidation.validatePassword(password.getText().toString(), confirmedPassword.getText().toString())) {
             postRequest.postRequest(jsonAccount, URL, null, new IRequestCallback() {
                 //Called when postRequest is done
                 @Override
@@ -107,6 +112,12 @@ public class SignUpPasswordFragment extends Fragment implements IPostActivity {
         nextButton.setEnabled(true);
     }
 
+    private void underline(){
+        SpannableString content = new SpannableString("Step 2 of 3");
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        step.setText(content);
+    }
+
     private void setup() {
         certificateByPass = new CertificateByPass();
         certificateByPass.IngoreCertificate();
@@ -117,19 +128,18 @@ public class SignUpPasswordFragment extends Fragment implements IPostActivity {
         countryAbbreviation = new CountryAbbreviation();
         passwordsEye = new PasswordsEye();
         constraintLayout = binding.layoutSignUp;
+        step = binding.textViewStep2of3;
+        email = binding.editTextSignupEmail;
         password = binding.editTextPassword;
         confirmedPassword = binding.editTextConfirmPassword;
         nextButton = binding.buttonNextPassword;
+        underline();
     }
 
     @Override
     public void onPostErrorResponse(int errorCode) {
         loadingGone();
         if (errorCode == 403) {
-            Bundle bundle = new Bundle();
-            bundle.putString("Firstname", getArguments().getString("Firstname"));
-            bundle.putString("Lastname", getArguments().getString("Lastname"));
-            ((CreateAccountActivity) getActivity()).replaceFrag(new SignUpEmailFragment(), bundle);
             new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("This email is already taken").show();
         } else {
             new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();

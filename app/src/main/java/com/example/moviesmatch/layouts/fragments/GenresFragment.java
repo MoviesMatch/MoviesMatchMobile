@@ -5,13 +5,17 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.moviesmatch.interfaces.IGetActivity;
 import com.example.moviesmatch.interfaces.IPostActivity;
@@ -49,6 +53,8 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     private Button button;
     private String parent;
     private ImageView imageLogo;
+    private TextView step;
+    private TextView selectGenre;
     private LinearLayout linearLayout;
     private GenreCheckboxAdapter genreCheckboxAdapter;
     private String token;
@@ -181,11 +187,21 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
             postRequest = new PostRequest((CreateAccountActivity) getActivity());
             getRequest = new GetRequest((CreateAccountActivity) getActivity());
             button.setText("Finish");
+            underline();
         } else {
             parent = "MainActivity";
             postRequest = new PostRequest((MainActivity) getActivity());
             getRequest = new GetRequest((MainActivity) getActivity());
+            step.setVisibility(View.GONE);
+            selectGenre.setTypeface(selectGenre.getTypeface(), Typeface.BOLD);
+            selectGenre.setTextSize(24);
         }
+    }
+
+    private void underline(){
+        SpannableString content = new SpannableString("Step 3 of 3");
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        step.setText(content);
     }
 
     private void setUp() {
@@ -202,6 +218,8 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
         button = binding.buttonGenre;
         imageLogo = binding.imageViewLogo;
         linearLayout = binding.linearLayoutGenres;
+        step = binding.textViewStep3of3;
+        selectGenre = binding.textViewSelectGenre;
         setParent();
         imageGone();
     }
