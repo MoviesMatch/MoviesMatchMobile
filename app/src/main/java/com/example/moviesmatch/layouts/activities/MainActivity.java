@@ -24,7 +24,7 @@ import com.example.moviesmatch.layouts.fragments.MovieInfosFragment;
 import com.example.moviesmatch.layouts.fragments.SettingsFragment;
 import com.example.moviesmatch.layouts.fragments.SwipeFragment;
 import com.example.moviesmatch.interfaces.IGetActivity;
-import com.example.moviesmatch.layouts.fragments.AccountFragment;
+import com.example.moviesmatch.layouts.fragments.account.AccountFragment;
 import com.example.moviesmatch.validation.OnErrorResponse;
 import com.google.android.material.navigation.NavigationView;
 
@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements IGetActivity, IPo
         toolbar = findViewById(R.id.toolbar);
         imageMatch = findViewById(R.id.imageMatch);
         account = getIntent().getStringExtra("Account");
+        System.out.println("");
         onErrorResponse = new OnErrorResponse();
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);

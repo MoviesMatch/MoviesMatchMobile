@@ -37,6 +37,7 @@
         android:layout_height="wrap_content"
         android:text="Your full name:"
         android:textStyle="bold"
+        android:layout_marginTop="25dp"
         app:layout_constraintBottom_toTopOf="@+id/textViewFullName"
         app:layout_constraintEnd_toStartOf="@id/guidelineRight"
         app:layout_constraintHorizontal_bias="0.5"
@@ -52,7 +53,7 @@
         app:layout_constraintEnd_toEndOf="@id/guidelineRight"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@id/guidelineLeft"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guidelineTop"
         app:srcCompat="@drawable/logo" />
 
     <TextView
@@ -71,7 +72,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Country"
-        app:layout_constraintBottom_toTopOf="@+id/textViewOldPsw"
         app:layout_constraintEnd_toStartOf="@id/guidelineRight"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@id/guidelineLeft"
@@ -88,80 +88,17 @@
         app:layout_constraintStart_toEndOf="@id/guidelineLeft"
         app:layout_constraintTop_toBottomOf="@+id/textViewEmailPresentation" />
 
-    <TextView
-        android:id="@+id/textViewOldPsw"
+    <Button
+        android:id="@+id/buttonChangePassword"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Your old password:"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/editTextOldPsw"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:drawableEnd="@drawable/ic_baseline_arrow_right_24"
+        android:text="Change My Password"
         app:layout_constraintEnd_toStartOf="@id/guidelineRight"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@id/guidelineLeft"
         app:layout_constraintTop_toBottomOf="@+id/textViewCountry" />
-
-    <TextView
-        android:id="@+id/textViewNewPsw"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Your new password:"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/editTextNewPsw"
-        app:layout_constraintEnd_toStartOf="@id/guidelineRight"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@id/guidelineLeft"
-        app:layout_constraintTop_toBottomOf="@+id/editTextOldPsw" />
-
-    <Button
-        android:id="@+id/buttonSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Save Changes"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/guidelineRight"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@id/guidelineLeft"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNewPsw" />
-
-    <EditText
-        android:id="@+id/editTextOldPsw"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:background="@drawable/custom_rectangle"
-        android:drawableStart="@drawable/ic_baseline_lock_24"
-        android:drawablePadding="12dp"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        app:layout_constraintBottom_toTopOf="@+id/textViewNewPsw"
-        app:layout_constraintEnd_toStartOf="@id/guidelineRight"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@id/guidelineLeft"
-        app:layout_constraintTop_toBottomOf="@+id/textViewOldPsw" />
-
-    <EditText
-        android:id="@+id/editTextNewPsw"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:background="@drawable/custom_rectangle"
-        android:drawableStart="@drawable/ic_baseline_lock_24"
-        android:drawablePadding="12dp"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/buttonSave"
-        app:layout_constraintEnd_toStartOf="@id/guidelineRight"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@id/guidelineLeft"
-        app:layout_constraintTop_toBottomOf="@+id/textViewNewPsw" />
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -169,7 +106,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.1" />
+        app:layout_constraintGuide_percent="0.18" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineLeft"
