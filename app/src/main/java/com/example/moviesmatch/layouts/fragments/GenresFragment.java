@@ -16,6 +16,7 @@ import android.widget.ListView;
 
 import com.example.moviesmatch.interfaces.IGetActivity;
 import com.example.moviesmatch.interfaces.IPostActivity;
+import com.example.moviesmatch.interfaces.IRequestCallbackArray;
 import com.example.moviesmatch.layouts.adapters.GenreCheckboxAdapter;
 import com.example.moviesmatch.requests.GetRequest;
 import com.example.moviesmatch.requests.PostRequest;
@@ -53,6 +54,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     private LinearLayout linearLayout;
     private GenreCheckboxAdapter genreCheckboxAdapter;
     private String token;
+    String usrId;
 
     private final String getGenresURL = "/api/genre/getAllGenres";
     private final String postGenresURL = "/api/genre/addGenresToUser";
@@ -75,8 +77,9 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
                 if (genreCheckboxAdapter.isFiveChecked()) {
                     loading();
                     try {
-                        jsonAccountWithGenres.put("idUser", account.get("usrId"));
+                        jsonAccountWithGenres.put("idUser", usrId);
                         jsonAccountWithGenres.put("genreIds", genreCheckboxAdapter.getSelectedGenres());
+                        System.out.println("AAAAAAAAAAA" + jsonAccountWithGenres);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -102,11 +105,11 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
      */
     private void getGenres() {
         loading();
-        getRequest.getRequest(getGenresURL, token, new IRequestCallback() {
+        getRequest.getRequestArray(getGenresURL, token, new IRequestCallbackArray() {
             @Override
-            public void onSuccess(JSONObject jsonObject) {
+            public void onSuccess(JSONArray jsonArray) {
                 try {
-                    listGenres = new JSONArrayManipulator().toGenreList(jsonObject);
+                    listGenres = new JSONArrayManipulator().toGenreList(jsonArray);
                     genreCheckboxAdapter = new GenreCheckboxAdapter(getContext(), listGenres);
                     if (parent.equals("MainActivity")) {
                         getUserGenres();
@@ -126,11 +129,11 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
      */
     private void getUserGenres() {
         setUserGenreURL();
-        getRequest.getRequest(getUserGenreURL, token, new IRequestCallback() {
+        getRequest.getRequestArray(getUserGenreURL, token, new IRequestCallbackArray() {
             @Override
-            public void onSuccess(JSONObject jsonObject) {
+            public void onSuccess(JSONArray jsonArray) {
                 try {
-                    ArrayList<Genre> userGenre = new JSONArrayManipulator().toGenreList(jsonObject);
+                    ArrayList<Genre> userGenre = new JSONArrayManipulator().toGenreList(jsonArray);
                     for (Genre genres : listGenres) {
                         for (Genre userGenres : userGenre) {
                             if (genres.getId() == userGenres.getId()) {
@@ -150,7 +153,6 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
      * Sets the URL with the loggedIn user id in parameter
      */
     private void setUserGenreURL() {
-        String usrId = "";
         try {
             usrId = account.getJSONObject("userDB").getString("usrId");
         } catch (JSONException e) {
