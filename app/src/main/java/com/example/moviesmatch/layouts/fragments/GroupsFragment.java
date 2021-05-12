@@ -103,12 +103,8 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
 
     private void createGroup(){
         JSONObject createGroupJSON = new JSONObject();
-        try{
-            createGroupJSON.put("groupName", createGroupEditText.getText().toString());
-            createGroupJSON.put("userId", userId);
-        } catch (JSONException e){
-            e.printStackTrace();
-        }
+        createGroupJSON = jsonArrayManipulator.putJSONObject(createGroupJSON, "groupName", createGroupEditText.getText().toString());
+        createGroupJSON = jsonArrayManipulator.putJSONObject(createGroupJSON, "userId", userId);
         postRequest.postRequest(createGroupJSON, createGroupURL, token, new IRequestCallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) {

@@ -52,4 +52,13 @@ public class JSONArrayManipulator {
         }
         return value;
     }
+
+    public JSONObject putJSONObject(JSONObject jsonObject, String columnName, String value){
+        try{
+            jsonObject.put(columnName, value);
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
 }
