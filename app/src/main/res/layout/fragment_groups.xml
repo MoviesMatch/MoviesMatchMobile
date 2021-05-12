@@ -59,7 +59,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/guidelineListViewBottom"
-        app:layout_constraintBottom_toTopOf="@id/divider"/>
+        app:layout_constraintBottom_toTopOf="@id/editTextJoinGroup"/>
 
     <EditText
         android:id="@+id/editTextCreateGroup"
@@ -76,15 +76,6 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/buttonCreateGroup"
         app:layout_constraintTop_toTopOf="@+id/buttonCreateGroup" />
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?android:attr/listDivider"
-        android:visibility="visible"
-        app:layout_constraintTop_toBottomOf="@id/buttonCreateGroup"
-        app:layout_constraintBottom_toTopOf="@id/editTextJoinGroup"/>
 
     <Button
         android:id="@+id/buttonJoin"
@@ -113,7 +104,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/buttonJoin"
-        app:layout_constraintTop_toBottomOf="@id/divider"
+        app:layout_constraintTop_toBottomOf="@id/buttonCreateGroup"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <androidx.constraintlayout.widget.Guideline
