@@ -29,10 +29,9 @@ import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.layouts.activities.CreateAccountActivity;
 import com.example.moviesmatch.layouts.activities.MainActivity;
 import com.example.moviesmatch.models.Genre;
-import com.example.moviesmatch.validation.JSONArrayManipulator;
+import com.example.moviesmatch.validation.JSONManipulator;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -57,7 +56,9 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     private TextView selectGenre;
     private LinearLayout linearLayout;
     private GenreCheckboxAdapter genreCheckboxAdapter;
+    private JSONManipulator jsonManipulator;
     private String token;
+    String usrId;
 
     private final String getGenresURL = "/api/genre/getAllGenres";
     private final String postGenresURL = "/api/genre/addGenresToUser";
@@ -79,13 +80,8 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
             public void onClick(View view) {
                 if (genreCheckboxAdapter.isFiveChecked()) {
                     loading();
-                    try {
-                        jsonAccountWithGenres.put("idUser", account.getJSONObject("userDB").getString("usrId"));
-                        jsonAccountWithGenres.put("genreIds", genreCheckboxAdapter.getSelectedGenres());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
+                    jsonAccountWithGenres = jsonManipulator.put(jsonAccountWithGenres, "idUser", usrId);
+                    jsonAccountWithGenres = jsonManipulator.put(jsonAccountWithGenres, "genreIds", genreCheckboxAdapter.getSelectedGenres());
                     postRequest.postRequest(jsonAccountWithGenres, postGenresURL, token, new IRequestCallback() {
                         @Override
                         public void onSuccess(JSONObject jsonObject) {
@@ -110,16 +106,12 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
         getRequest.getRequestArray(getGenresURL, token, new IRequestCallbackArray() {
             @Override
             public void onSuccess(JSONArray jsonArray) {
-                try {
-                    listGenres = new JSONArrayManipulator().toGenreList(jsonArray);
-                    genreCheckboxAdapter = new GenreCheckboxAdapter(getContext(), listGenres);
-                    if (parent.equals("MainActivity")) {
-                        getUserGenres();
-                    } else {
-                        genreCheckboxAdapter.setCheckboxesGenres(linearLayout);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                listGenres = new JSONManipulator().toGenreList(jsonArray);
+                genreCheckboxAdapter = new GenreCheckboxAdapter(getContext(), listGenres);
+                if (parent.equals("MainActivity")) {
+                    getUserGenres();
+                } else {
+                    genreCheckboxAdapter.setCheckboxesGenres(linearLayout);
                 }
                 loadingGone();
             }
@@ -130,23 +122,18 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
      * Gets the loggedIn users selected Genres to be checked in the listView
      */
     private void getUserGenres() {
-        setUserGenreURL();
         getRequest.getRequestArray(getUserGenreURL, token, new IRequestCallbackArray() {
             @Override
             public void onSuccess(JSONArray jsonArray) {
-                try {
-                    ArrayList<Genre> userGenre = new JSONArrayManipulator().toGenreList(jsonArray);
-                    for (Genre genres : listGenres) {
-                        for (Genre userGenres : userGenre) {
-                            if (genres.getId() == userGenres.getId()) {
-                                genres.setChecked(true);
-                            }
+                ArrayList<Genre> userGenre = new JSONManipulator().toGenreList(jsonArray);
+                for (Genre genres : listGenres) {
+                    for (Genre userGenres : userGenre) {
+                        if (genres.getId() == userGenres.getId()) {
+                            genres.setChecked(true);
                         }
                     }
-                    genreCheckboxAdapter.setCheckboxesGenres(linearLayout);
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
+                genreCheckboxAdapter.setCheckboxesGenres(linearLayout);
             }
         });
     }
@@ -155,12 +142,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
      * Sets the URL with the loggedIn user id in parameter
      */
     private void setUserGenreURL() {
-        String usrId = "";
-        try {
-            usrId = account.getJSONObject("userDB").getString("usrId");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        usrId = jsonManipulator.getJSONObjectGetString(account,"userDB", "usrId");
         getUserGenreURL += "?idUser=" + usrId;
     }
 
@@ -207,12 +189,10 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     private void setUp() {
         certificateByPass = new CertificateByPass();
         certificateByPass.IngoreCertificate();
-        try {
-            account = new JSONObject(this.getArguments().getString("Account"));
-            token = account.getString("token");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        jsonManipulator = new JSONManipulator();
+        account = jsonManipulator.newJSONObject(this.getArguments().getString("Account"));
+        token = jsonManipulator.getString(account, "token");
+        setUserGenreURL();
         jsonAccountWithGenres = new JSONObject();
         gifLoading = binding.genresLoadingGif;
         button = binding.buttonGenre;

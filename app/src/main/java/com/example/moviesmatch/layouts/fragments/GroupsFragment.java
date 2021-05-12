@@ -1,8 +1,7 @@
 package com.example.moviesmatch.layouts.fragments;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
@@ -10,62 +9,69 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.example.moviesmatch.R;
 import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.databinding.FragmentGroupsBinding;
-import com.example.moviesmatch.databinding.FragmentMovieInfosBinding;
-import com.example.moviesmatch.databinding.FragmentSwipeBinding;
+import com.example.moviesmatch.interfaces.IGetActivity;
+import com.example.moviesmatch.interfaces.IPostActivity;
 import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.interfaces.IRequestCallbackArray;
 import com.example.moviesmatch.layouts.activities.MainActivity;
 import com.example.moviesmatch.layouts.adapters.GroupsAdapter;
 import com.example.moviesmatch.requests.GetRequest;
+import com.example.moviesmatch.requests.PostRequest;
+import com.example.moviesmatch.validation.InputsValidation;
+import com.example.moviesmatch.validation.JSONManipulator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class GroupsFragment extends Fragment {
+public class GroupsFragment extends Fragment implements IGetActivity, IPostActivity {
     private ListView listViewGroups;
     private FragmentGroupsBinding binding;
     private JSONObject account;
     private ArrayList arrayListGroups;
     private GroupsAdapter adapter;
-    private String currentAccount;
-    private GetRequest getReq;
+    private GetRequest getRequest;
+    private PostRequest postRequest;
     private CertificateByPass certificat;
-    private String URL;
+    private String userGroupsURL = "/api/user/getUserGroups/";
+    private String createGroupURL = "/api/group/createGroup";
+    private String joinGroupURL = "/api/group/joinGroup";
     private String token;
+    private String userId;
+    private JSONManipulator jsonManipulator;
+    private InputsValidation validation;
+    private Button createGroupButton, joinGroupButton;
+    private EditText createGroupEditText, joinGroupEditText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentGroupsBinding.inflate(getLayoutInflater());
-        currentAccount = getArguments().getString("Account");
+        init();
+        displayGroups();
+        createGroupButtonOnClick();
+        joinGroupButtonOnClick();
         return binding.getRoot();
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setUp();
-        displayGroups();
-    }
-
     private void displayGroups() {
-        getGrpUser();
+        getGroupUser();
 
         listViewGroups.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Object group = adapter.getItem(position);
                 Bundle bundle = new Bundle();
-                bundle.putString("currentGroup", group.toString());
+                bundle.putString("Group", group.toString());
+                bundle.putString("Account", account.toString());
                 SwipeFragment swipeFragment = new SwipeFragment();
                 swipeFragment.setArguments(bundle);
                 getFragmentManager().beginTransaction().replace(R.id.frame, swipeFragment).commit();
@@ -73,36 +79,9 @@ public class GroupsFragment extends Fragment {
         });
     }
 
-    private void setUp() {
-        listViewGroups = binding.listViewGroups;
-        arrayListGroups = new ArrayList<JSONObject>();
-        getReq = new GetRequest((MainActivity) getActivity());
-        certificat = new CertificateByPass();
-        certificat.IngoreCertificate();
-    }
-
-    private void setUserGenreURL() {
-        URL = "/api/user/getUserGroups/";
-        String usrId = "";
-        try {
-            usrId = account.getJSONObject("userDB").getString("usrId");
-            token = account.getString("token");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        URL += usrId;
-    }
-
-    private void getGrpUser() {
-        try {
-            account = new JSONObject(currentAccount);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        setUserGenreURL();
-
-        getReq.getRequestArray(URL, token, new IRequestCallbackArray() {
+    private void getGroupUser() {
+        arrayListGroups.clear();
+        getRequest.getRequestArray(userGroupsURL, token, new IRequestCallbackArray() {
             @Override
             public void onSuccess(JSONArray jsonArray) {
                 try {
@@ -116,7 +95,87 @@ public class GroupsFragment extends Fragment {
                 listViewGroups.setAdapter(adapter);
             }
         });
+    }
+
+    private void createGroupButtonOnClick() {
+        createGroupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (validation.validateInputNotEmpty(createGroupEditText.getText().toString(), "Create Group", "You must give a name to your group")) {
+                    createGroup();
+                }
+            }
+        });
+    }
+
+    private void joinGroupButtonOnClick() {
+        joinGroupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (validation.validateInputNotEmpty(joinGroupEditText.getText().toString(), "Join Group", "You must write a valid code")) {
+                    joinGroup();
+                }
+            }
+        });
+    }
 
 
+    private void createGroup() {
+        JSONObject createGroupJSON = new JSONObject();
+        createGroupJSON = jsonManipulator.put(createGroupJSON, "groupName", createGroupEditText.getText().toString());
+        createGroupJSON = jsonManipulator.put(createGroupJSON, "userId", userId);
+        postRequest.postRequest(createGroupJSON, createGroupURL, token, new IRequestCallback() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                System.out.println("Create Group " + jsonObject);
+                displayGroups();
+            }
+        });
+    }
+
+    private void joinGroup() {
+        JSONObject joinGroupJSON = new JSONObject();
+        joinGroupJSON = jsonManipulator.put(joinGroupJSON, "joinCode", joinGroupEditText.getText().toString());
+        joinGroupJSON = jsonManipulator.put(joinGroupJSON, "userId", userId);
+        postRequest.postRequest(joinGroupJSON, joinGroupURL, token, new IRequestCallback() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                System.out.println("Join Group " + jsonObject);
+                displayGroups();
+            }
+        });
+    }
+
+    private void setUserIdToURL() {
+        userId = jsonManipulator.getJSONObjectGetString(account, "userDB", "usrId");
+        userGroupsURL += userId;
+    }
+
+    private void init() {
+        listViewGroups = binding.listViewGroups;
+        createGroupButton = binding.buttonCreateGroup;
+        joinGroupButton = binding.buttonJoin;
+        createGroupEditText = binding.editTextCreateGroup;
+        joinGroupEditText = binding.editTextJoinGroup;
+        arrayListGroups = new ArrayList<JSONObject>();
+        getRequest = new GetRequest((MainActivity) getActivity());
+        postRequest = new PostRequest((MainActivity) getActivity());
+        jsonManipulator = new JSONManipulator();
+        validation = new InputsValidation(getContext());
+        certificat = new CertificateByPass();
+        certificat.IngoreCertificate();
+        account = jsonManipulator.newJSONObject(getArguments().getString("Account"));
+        setUserIdToURL();
+        token = jsonManipulator.getString(account, "token");
+    }
+
+    @Override
+    public void onGetErrorResponse(int errorCode) {
+        new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
+    }
+
+    @Override
+    public void onPostErrorResponse(int errorCode) {
+        new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
     }
 }

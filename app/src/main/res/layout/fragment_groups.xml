@@ -85,15 +85,15 @@
         android:layout_marginTop="0dp"
         android:layout_marginLeft="25dp"
         android:text="Join"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextJoinCode"
-        app:layout_constraintEnd_toStartOf="@+id/editTextJoinCode"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextJoinGroup"
+        app:layout_constraintEnd_toStartOf="@+id/editTextJoinGroup"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editTextJoinCode" />
+        app:layout_constraintTop_toTopOf="@+id/editTextJoinGroup" />
 
     <EditText
-        android:id="@+id/editTextJoinCode"
+        android:id="@+id/editTextJoinGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/custom_rectangle"
