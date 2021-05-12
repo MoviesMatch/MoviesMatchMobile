@@ -25,6 +25,14 @@ public class InputsValidation {
         return true;
     }
 
+    public boolean validateInputNotEmpty(String input, String title, String message) {
+        if (input.isEmpty()) {
+            new AlertDialog.Builder(context).setTitle(title).setMessage(message).show();
+            return false;
+        }
+        return true;
+    }
+
     public boolean validateEmail(String email) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
         if (!matcher.find()) {
