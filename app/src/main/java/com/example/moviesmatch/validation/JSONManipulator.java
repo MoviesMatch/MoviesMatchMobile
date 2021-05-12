@@ -10,21 +10,21 @@ import java.util.ArrayList;
 
 public class JSONManipulator {
 
-    public ArrayList<Genre> toGenreList(JSONArray jsonArray) throws JSONException {
+    public ArrayList<Genre> toGenreList(JSONArray jsonArray) {
         ArrayList<Genre> listGenres = new ArrayList<>();
-        for (int i = 0; i < jsonArray.length(); i++) {
-            try{
+        try{
+            for (int i = 0; i < jsonArray.length(); i++) {
                 listGenres.add(new Genre(jsonArray.getJSONObject(i).getInt("genId"),
                         jsonArray.getJSONObject(i).getString("genName"),
                         false));
-            } catch (JSONException e){
-                e.printStackTrace();
             }
+        } catch (JSONException e){
+            e.printStackTrace();
         }
         return listGenres;
     }
 
-    public JSONObject newJSONObject(String string){
+    public JSONObject newJSONObject(String string) {
         JSONObject value = new JSONObject();
         try {
             value = new JSONObject(string);
@@ -34,30 +34,30 @@ public class JSONManipulator {
         return value;
     }
 
-    public String getJSONObjectGetString(JSONObject jsonObject, String objectName, String columnName){
+    public String getJSONObjectGetString(JSONObject jsonObject, String objectName, String columnName) {
         String value = "";
-        try{
+        try {
             value = jsonObject.getJSONObject(objectName).getString(columnName);
-        } catch (JSONException e){
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         return value;
     }
 
-    public String getString(JSONObject jsonObject, String columnName){
+    public String getString(JSONObject jsonObject, String columnName) {
         String value = "";
-        try{
+        try {
             value = jsonObject.getString(columnName);
-        } catch (JSONException e){
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         return value;
     }
 
-    public JSONObject put(JSONObject jsonObject, String columnName, String value){
-        try{
+    public JSONObject put(JSONObject jsonObject, String columnName, Object value) {
+        try {
             jsonObject.put(columnName, value);
-        } catch (JSONException e){
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         return jsonObject;
