@@ -10,4 +10,13 @@ public class CountryAbbreviation {
                 return fullCountryName;
         }
     }
+
+    public String getCountryAbbreviationReverse (String shortCountryName){
+        switch (shortCountryName){
+            case "CA":
+                return "Canada";
+            default:
+                return shortCountryName;
+        }
+    }
 }

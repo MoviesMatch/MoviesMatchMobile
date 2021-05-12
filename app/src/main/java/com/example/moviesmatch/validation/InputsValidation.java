@@ -42,6 +42,8 @@ public class InputsValidation {
         return true;
     }
 
+
+
     public boolean validatePassword(String password, String confirmedPassword) {
         if (password.equals(confirmedPassword)) {
             if (password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$")) {

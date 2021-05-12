@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.moviesmatch.R;
 import com.example.moviesmatch.databinding.FragmentAccountBinding;
+import com.example.moviesmatch.validation.CountryAbbreviation;
 import com.example.moviesmatch.validation.JSONManipulator;
 
 import org.json.JSONObject;
@@ -24,6 +25,7 @@ public class AccountFragment extends Fragment {
     private TextView textViewFullName, textViewEmail, textViewCountry;
     private JSONManipulator jsonManipulator;
     private JSONObject account;
+    private CountryAbbreviation countryAbbreviation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,15 +46,16 @@ public class AccountFragment extends Fragment {
         textViewEmail = binding.textViewEmail;
         textViewCountry = binding.textViewCountry;
         buttonChangePassword = binding.buttonChangePassword;
-        account = jsonManipulator.newJSONObject(getArguments().getString("Account"));
+        countryAbbreviation = new CountryAbbreviation();
         jsonManipulator = new JSONManipulator();
+        account = jsonManipulator.newJSONObject(getArguments().getString("Account"));
     }
 
     private void fillInfos(){
         System.out.println(account);
-        textViewFullName.setText(jsonManipulator.getString(account,"usrFirstname") + " " + jsonManipulator.getString(account,"usrLastname"));
-        textViewEmail.setText(jsonManipulator.getString(account,"usrEmail"));
-        textViewCountry.setText(jsonManipulator.getString(account,"usrCountry"));
+        textViewFullName.setText(jsonManipulator.getJSONObjectGetString(account,"userDB","usrFirstname") + " " + jsonManipulator.getJSONObjectGetString(account,"userDB","usrLastname"));
+        textViewEmail.setText(jsonManipulator.getJSONObjectGetString(account,"userDB","usrEmail"));
+        textViewCountry.setText(countryAbbreviation.getCountryAbbreviationReverse(jsonManipulator.getJSONObjectGetString(account,"userDB","usrCountry")));
     }
 
 
