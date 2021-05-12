@@ -43,11 +43,12 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
     private CertificateByPass certificat;
     private String userGroupsURL = "/api/user/getUserGroups/";
     private String createGroupURL = "/api/group/createGroup";
+    private String joinGroupURL = "/api/group/joinGroup";
     private String token;
     private String userId;
     private JSONArrayManipulator jsonArrayManipulator;
-    private Button createGroupButton;
-    private EditText createGroupEditText;
+    private Button createGroupButton, joinGroupButton;
+    private EditText createGroupEditText, joinGroupEditText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -55,6 +56,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
         init();
         displayGroups();
         createGroupButtonOnClick();
+        joinGroupButtonOnClick();
         return binding.getRoot();
     }
 
@@ -76,6 +78,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
     }
 
     private void getGroupUser() {
+        arrayListGroups.clear();
         getRequest.getRequestArray(userGroupsURL, token, new IRequestCallbackArray() {
             @Override
             public void onSuccess(JSONArray jsonArray) {
@@ -92,7 +95,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
         });
     }
 
-    private void createGroupButtonOnClick(){
+    private void createGroupButtonOnClick() {
         createGroupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,7 +104,17 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
         });
     }
 
-    private void createGroup(){
+    private void joinGroupButtonOnClick() {
+        joinGroupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                joinGroup();
+            }
+        });
+    }
+
+
+    private void createGroup() {
         JSONObject createGroupJSON = new JSONObject();
         createGroupJSON = jsonArrayManipulator.put(createGroupJSON, "groupName", createGroupEditText.getText().toString());
         createGroupJSON = jsonArrayManipulator.put(createGroupJSON, "userId", userId);
@@ -109,6 +122,19 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
             @Override
             public void onSuccess(JSONObject jsonObject) {
                 System.out.println("Create Group " + jsonObject);
+                displayGroups();
+            }
+        });
+    }
+
+    private void joinGroup() {
+        JSONObject joinGroupJSON = new JSONObject();
+        joinGroupJSON = jsonArrayManipulator.put(joinGroupJSON, "joinCode", joinGroupEditText.getText().toString());
+        joinGroupJSON = jsonArrayManipulator.put(joinGroupJSON, "userId", userId);
+        postRequest.postRequest(joinGroupJSON, joinGroupURL, token, new IRequestCallback() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                System.out.println("Join Group " + jsonObject);
                 displayGroups();
             }
         });
@@ -122,10 +148,12 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
     private void init() {
         listViewGroups = binding.listViewGroups;
         createGroupButton = binding.buttonCreateGroup;
+        joinGroupButton = binding.buttonJoin;
         createGroupEditText = binding.editTextCreateGroup;
+        joinGroupEditText = binding.editTextJoinGroup;
         arrayListGroups = new ArrayList<JSONObject>();
         getRequest = new GetRequest((MainActivity) getActivity());
-        postRequest = new PostRequest((MainActivity)getActivity());
+        postRequest = new PostRequest((MainActivity) getActivity());
         jsonArrayManipulator = new JSONArrayManipulator();
         certificat = new CertificateByPass();
         certificat.IngoreCertificate();
