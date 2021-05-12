@@ -27,6 +27,7 @@ import com.example.moviesmatch.requests.GetRequest;
 import com.example.moviesmatch.requests.PostRequest;
 import com.example.moviesmatch.validation.InputsValidation;
 import com.example.moviesmatch.validation.JSONManipulator;
+import com.example.moviesmatch.validation.Loading;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,6 +57,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
     private EditText createGroupEditText, joinGroupEditText;
     private TextView noGroupsTextView;
     private GifImageView loadingGif;
+    private Loading loading;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -92,7 +94,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
     }
 
     private void getGroupUser() {
-        loading();
+        loading.loadingVisible(loadingGif, createGroupButton, joinGroupButton);
         arrayListGroups.clear();
         getRequest.getRequestArray(userGroupsURL, token, new IRequestCallbackArray() {
             @Override
@@ -107,7 +109,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
                 adapter = new GroupsAdapter(getContext(), arrayListGroups);
                 listViewGroups.setAdapter(adapter);
                 amountOfGroups();
-                loadingGone();
+                loading.loadingGone(loadingGif, createGroupButton, joinGroupButton);
             }
         });
     }
@@ -136,7 +138,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
 
 
     private void createGroup() {
-        loading();
+        loading.loadingVisible(loadingGif, createGroupButton, joinGroupButton);
         JSONObject createGroupJSON = new JSONObject();
         createGroupJSON = jsonManipulator.put(createGroupJSON, "groupName", createGroupEditText.getText().toString());
         createGroupJSON = jsonManipulator.put(createGroupJSON, "userId", userId);
@@ -144,14 +146,14 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
             @Override
             public void onSuccess(JSONObject jsonObject) {
                 System.out.println("Create Group " + jsonObject);
-                loadingGone();
+                loading.loadingGone(loadingGif, createGroupButton, joinGroupButton);
                 displayGroups();
             }
         });
     }
 
     private void joinGroup() {
-        loading();
+        loading.loadingVisible(loadingGif, createGroupButton, joinGroupButton);
         JSONObject joinGroupJSON = new JSONObject();
         joinGroupJSON = jsonManipulator.put(joinGroupJSON, "joinCode", joinGroupEditText.getText().toString());
         joinGroupJSON = jsonManipulator.put(joinGroupJSON, "userId", userId);
@@ -159,7 +161,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
             @Override
             public void onSuccess(JSONObject jsonObject) {
                 System.out.println("Join Group " + jsonObject);
-                loadingGone();
+                loading.loadingGone(loadingGif, createGroupButton, joinGroupButton);
                 displayGroups();
             }
         });
@@ -171,7 +173,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
         userGroupsURL += userId;
     }
 
-    private void loading(){
+    /*private void loading(){
         loadingGif.setVisibility(View.VISIBLE);
         createGroupButton.setEnabled(false);
         joinGroupButton.setEnabled(false);
@@ -181,7 +183,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
         loadingGif.setVisibility(View.GONE);
         createGroupButton.setEnabled(true);
         joinGroupButton.setEnabled(true);
-    }
+    }*/
 
     private void init() {
         listViewGroups = binding.listViewGroups;
@@ -196,6 +198,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
         postRequest = new PostRequest((MainActivity) getActivity());
         jsonManipulator = new JSONManipulator();
         validation = new InputsValidation(getContext());
+        loading = new Loading();
         certificat = new CertificateByPass();
         certificat.IngoreCertificate();
         account = jsonManipulator.newJSONObject(getArguments().getString("Account"));
@@ -205,13 +208,13 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
 
     @Override
     public void onGetErrorResponse(int errorCode) {
-        loadingGone();
+        loading.loadingGone(loadingGif, createGroupButton, joinGroupButton);
         new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
     }
 
     @Override
     public void onPostErrorResponse(int errorCode) {
-        loadingGone();
+        loading.loadingGone(loadingGif, createGroupButton, joinGroupButton);
         new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
     }
 }
