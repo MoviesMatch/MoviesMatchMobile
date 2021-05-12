@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.moviesmatch.R;
+import com.example.moviesmatch.validation.JSONManipulator;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -24,11 +25,13 @@ public class SwipeAdapter extends ArrayAdapter<JSONObject> {
 
     private Context mContext;
     private List<JSONObject> moviesList;
+    private JSONManipulator jsonManipulator;
 
     public SwipeAdapter(@NonNull Context context, ArrayList<JSONObject> list) {
         super(context, 0, list);
         mContext = context;
         moviesList = list;
+        jsonManipulator = new JSONManipulator();
     }
 
     @NonNull
@@ -47,13 +50,10 @@ public class SwipeAdapter extends ArrayAdapter<JSONObject> {
         TextView title = row.findViewById(R.id.textViewTitle);
         TextView date = row.findViewById(R.id.textViewDate);
 
-        try {
-            Picasso.get().load(currentMovie.getString("movPosterUrl")).into(image);
-            title.setText(currentMovie.getString("movTitle"));
-            date.setText(currentMovie.getString("movReleaseYear"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        Picasso.get().load(jsonManipulator.getString(currentMovie, "movPosterUrl")).into(image);
+        title.setText(jsonManipulator.getString(currentMovie, "movTitle"));
+        date.setText(jsonManipulator.getString(currentMovie, "movReleaseYear"));
+
         return row;
     }
 }
