@@ -7,7 +7,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class JSONArrayManipulator {
+public class JSONManipulator {
 
     public ArrayList<Genre> toGenreList(JSONObject jsonObject) throws JSONException {
         ArrayList<Genre> listGenres = new ArrayList<>();
