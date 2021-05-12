@@ -148,16 +148,6 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
         getUserGenreURL += "?idUser=" + usrId;
     }
 
-    /*private void loading() {
-        gifLoading.setVisibility(View.VISIBLE);
-        button.setEnabled(false);
-    }
-
-    private void loadingGone() {
-        gifLoading.setVisibility(View.GONE);
-        button.setEnabled(true);
-    }*/
-
     private void imageGone() {
         if (parent.equals("MainActivity")) {
             imageLogo.setVisibility(View.GONE);

@@ -173,18 +173,6 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
         userGroupsURL += userId;
     }
 
-    /*private void loading(){
-        loadingGif.setVisibility(View.VISIBLE);
-        createGroupButton.setEnabled(false);
-        joinGroupButton.setEnabled(false);
-    }
-
-    private void loadingGone(){
-        loadingGif.setVisibility(View.GONE);
-        createGroupButton.setEnabled(true);
-        joinGroupButton.setEnabled(true);
-    }*/
-
     private void init() {
         listViewGroups = binding.listViewGroups;
         createGroupButton = binding.buttonCreateGroup;
