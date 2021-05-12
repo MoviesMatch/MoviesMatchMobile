@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.moviesmatch.R;
 import com.example.moviesmatch.certificate.CertificateByPass;
@@ -33,6 +34,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class GroupsFragment extends Fragment implements IGetActivity, IPostActivity {
     private ListView listViewGroups;
     private FragmentGroupsBinding binding;
@@ -51,6 +54,8 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
     private InputsValidation validation;
     private Button createGroupButton, joinGroupButton;
     private EditText createGroupEditText, joinGroupEditText;
+    private TextView noGroupsTextView;
+    private GifImageView loadingGif;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -62,9 +67,16 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
         return binding.getRoot();
     }
 
+    private void amountOfGroups(){
+        if (listViewGroups.getAdapter().getCount() == 0){
+            noGroupsTextView.setVisibility(View.VISIBLE);
+        } else {
+            noGroupsTextView.setVisibility(View.GONE);
+        }
+    }
+
     private void displayGroups() {
         getGroupUser();
-
         listViewGroups.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -80,6 +92,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
     }
 
     private void getGroupUser() {
+        loading();
         arrayListGroups.clear();
         getRequest.getRequestArray(userGroupsURL, token, new IRequestCallbackArray() {
             @Override
@@ -93,6 +106,8 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
                 }
                 adapter = new GroupsAdapter(getContext(), arrayListGroups);
                 listViewGroups.setAdapter(adapter);
+                amountOfGroups();
+                loadingGone();
             }
         });
     }
@@ -121,6 +136,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
 
 
     private void createGroup() {
+        loading();
         JSONObject createGroupJSON = new JSONObject();
         createGroupJSON = jsonManipulator.put(createGroupJSON, "groupName", createGroupEditText.getText().toString());
         createGroupJSON = jsonManipulator.put(createGroupJSON, "userId", userId);
@@ -128,12 +144,14 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
             @Override
             public void onSuccess(JSONObject jsonObject) {
                 System.out.println("Create Group " + jsonObject);
+                loadingGone();
                 displayGroups();
             }
         });
     }
 
     private void joinGroup() {
+        loading();
         JSONObject joinGroupJSON = new JSONObject();
         joinGroupJSON = jsonManipulator.put(joinGroupJSON, "joinCode", joinGroupEditText.getText().toString());
         joinGroupJSON = jsonManipulator.put(joinGroupJSON, "userId", userId);
@@ -141,6 +159,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
             @Override
             public void onSuccess(JSONObject jsonObject) {
                 System.out.println("Join Group " + jsonObject);
+                loadingGone();
                 displayGroups();
             }
         });
@@ -152,12 +171,26 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
         userGroupsURL += userId;
     }
 
+    private void loading(){
+        loadingGif.setVisibility(View.VISIBLE);
+        createGroupButton.setEnabled(false);
+        joinGroupButton.setEnabled(false);
+    }
+
+    private void loadingGone(){
+        loadingGif.setVisibility(View.GONE);
+        createGroupButton.setEnabled(true);
+        joinGroupButton.setEnabled(true);
+    }
+
     private void init() {
         listViewGroups = binding.listViewGroups;
         createGroupButton = binding.buttonCreateGroup;
         joinGroupButton = binding.buttonJoin;
         createGroupEditText = binding.editTextCreateGroup;
         joinGroupEditText = binding.editTextJoinGroup;
+        noGroupsTextView = binding.textViewNoGroups;
+        loadingGif = binding.groupsLoadingGif;
         arrayListGroups = new ArrayList<JSONObject>();
         getRequest = new GetRequest((MainActivity) getActivity());
         postRequest = new PostRequest((MainActivity) getActivity());
@@ -172,11 +205,13 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
 
     @Override
     public void onGetErrorResponse(int errorCode) {
+        loadingGone();
         new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
     }
 
     @Override
     public void onPostErrorResponse(int errorCode) {
+        loadingGone();
         new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
     }
 }
