@@ -17,6 +17,7 @@ import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.interfaces.IPostActivity;
 import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.validation.InputsValidation;
+import com.example.moviesmatch.validation.Loading;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,6 +35,7 @@ public class LoginActivity extends AppCompatActivity implements IPostActivity {
     private CertificateByPass certificat;
     private GifImageView loadingGif;
     private Button loginButton;
+    private Loading loading;
 
     private final static String URL = "/api/user/login";
 
@@ -48,7 +50,7 @@ public class LoginActivity extends AppCompatActivity implements IPostActivity {
 
 
     public void login(View view) {
-        loading();
+        loading.loadingVisible(loadingGif, loginButton);
         try {
             jsonObject.put("usrEmail", editTextEmail.getText().toString());
             jsonObject.put("usrPassword", editTextPsw.getText().toString());
@@ -64,13 +66,13 @@ public class LoginActivity extends AppCompatActivity implements IPostActivity {
                 }
             });
         } else{
-            loadingGone();
+            loading.loadingGone(loadingGif, loginButton);
         }
     }
 
     @Override
     public void onPostErrorResponse(int errorCode) {
-        loadingGone();
+        loading.loadingGone(loadingGif, loginButton);
         if (errorCode == 401) {
             new AlertDialog.Builder(this).setTitle("Your email or password are wrong").setMessage("Please change your email or password").show();
         } else {
@@ -86,6 +88,7 @@ public class LoginActivity extends AppCompatActivity implements IPostActivity {
         jsonObject = new JSONObject();
         postRequest = new PostRequest(this);
         validation = new InputsValidation(this);
+        loading = new Loading();
         certificat = new CertificateByPass();
         certificat.IngoreCertificate();
     }
@@ -100,16 +103,6 @@ public class LoginActivity extends AppCompatActivity implements IPostActivity {
         Intent i = new Intent(LoginActivity.this, MainActivity.class);
         i.putExtra("Account", jsonObject.toString());
         startActivity(i);
-    }
-
-    private void loading() {
-        loadingGif.setVisibility(View.VISIBLE);
-        loginButton.setEnabled(false);
-    }
-
-    private void loadingGone() {
-        loadingGif.setVisibility(View.GONE);
-        loginButton.setEnabled(true);
     }
 
     @Override
