@@ -30,6 +30,7 @@ import com.example.moviesmatch.layouts.activities.CreateAccountActivity;
 import com.example.moviesmatch.layouts.activities.MainActivity;
 import com.example.moviesmatch.models.Genre;
 import com.example.moviesmatch.validation.JSONManipulator;
+import com.example.moviesmatch.validation.Loading;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -58,7 +59,8 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     private GenreCheckboxAdapter genreCheckboxAdapter;
     private JSONManipulator jsonManipulator;
     private String token;
-    String usrId;
+    private String usrId;
+    private Loading loading;
 
     private final String getGenresURL = "/api/genre/getAllGenres";
     private final String postGenresURL = "/api/genre/addGenresToUser";
@@ -79,7 +81,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
             @Override
             public void onClick(View view) {
                 if (genreCheckboxAdapter.isFiveChecked()) {
-                    loading();
+                    loading.loadingVisible(gifLoading, button);
                     jsonAccountWithGenres = jsonManipulator.put(jsonAccountWithGenres, "idUser", usrId);
                     jsonAccountWithGenres = jsonManipulator.put(jsonAccountWithGenres, "genreIds", genreCheckboxAdapter.getSelectedGenres());
                     postRequest.postRequest(jsonAccountWithGenres, postGenresURL, token, new IRequestCallback() {
@@ -91,7 +93,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
                         }
                     });
                 } else {
-                    loadingGone();
+                    loading.loadingGone(gifLoading, button);
                     new AlertDialog.Builder(getContext()).setTitle("You didn't check 5 genres").setMessage("Please check exactly 5 genres of movies you like").show();
                 }
             }
@@ -102,7 +104,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
      * Get all available genres from the server
      */
     private void getGenres() {
-        loading();
+        loading.loadingVisible(gifLoading, button);
         getRequest.getRequestArray(getGenresURL, token, new IRequestCallbackArray() {
             @Override
             public void onSuccess(JSONArray jsonArray) {
@@ -113,7 +115,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
                 } else {
                     genreCheckboxAdapter.setCheckboxesGenres(linearLayout);
                 }
-                loadingGone();
+                loading.loadingGone(gifLoading, button);
             }
         });
     }
@@ -146,7 +148,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
         getUserGenreURL += "?idUser=" + usrId;
     }
 
-    private void loading() {
+    /*private void loading() {
         gifLoading.setVisibility(View.VISIBLE);
         button.setEnabled(false);
     }
@@ -154,7 +156,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     private void loadingGone() {
         gifLoading.setVisibility(View.GONE);
         button.setEnabled(true);
-    }
+    }*/
 
     private void imageGone() {
         if (parent.equals("MainActivity")) {
@@ -190,6 +192,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
         certificateByPass = new CertificateByPass();
         certificateByPass.IngoreCertificate();
         jsonManipulator = new JSONManipulator();
+        loading = new Loading();
         account = jsonManipulator.newJSONObject(this.getArguments().getString("Account"));
         token = jsonManipulator.getString(account, "token");
         setUserGenreURL();
@@ -206,13 +209,13 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
 
     @Override
     public void onGetErrorResponse(int errorCode) {
-        loadingGone();
+        loading.loadingGone(gifLoading, button);
         new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
     }
 
     @Override
     public void onPostErrorResponse(int errorCode) {
-        loadingGone();
+        loading.loadingGone(gifLoading, button);
         new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
     }
 }
