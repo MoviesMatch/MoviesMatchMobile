@@ -168,5 +168,4 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
         certificat = new CertificateByPass();
         certificat.IngoreCertificate();
     }
-
 }

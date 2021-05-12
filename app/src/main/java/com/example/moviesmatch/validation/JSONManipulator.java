@@ -62,4 +62,24 @@ public class JSONManipulator {
         }
         return jsonObject;
     }
+
+    public JSONArray getJSONArrayFromJSONObject(JSONObject jsonObject, String columnName){
+        JSONArray jsonArray = new JSONArray();
+        try {
+            jsonArray = jsonObject.getJSONArray(columnName);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonArray;
+    }
+
+    public String getStringFromJSONArrayAtPosition(JSONArray jsonArray, String columnName, int position){
+        String string = "";
+        try {
+            string = jsonArray.getJSONObject(position).getString(columnName);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return string;
+    }
 }
