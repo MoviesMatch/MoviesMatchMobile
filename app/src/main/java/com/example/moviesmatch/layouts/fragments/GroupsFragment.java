@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.moviesmatch.R;
 import com.example.moviesmatch.certificate.CertificateByPass;
@@ -51,6 +52,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
     private InputsValidation validation;
     private Button createGroupButton, joinGroupButton;
     private EditText createGroupEditText, joinGroupEditText;
+    private TextView noGroupsTextView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -62,9 +64,16 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
         return binding.getRoot();
     }
 
+    private void amountOfGroups(){
+        if (listViewGroups.getAdapter().getCount() == 0){
+            noGroupsTextView.setVisibility(View.VISIBLE);
+        } else {
+            noGroupsTextView.setVisibility(View.GONE);
+        }
+    }
+
     private void displayGroups() {
         getGroupUser();
-
         listViewGroups.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -93,6 +102,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
                 }
                 adapter = new GroupsAdapter(getContext(), arrayListGroups);
                 listViewGroups.setAdapter(adapter);
+                amountOfGroups();
             }
         });
     }
@@ -157,6 +167,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
         joinGroupButton = binding.buttonJoin;
         createGroupEditText = binding.editTextCreateGroup;
         joinGroupEditText = binding.editTextJoinGroup;
+        noGroupsTextView = binding.textViewNoGroups;
         arrayListGroups = new ArrayList<JSONObject>();
         getRequest = new GetRequest((MainActivity) getActivity());
         postRequest = new PostRequest((MainActivity) getActivity());
