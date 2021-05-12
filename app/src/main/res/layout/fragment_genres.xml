@@ -9,13 +9,28 @@
 
     <Button
         android:id="@+id/buttonGenre"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollViewGenre" />
+
+    <TextView
+        android:id="@+id/textViewStep3of3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Step 3 of 3"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        android:ems="10"
+        app:layout_constraintTop_toBottomOf="@id/imageViewLogo"
+        app:layout_constraintBottom_toTopOf="@id/textViewSelectGenre"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintEnd_toEndOf="@id/guideline2"/>
 
     <ScrollView
         android:id="@+id/scrollViewGenre"
@@ -26,7 +41,7 @@
         app:layout_constraintBottom_toTopOf="@id/guidelineBot"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTitre">
+        app:layout_constraintTop_toBottomOf="@+id/textViewSelectGenre">
 
         <LinearLayout
             android:id="@+id/linearLayoutGenres"
@@ -64,16 +79,15 @@
         app:srcCompat="@drawable/logo" />
 
     <TextView
-        android:id="@+id/textViewTitre"
+        android:id="@+id/textViewSelectGenre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Select 5 genres"
-        android:textColor="@color/light_black"
-        android:textSize="24dp"
-        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageViewLogo"
+        app:layout_constraintTop_toBottomOf="@id/textViewStep3of3"
         app:layout_constraintBottom_toTopOf="@id/scrollViewGenre"/>
 
     <pl.droidsonroids.gif.GifImageView
