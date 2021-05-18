@@ -13,10 +13,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.example.moviesmatch.R;
 import com.example.moviesmatch.interfaces.IRequestCallbackArray;
 import com.example.moviesmatch.layouts.adapters.SwipeAdapter;
+import com.example.moviesmatch.models.Movie;
+import com.example.moviesmatch.models.factory.MovieFactory;
 import com.example.moviesmatch.requests.GetRequest;
 import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.databinding.FragmentSwipeBinding;
@@ -25,6 +28,9 @@ import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.layouts.activities.MainActivity;
 import com.example.moviesmatch.validation.JSONManipulator;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,11 +44,13 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     private Button buttonLeft, buttonRight;
     private GetRequest getReq;
     private ArrayList<JSONObject> listJsonObjectsFilms;
+    private ArrayList<Movie> movies;
     private FragmentSwipeBinding binding;
     private CertificateByPass certificat;
     private String getMovieURL, token;
     private JSONManipulator jsonManipulator;
     private JSONObject account, group;
+    private int index;
 
 
     @Override
@@ -85,18 +93,11 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
         getReq.getRequestArray(getMovieURL, token,new IRequestCallbackArray() {
             @Override
             public void onSuccess(JSONArray jsonArray) {
-                try {
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        listJsonObjectsFilms.add(jsonArray.getJSONObject(i));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                movies = new MovieFactory().createArrayMovies(jsonArray);
                 fling();
             }
         });
     }
-
 
     private void setUserSwipeURL() {
         getMovieURL = "/api/movie/GetMovies";
@@ -108,7 +109,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
 
 
     private void fling() {
-        arrayAdapter = new SwipeAdapter(getContext(), listJsonObjectsFilms);
+        arrayAdapter = new SwipeAdapter(getContext(), movies);
         flingContainer.setAdapter(arrayAdapter);
         arrayAdapter.notifyDataSetChanged();
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
@@ -116,7 +117,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
             public void removeFirstObjectInAdapter() {
                 // this is the simplest way to delete an object from the Adapter (/AdapterView)
                 Log.d("LIST", "removed object!");
-                listJsonObjectsFilms.remove(0);
+                movies.remove(0);
                 arrayAdapter.notifyDataSetChanged();
             }
 
@@ -163,6 +164,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
         buttonRight = binding.buttonRight;
         flingContainer = binding.frame;
         listJsonObjectsFilms = new ArrayList<>();
+        movies = new ArrayList<>();
         getReq = new GetRequest((MainActivity) getActivity());
         jsonManipulator = new JSONManipulator();
         certificat = new CertificateByPass();
