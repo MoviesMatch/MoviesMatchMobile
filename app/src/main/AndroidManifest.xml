@@ -11,7 +11,6 @@
         android:roundIcon="@mipmap/ic_launcher_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MoviesMatch">
-        <activity android:name=".layouts.activities.BrowseActivity" />
         <activity android:name=".layouts.activities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
