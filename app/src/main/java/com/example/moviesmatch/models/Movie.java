@@ -1,20 +1,19 @@
 package com.example.moviesmatch.models;
 
-import android.graphics.Bitmap;
-import android.widget.ImageView;
+import android.graphics.drawable.Drawable;
 
 public class Movie {
     String id;
     String title;
     String overview;
     String posterURL;
-    Bitmap imagePoster;
-    int releaseYear;
-    int imdbRating;
-    int runtime;
+    Drawable imagePoster;
+    String releaseYear;
+    String imdbRating;
+    String runtime;
     String movieURL;
 
-    public Movie(String id, String title, String overview, String posterURL, Bitmap imagePoster, int releaseYear, int imdbRating, int runtime, String movieURL) {
+    public Movie(String id, String title, String overview, String posterURL, Drawable imagePoster, String releaseYear, String imdbRating, String runtime, String movieURL) {
         this.id = id;
         this.title = title;
         this.overview = overview;
@@ -26,7 +25,7 @@ public class Movie {
         this.movieURL = movieURL;
     }
 
-    public void setImagePoster(Bitmap imagePoster) {
+    public void setImagePoster(Drawable imagePoster) {
         this.imagePoster = imagePoster;
     }
 
@@ -46,19 +45,19 @@ public class Movie {
         return posterURL;
     }
 
-    public Bitmap getImagePoster(){
+    public Drawable getImagePoster(){
         return imagePoster;
     }
 
-    public int getReleaseYear() {
+    public String getReleaseYear() {
         return releaseYear;
     }
 
-    public int getImdbRating() {
+    public String getImdbRating() {
         return imdbRating;
     }
 
-    public int getRuntime() {
+    public String getRuntime() {
         return runtime;
     }
 

@@ -6,14 +6,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.example.moviesmatch.R;
 import com.example.moviesmatch.interfaces.IRequestCallbackArray;
@@ -24,16 +22,11 @@ import com.example.moviesmatch.requests.GetRequest;
 import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.databinding.FragmentSwipeBinding;
 import com.example.moviesmatch.interfaces.IOnBackPressed;
-import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.layouts.activities.MainActivity;
 import com.example.moviesmatch.validation.JSONManipulator;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.RequestCreator;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -50,7 +43,6 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     private String getMovieURL, token;
     private JSONManipulator jsonManipulator;
     private JSONObject account, group;
-    private int index;
 
 
     @Override

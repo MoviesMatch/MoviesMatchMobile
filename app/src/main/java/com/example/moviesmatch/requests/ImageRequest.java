@@ -2,20 +2,22 @@ package com.example.moviesmatch.requests;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 
 import java.io.InputStream;
+import java.net.URL;
 
-public class ImageRequest extends AsyncTask<String, Void, Bitmap> {
-    protected Bitmap doInBackground(String... urls) {
-        String urldisplay = urls[0];
-        Bitmap bitmap = null;
+public class ImageRequest extends AsyncTask<String, Void, Drawable> {
+    protected Drawable doInBackground(String... urls) {
+        String url = urls[0];
+        Drawable drawable = null;
         try {
-            InputStream in = new java.net.URL(urldisplay).openStream();
-            bitmap = BitmapFactory.decodeStream(in);
+            InputStream is = (InputStream) new URL(url).getContent();
+            drawable = Drawable.createFromStream(is, "src name");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return bitmap;
+        return drawable;
     }
 }

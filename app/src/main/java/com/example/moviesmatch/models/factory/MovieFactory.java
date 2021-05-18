@@ -1,14 +1,10 @@
 package com.example.moviesmatch.models.factory;
 
-import android.graphics.Bitmap;
-import android.widget.ImageView;
+import android.graphics.drawable.Drawable;
 
 import com.example.moviesmatch.models.Movie;
 import com.example.moviesmatch.requests.ImageRequest;
 import com.example.moviesmatch.validation.JSONManipulator;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.RequestCreator;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -20,7 +16,6 @@ public class MovieFactory {
     ArrayList<Movie> movies;
     JSONManipulator jsonManipulator;
     Movie movie;
-    ImageView imagePoster;
 
     public MovieFactory(){
         jsonManipulator = new JSONManipulator();
@@ -41,23 +36,23 @@ public class MovieFactory {
                 jsonManipulator.getString(currentMovie, "movOverview"),
                 jsonManipulator.getString(currentMovie, "movPosterUrl"),
                 setMoviePoster(jsonManipulator.getString(currentMovie, "movPosterUrl")),
-                Integer.parseInt(jsonManipulator.getString(currentMovie, "movReleaseYear")),
-                Integer.parseInt(jsonManipulator.getString(currentMovie, "movImdbRating")),
-                Integer.parseInt(jsonManipulator.getString(currentMovie, "movRuntime")),
+                jsonManipulator.getString(currentMovie, "movReleaseYear"),
+                jsonManipulator.getString(currentMovie, "movImdbRating"),
+                jsonManipulator.getString(currentMovie, "movRuntime"),
                 jsonManipulator.getString(currentMovie, "movUrl"));
-        System.out.println(currentMovie);
+        System.out.println("Drawable " + currentMovie);
         return movie;
     }
 
-    private Bitmap setMoviePoster(String url){
-        Bitmap bitmap = null;
+    private Drawable setMoviePoster(String url){
+        Drawable drawable = null;
         try {
-            bitmap = new ImageRequest().execute(url).get();
+            drawable = new ImageRequest().execute(url).get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return bitmap;
+        return drawable;
     }
 }
