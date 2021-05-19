@@ -35,12 +35,12 @@ public class AccountFragment extends Fragment {
     private TextView textViewEmail;
     private Spinner spinnerCountry;
     private JSONManipulator jsonManipulator;
-    private JSONObject account,updAccount;
+    private JSONObject account, updAccount;
     private CountryAbbreviation countryAbbreviation;
     private PutRequest putRequest;
     private InputsValidation inputsValidation;
     private String URL = "/api/user/updateUser";
-    private String token ;
+    private String token;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -51,7 +51,7 @@ public class AccountFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-      // refresh();
+        // refresh();
         setUp();
         fillInfos();
         goToChangePassword();
@@ -71,7 +71,7 @@ public class AccountFragment extends Fragment {
         account = jsonManipulator.newJSONObject(getArguments().getString("Account"));
         putRequest = new PutRequest((AppCompatActivity) getActivity());
         inputsValidation = new InputsValidation(getContext());
-        token =  jsonManipulator.getString(account, "token");
+        token = jsonManipulator.getString(account, "token");
     }
 
     private void fillInfos() {
@@ -79,8 +79,6 @@ public class AccountFragment extends Fragment {
         editTextFirstName.setText(jsonManipulator.getJSONObjectGetString(account, "userDB", "usrFirstname"));
         editTextLastName.setText(jsonManipulator.getJSONObjectGetString(account, "userDB", "usrLastname"));
         textViewEmail.setText(jsonManipulator.getJSONObjectGetString(account, "userDB", "usrEmail"));
-
-        // textViewCountry.setText(countryAbbreviation.getCountryAbbreviationReverse(jsonManipulator.getJSONObjectGetString(account,"userDB","usrCountry")));
     }
 
 
@@ -98,7 +96,7 @@ public class AccountFragment extends Fragment {
             public void onClick(View v) {
                 if (inputsValidation.validateName(editTextFirstName.getText().toString(), editTextLastName.getText().toString())) {
                     try {
-                        updAccount.put("usrId", jsonManipulator.getJSONObjectGetString(account,"userDB","usrId"));
+                        updAccount.put("usrId", jsonManipulator.getJSONObjectGetString(account, "userDB", "usrId"));
                         updAccount.put("usrFirstname", editTextFirstName.getText().toString());
                         updAccount.put("usrLastname", editTextLastName.getText().toString());
                         updAccount.put("usrCountry", countryAbbreviation.getCountryAbbreviation(spinnerCountry.getSelectedItem().toString()));
