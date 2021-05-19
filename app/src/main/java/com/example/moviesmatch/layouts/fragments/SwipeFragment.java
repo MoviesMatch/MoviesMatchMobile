@@ -39,7 +39,6 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     private SwipeFlingAdapterView flingContainer;
     private Button buttonLeft, buttonRight;
     private GetRequest getReq;
-    private ArrayList<JSONObject> listJsonObjectsFilms;
     private ArrayList<Movie> movies;
     private FragmentSwipeBinding binding;
     private CertificateByPass certificat;
@@ -184,7 +183,6 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
         buttonLeft = binding.buttonLeft;
         buttonRight = binding.buttonRight;
         flingContainer = binding.frame;
-        listJsonObjectsFilms = new ArrayList<>();
         movies = new ArrayList<>();
         getReq = new GetRequest((MainActivity) getActivity());
         jsonManipulator = new JSONManipulator();

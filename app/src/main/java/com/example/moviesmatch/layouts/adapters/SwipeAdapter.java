@@ -17,13 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SwipeAdapter extends ArrayAdapter<Movie> {
-
-    private Context mContext;
     private List<Movie> moviesList;
 
     public SwipeAdapter(@NonNull Context context, ArrayList<Movie> list) {
         super(context, 0, list);
-        mContext = context;
         moviesList = list;
     }
 
@@ -36,16 +33,15 @@ public class SwipeAdapter extends ArrayAdapter<Movie> {
         } else {
             row = convertView;
         }
-
         Movie currentMovie = moviesList.get(position);
 
         ImageView image = row.findViewById(R.id.imageSwipe);
         TextView title = row.findViewById(R.id.textViewTitle);
         TextView date = row.findViewById(R.id.textViewDate);
+
         image.setImageBitmap(currentMovie.getImagePoster());
         title.setText(currentMovie.getTitle());
         date.setText(String.valueOf(currentMovie.getReleaseYear()));
-        System.out.println("RETURN ROW");
         return row;
     }
 }

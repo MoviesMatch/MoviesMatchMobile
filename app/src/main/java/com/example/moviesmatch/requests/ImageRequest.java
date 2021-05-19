@@ -11,7 +11,6 @@ import java.io.InputStream;
 public class ImageRequest extends AsyncTask<String, Void, Bitmap> {
     Bitmap bitmap;
     IImageRequestCallback callback;
-    static int index = 0;
     public ImageRequest(Bitmap bitmap, IImageRequestCallback callback) {
         this.bitmap = bitmap;
         this.callback = callback;
@@ -31,8 +30,6 @@ public class ImageRequest extends AsyncTask<String, Void, Bitmap> {
 
     protected void onPostExecute(Bitmap result) {
         bitmap = result;
-        System.out.println("DONE " + index);
         callback.onSuccess(result);
-        index++;
     }
 }
