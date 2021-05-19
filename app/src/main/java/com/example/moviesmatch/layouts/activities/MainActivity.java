@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.example.moviesmatch.interfaces.IPostActivity;
+import com.example.moviesmatch.interfaces.IPutActivity;
 import com.example.moviesmatch.layouts.fragments.DonateFragment;
 import com.example.moviesmatch.layouts.fragments.GenresFragment;
 import com.example.moviesmatch.layouts.fragments.GroupsFragment;
@@ -30,7 +31,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements IGetActivity, IPostActivity {
+public class MainActivity extends AppCompatActivity implements IGetActivity, IPostActivity, IPutActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
@@ -147,5 +148,10 @@ public class MainActivity extends AppCompatActivity implements IGetActivity, IPo
     @Override
     public void onPostErrorResponse(int errorCode) {
         onErrorResponse.onPostErrorResponse(errorCode, this);
+    }
+
+    @Override
+    public void onPutErrorResponse(int errorCode) {
+        onErrorResponse.onPutErrorResponse(errorCode, this);
     }
 }

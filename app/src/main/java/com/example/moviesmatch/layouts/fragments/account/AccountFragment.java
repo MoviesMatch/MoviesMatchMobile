@@ -19,6 +19,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.moviesmatch.R;
 import com.example.moviesmatch.databinding.FragmentAccountBinding;
 import com.example.moviesmatch.interfaces.IRequestCallback;
+import com.example.moviesmatch.requests.GetRequest;
 import com.example.moviesmatch.requests.PutRequest;
 import com.example.moviesmatch.validation.CountryAbbreviation;
 import com.example.moviesmatch.validation.InputsValidation;
@@ -38,8 +39,10 @@ public class AccountFragment extends Fragment {
     private JSONObject account, updAccount;
     private CountryAbbreviation countryAbbreviation;
     private PutRequest putRequest;
+    private GetRequest getRequest;
     private InputsValidation inputsValidation;
-    private String URL = "/api/user/updateUser";
+    private String URLUpdate = "/api/user/updateUser";
+    private String URLGetAccount;
     private String token;
 
     @Override
@@ -51,9 +54,8 @@ public class AccountFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // refresh();
         setUp();
-        fillInfos();
+        getAccountById();
         goToChangePassword();
         saveChanges();
     }
@@ -70,25 +72,33 @@ public class AccountFragment extends Fragment {
         jsonManipulator = new JSONManipulator();
         account = jsonManipulator.newJSONObject(getArguments().getString("Account"));
         putRequest = new PutRequest((AppCompatActivity) getActivity());
+        getRequest = new GetRequest((AppCompatActivity) getActivity());
         inputsValidation = new InputsValidation(getContext());
         token = jsonManipulator.getString(account, "token");
     }
 
-    private void fillInfos() {
-        System.out.println(account);
-        editTextFirstName.setText(jsonManipulator.getJSONObjectGetString(account, "userDB", "usrFirstname"));
-        editTextLastName.setText(jsonManipulator.getJSONObjectGetString(account, "userDB", "usrLastname"));
-        textViewEmail.setText(jsonManipulator.getJSONObjectGetString(account, "userDB", "usrEmail"));
+    private void setAccountURL() {
+        URLGetAccount = "/api/user/getUser/";
+        String usrId = "";
+        try {
+            usrId = account.getJSONObject("userDB").getString("usrId");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        URLGetAccount +=  usrId;
     }
 
-
-    /*private void refresh(){
-        Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.account);
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.detach(currentFragment);
-        fragmentTransaction.attach(currentFragment);
-        fragmentTransaction.commit();
-    }*/
+    private void getAccountById(){
+        setAccountURL();
+        getRequest.getRequest(URLGetAccount, token, new IRequestCallback() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+                editTextFirstName.setText(jsonManipulator.getString(jsonObject, "usrFirstname"));
+                editTextLastName.setText(jsonManipulator.getString(jsonObject,  "usrLastname"));
+                textViewEmail.setText(jsonManipulator.getString(jsonObject,  "usrEmail"));
+            }
+        });
+    }
 
     private void saveChanges() {
         buttonSave.setOnClickListener(new View.OnClickListener() {
@@ -111,7 +121,7 @@ public class AccountFragment extends Fragment {
     }
 
     private void updateAccount() {
-        putRequest.putRequest(updAccount, URL, token, new IRequestCallback() {
+        putRequest.putRequest(updAccount, URLUpdate, token, new IRequestCallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
                 new AlertDialog.Builder(getContext()).setTitle("Success!").setMessage("Your infos has been saved.").show();

@@ -19,6 +19,7 @@ import com.example.moviesmatch.R;
 import com.example.moviesmatch.databinding.FragmentAccountBinding;
 import com.example.moviesmatch.databinding.FragmentAccountPasswordBinding;
 import com.example.moviesmatch.interfaces.IOnBackPressed;
+import com.example.moviesmatch.interfaces.IPutActivity;
 import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.layouts.activities.MainActivity;
 import com.example.moviesmatch.layouts.fragments.GroupsFragment;
@@ -30,7 +31,7 @@ import com.example.moviesmatch.validation.PasswordsEye;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class AccountPasswordFragment extends Fragment implements IOnBackPressed {
+public class AccountPasswordFragment extends Fragment implements IOnBackPressed, IPutActivity {
 
     private FragmentAccountPasswordBinding binding;
     private EditText oldPassword, newPassword, confirmNewPassword;
@@ -110,5 +111,14 @@ public class AccountPasswordFragment extends Fragment implements IOnBackPressed 
     @Override
     public void onBackPressed() {
         ((MainActivity) getActivity()).replaceFrag(new AccountFragment());
+    }
+
+    @Override
+    public void onPutErrorResponse(int errorCode) {
+            if (errorCode == 401) {
+                new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Please make sure you've written the right password.").show();
+            } else {
+                new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
+            }
     }
 }
