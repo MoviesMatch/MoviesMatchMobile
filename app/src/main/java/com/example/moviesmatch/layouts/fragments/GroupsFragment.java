@@ -221,6 +221,10 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
     @Override
     public void onPostErrorResponse(int errorCode) {
         loading.loadingGone(loadingGif, createGroupButton, joinGroupButton);
-        new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
+        if (errorCode == 400){
+            new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("This group does not exist").show();
+        } else {
+            new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
+        }
     }
 }
