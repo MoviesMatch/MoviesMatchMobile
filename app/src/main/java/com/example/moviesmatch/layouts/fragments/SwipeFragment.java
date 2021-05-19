@@ -95,19 +95,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
             public void onSuccess(JSONArray jsonArray) {
                 index = 0;
                 movies = new MovieFactory().createArrayMovies(jsonArray);
-                for (int i = 0; i <= 5; i++) {
-                    new ImageRequest(movies.get(i).getImagePoster(), new IImageRequestCallback() {
-                        @Override
-                        public void onSuccess(Bitmap bitmap) {
-                            movies.get(index).setImagePoster(bitmap);
-                            if (index == 5){
-                                fling();
-                                loading.loadingGone(loadingGif, buttonLeft, buttonRight);
-                            }
-                            index++;
-                        }
-                    }).execute(movies.get(i).getPosterURL());
-                }
+                setImage();
             }
         });
     }
@@ -131,13 +119,14 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
                 // this is the simplest way to delete an object from the Adapter (/AdapterView)
                 Log.d("LIST", "removed object!");
                 movies.remove(0);
-                new ImageRequest(movies.get(5).getImagePoster(), new IImageRequestCallback() {
-                    @Override
-                    public void onSuccess(Bitmap bitmap) {
-                        movies.get(5).setImagePoster(bitmap);
-                        arrayAdapter.notifyDataSetChanged();
-                    }
-                }).execute(movies.get(5).getPosterURL());
+                System.out.println(movies.size());
+                if (movies.size() > 5){
+                    loadImage(5);
+                } else if (movies.size() <= 5 && movies.size() > 0){
+                    loadImage(movies.size() - 1);
+                } else {
+                    getRequestListFilm();
+                }
             }
 
             @Override
@@ -179,6 +168,32 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
                 getFragmentManager().beginTransaction().replace(R.id.frame, movieInfosFragment).addToBackStack(null).commit();
             }
         });
+    }
+
+    private void setImage(){
+        for (int i = 0; i <= 5; i++) {
+            new ImageRequest(movies.get(i).getImagePoster(), new IImageRequestCallback() {
+                @Override
+                public void onSuccess(Bitmap bitmap) {
+                    movies.get(index).setImagePoster(bitmap);
+                    if (index == 5){
+                        fling();
+                        loading.loadingGone(loadingGif, buttonLeft, buttonRight);
+                    }
+                    index++;
+                }
+            }).execute(movies.get(i).getPosterURL());
+        }
+    }
+
+    private void loadImage(int position){
+        new ImageRequest(movies.get(position).getImagePoster(), new IImageRequestCallback() {
+            @Override
+            public void onSuccess(Bitmap bitmap) {
+                movies.get(position).setImagePoster(bitmap);
+                arrayAdapter.notifyDataSetChanged();
+            }
+        }).execute(movies.get(position).getPosterURL());
     }
 
     @Override
