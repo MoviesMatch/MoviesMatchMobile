@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +52,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     private int index;
     private GifImageView loadingGif;
     private Loading loading;
+    long mLastClickTime = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -71,6 +73,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
         buttonRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                stopButtonSpamming();
                 flingContainer.getTopCardListener().selectLeft();
             }
         });
@@ -78,6 +81,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
         buttonLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                stopButtonSpamming();
                 flingContainer.getTopCardListener().selectRight();
             }
         });
@@ -212,5 +216,12 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
         jsonManipulator = new JSONManipulator();
         certificat = new CertificateByPass();
         certificat.IngoreCertificate();
+    }
+
+    private void stopButtonSpamming(){
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
     }
 }
