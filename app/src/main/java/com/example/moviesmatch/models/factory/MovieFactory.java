@@ -1,16 +1,12 @@
 package com.example.moviesmatch.models.factory;
 
-import android.graphics.drawable.Drawable;
-
 import com.example.moviesmatch.models.Movie;
-import com.example.moviesmatch.requests.ImageRequest;
 import com.example.moviesmatch.validation.JSONManipulator;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 public class MovieFactory {
     ArrayList<Movie> movies;
@@ -35,24 +31,21 @@ public class MovieFactory {
                 jsonManipulator.getString(currentMovie, "movTitle"),
                 jsonManipulator.getString(currentMovie, "movOverview"),
                 jsonManipulator.getString(currentMovie, "movPosterUrl"),
-                setMoviePoster(jsonManipulator.getString(currentMovie, "movPosterUrl")),
                 jsonManipulator.getString(currentMovie, "movReleaseYear"),
                 jsonManipulator.getString(currentMovie, "movImdbRating"),
                 jsonManipulator.getString(currentMovie, "movRuntime"),
-                jsonManipulator.getString(currentMovie, "movUrl"));
-        System.out.println("Drawable " + currentMovie);
+                jsonManipulator.getString(currentMovie, "movUrl"),
+                setMovieGenres(currentMovie));
         return movie;
     }
 
-    private Drawable setMoviePoster(String url){
-        Drawable drawable = null;
-        try {
-            drawable = new ImageRequest().execute(url).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    private ArrayList<String> setMovieGenres(JSONObject currentMovie){
+        ArrayList<String> genresArrayList = new ArrayList<>();
+        JSONArray genres = jsonManipulator.getJSONArrayFromJSONObject(currentMovie, "movieGenreMgrs");
+        for (int i = 0; i < genres.length(); i++) {
+            JSONObject genre = jsonManipulator.getJSONObjectFromJSONArray(genres, i);
+            genresArrayList.add(jsonManipulator.getString(genre, "genName"));
         }
-        return drawable;
+        return genresArrayList;
     }
 }

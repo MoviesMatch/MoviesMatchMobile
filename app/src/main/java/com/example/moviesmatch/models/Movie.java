@@ -1,31 +1,34 @@
 package com.example.moviesmatch.models;
 
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
+
+import java.util.ArrayList;
 
 public class Movie {
     String id;
     String title;
     String overview;
     String posterURL;
-    Drawable imagePoster;
+    Bitmap imagePoster;
     String releaseYear;
     String imdbRating;
     String runtime;
     String movieURL;
+    ArrayList<String> genres;
 
-    public Movie(String id, String title, String overview, String posterURL, Drawable imagePoster, String releaseYear, String imdbRating, String runtime, String movieURL) {
+    public Movie(String id, String title, String overview, String posterURL,String releaseYear, String imdbRating, String runtime, String movieURL, ArrayList<String> genres) {
         this.id = id;
         this.title = title;
         this.overview = overview;
         this.posterURL = posterURL;
-        this.imagePoster = imagePoster;
         this.releaseYear = releaseYear;
         this.imdbRating = imdbRating;
         this.runtime = runtime;
         this.movieURL = movieURL;
+        this.genres = genres;
     }
 
-    public void setImagePoster(Drawable imagePoster) {
+    public void setImagePoster(Bitmap imagePoster) {
         this.imagePoster = imagePoster;
     }
 
@@ -45,7 +48,7 @@ public class Movie {
         return posterURL;
     }
 
-    public Drawable getImagePoster(){
+    public Bitmap getImagePoster(){
         return imagePoster;
     }
 
@@ -63,6 +66,10 @@ public class Movie {
 
     public String getMovieURL() {
         return movieURL;
+    }
+
+    public ArrayList<String> getGenres() {
+        return genres;
     }
 
     @Override

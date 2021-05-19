@@ -49,6 +49,7 @@ public class MovieInfosFragment extends Fragment implements IOnBackPressed {
     private Calculator calculator;
 
     private ArrayList<String> genres;
+    private String title, overview, posterUrl, releaseYear, imdbRating, runtime, url;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,25 +89,33 @@ public class MovieInfosFragment extends Fragment implements IOnBackPressed {
     public void getJsonObject() {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            String movieString = (String) bundle.get("movie");
+            /*String movieString = (String) bundle.get("movie");
             movieJson = jsonManipulator.newJSONObject(movieString);
-            movieGenreJson = jsonManipulator.getJSONArrayFromJSONObject(movieJson, "movieGenreMgrs");
+            movieGenreJson = jsonManipulator.getJSONArrayFromJSONObject(movieJson, "movieGenreMgrs");*/
+            title = bundle.getString("Title");
+            overview = bundle.getString("Overview");
+            posterUrl = bundle.getString("PosterURL");
+            releaseYear = bundle.getString("ReleaseYear");
+            imdbRating = bundle.getString("ImdbRating");
+            runtime = bundle.getString("Runtime");
+            url = bundle.getString("URL");
+            genres = bundle.getStringArrayList("Genres");
         }
     }
 
     public void addInfos() {
 
-        textViewInfoTitle.setText(jsonManipulator.getString(movieJson, "movTitle"));
-        textViewInfoDate.setText(jsonManipulator.getString(movieJson, "movReleaseYear"));
-        textViewInfoOverview.setText(jsonManipulator.getString(movieJson, "movOverview"));
-        textViewRating.setText( calculator.rating(jsonManipulator.getString(movieJson, "movImdbRating")));
-        textViewRunTime.setText(calculator.runTime(jsonManipulator.getString(movieJson, "movRuntime")));
-        textViewUrl.setText(jsonManipulator.getString(movieJson, "movUrl"));
-        Picasso.get().load(jsonManipulator.getString(movieJson, "movPosterUrl")).into(poster);
+        textViewInfoTitle.setText(title);
+        textViewInfoDate.setText(releaseYear);
+        textViewInfoOverview.setText(overview);
+        textViewRating.setText(calculator.rating(imdbRating));
+        textViewRunTime.setText(calculator.runTime(runtime));
+        textViewUrl.setText(url);
+        Picasso.get().load(posterUrl).into(poster);
 
-        for (int i = 0; i < movieGenreJson.length(); i++) {
+        /*for (int i = 0; i < movieGenreJson.length(); i++) {
             genres.add(jsonManipulator.getStringFromJSONArrayAtPosition(movieGenreJson,"genName", i));
-        }
+        }*/
 
         initRecyclerView();
     }

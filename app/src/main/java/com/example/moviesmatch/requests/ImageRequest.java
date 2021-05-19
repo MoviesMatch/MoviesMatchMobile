@@ -2,22 +2,37 @@ package com.example.moviesmatch.requests;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 
-import java.io.InputStream;
-import java.net.URL;
+import com.example.moviesmatch.interfaces.IImageRequestCallback;
 
-public class ImageRequest extends AsyncTask<String, Void, Drawable> {
-    protected Drawable doInBackground(String... urls) {
-        String url = urls[0];
-        Drawable drawable = null;
+import java.io.InputStream;
+
+public class ImageRequest extends AsyncTask<String, Void, Bitmap> {
+    Bitmap bitmap;
+    IImageRequestCallback callback;
+    static int index = 0;
+    public ImageRequest(Bitmap bitmap, IImageRequestCallback callback) {
+        this.bitmap = bitmap;
+        this.callback = callback;
+    }
+
+    protected Bitmap doInBackground(String... urls) {
+        String urldisplay = urls[0];
+        Bitmap mIcon11 = null;
         try {
-            InputStream is = (InputStream) new URL(url).getContent();
-            drawable = Drawable.createFromStream(is, "src name");
+            InputStream in = new java.net.URL(urldisplay).openStream();
+            mIcon11 = BitmapFactory.decodeStream(in);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return drawable;
+        return mIcon11;
+    }
+
+    protected void onPostExecute(Bitmap result) {
+        bitmap = result;
+        System.out.println("DONE " + index);
+        callback.onSuccess(result, index);
+        index++;
     }
 }

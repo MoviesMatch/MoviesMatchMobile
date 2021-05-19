@@ -1,7 +1,6 @@
 package com.example.moviesmatch.layouts.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +13,6 @@ import androidx.annotation.Nullable;
 
 import com.example.moviesmatch.R;
 import com.example.moviesmatch.models.Movie;
-import com.example.moviesmatch.requests.ImageRequest;
-import com.example.moviesmatch.validation.JSONManipulator;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,8 +26,6 @@ public class SwipeAdapter extends ArrayAdapter<Movie> {
         mContext = context;
         moviesList = list;
     }
-
-
 
     @NonNull
     @Override
@@ -47,8 +42,7 @@ public class SwipeAdapter extends ArrayAdapter<Movie> {
         ImageView image = row.findViewById(R.id.imageSwipe);
         TextView title = row.findViewById(R.id.textViewTitle);
         TextView date = row.findViewById(R.id.textViewDate);
-
-        image.setImageDrawable(currentMovie.getImagePoster());
+        image.setImageBitmap(currentMovie.getImagePoster());
         title.setText(currentMovie.getTitle());
         date.setText(String.valueOf(currentMovie.getReleaseYear()));
         System.out.println("RETURN ROW");

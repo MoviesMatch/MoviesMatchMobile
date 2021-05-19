@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.moviesmatch.R;
+import com.example.moviesmatch.interfaces.IImageRequestCallback;
 import com.example.moviesmatch.interfaces.IRequestCallbackArray;
 import com.example.moviesmatch.layouts.adapters.SwipeAdapter;
 import com.example.moviesmatch.models.Movie;
@@ -23,6 +25,7 @@ import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.databinding.FragmentSwipeBinding;
 import com.example.moviesmatch.interfaces.IOnBackPressed;
 import com.example.moviesmatch.layouts.activities.MainActivity;
+import com.example.moviesmatch.requests.ImageRequest;
 import com.example.moviesmatch.validation.JSONManipulator;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
@@ -43,7 +46,6 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     private String getMovieURL, token;
     private JSONManipulator jsonManipulator;
     private JSONObject account, group;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -82,11 +84,21 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
 
         setUserSwipeURL();
 
-        getReq.getRequestArray(getMovieURL, token,new IRequestCallbackArray() {
+        getReq.getRequestArray(getMovieURL, token, new IRequestCallbackArray() {
             @Override
             public void onSuccess(JSONArray jsonArray) {
                 movies = new MovieFactory().createArrayMovies(jsonArray);
-                fling();
+                for (int i = 0; i <= 5; i++) {
+                    new ImageRequest(movies.get(i).getImagePoster(), new IImageRequestCallback() {
+                        @Override
+                        public void onSuccess(Bitmap bitmap, int index) {
+                            movies.get(index).setImagePoster(bitmap);
+                            if (index == 5){
+                                fling();
+                            }
+                        }
+                    }).execute(movies.get(i).getPosterURL());
+                }
             }
         });
     }
@@ -110,7 +122,13 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
                 // this is the simplest way to delete an object from the Adapter (/AdapterView)
                 Log.d("LIST", "removed object!");
                 movies.remove(0);
-                arrayAdapter.notifyDataSetChanged();
+                new ImageRequest(movies.get(5).getImagePoster(), new IImageRequestCallback() {
+                    @Override
+                    public void onSuccess(Bitmap bitmap, int index) {
+                        movies.get(5).setImagePoster(bitmap);
+                        arrayAdapter.notifyDataSetChanged();
+                    }
+                }).execute(movies.get(5).getPosterURL());
             }
 
             @Override
@@ -139,7 +157,15 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
             public void onItemClicked(int i, Object o) {
                 MovieInfosFragment movieInfosFragment = new MovieInfosFragment();
                 Bundle bundle = new Bundle();
-                bundle.putString("movie", o.toString());
+                Movie movie = (Movie) o;
+                bundle.putString("Title", movie.getTitle());
+                bundle.putString("Overview", movie.getOverview());
+                bundle.putString("PosterURL", movie.getPosterURL());
+                bundle.putString("ReleaseYear", movie.getReleaseYear());
+                bundle.putString("ImdbRating", movie.getImdbRating());
+                bundle.putString("Runtime", movie.getRuntime());
+                bundle.putString("URL", movie.getMovieURL());
+                bundle.putStringArrayList("Genres", movie.getGenres());
                 movieInfosFragment.setArguments(bundle);
                 getFragmentManager().beginTransaction().replace(R.id.frame, movieInfosFragment).addToBackStack(null).commit();
             }
