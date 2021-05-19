@@ -51,7 +51,7 @@ public class AccountFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        refresh();
+      // refresh();
         setUp();
         fillInfos();
         goToChangePassword();
@@ -84,11 +84,18 @@ public class AccountFragment extends Fragment {
     }
 
 
+    /*private void refresh(){
+        Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.account);
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.detach(currentFragment);
+        fragmentTransaction.attach(currentFragment);
+        fragmentTransaction.commit();
+    }*/
+
     private void saveChanges() {
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (inputsValidation.validateName(editTextFirstName.getText().toString(), editTextLastName.getText().toString())) {
                     try {
                         updAccount.put("usrId", jsonManipulator.getJSONObjectGetString(account,"userDB","usrId"));
@@ -96,6 +103,7 @@ public class AccountFragment extends Fragment {
                         updAccount.put("usrLastname", editTextLastName.getText().toString());
                         updAccount.put("usrCountry", countryAbbreviation.getCountryAbbreviation(spinnerCountry.getSelectedItem().toString()));
                         updateAccount();
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -111,14 +119,6 @@ public class AccountFragment extends Fragment {
                 new AlertDialog.Builder(getContext()).setTitle("Success!").setMessage("Your infos has been saved.").show();
             }
         });
-    }
-
-    private void refresh(){
-        AccountFragment currentFragment = new AccountFragment();
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.detach(currentFragment);
-        fragmentTransaction.attach(currentFragment);
-        fragmentTransaction.commit();
     }
 
     private void goToChangePassword() {
