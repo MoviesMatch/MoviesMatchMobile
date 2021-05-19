@@ -27,12 +27,15 @@ import com.example.moviesmatch.interfaces.IOnBackPressed;
 import com.example.moviesmatch.layouts.activities.MainActivity;
 import com.example.moviesmatch.requests.ImageRequest;
 import com.example.moviesmatch.validation.JSONManipulator;
+import com.example.moviesmatch.validation.Loading;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import pl.droidsonroids.gif.GifImageView;
 
 public class SwipeFragment extends Fragment implements IOnBackPressed {
     private SwipeAdapter arrayAdapter;
@@ -46,6 +49,8 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     private JSONManipulator jsonManipulator;
     private JSONObject account, group;
     private int index;
+    private GifImageView loadingGif;
+    private Loading loading;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -79,6 +84,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     }
 
     private void getRequestListFilm() {
+        loading.loadingVisible(loadingGif, buttonLeft, buttonRight);
         account =  jsonManipulator.newJSONObject(getArguments().getString("Account"));
         group = jsonManipulator.newJSONObject(getArguments().getString("Group"));
 
@@ -96,6 +102,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
                             movies.get(index).setImagePoster(bitmap);
                             if (index == 5){
                                 fling();
+                                loading.loadingGone(loadingGif, buttonLeft, buttonRight);
                             }
                             index++;
                         }
@@ -183,8 +190,10 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
         buttonLeft = binding.buttonLeft;
         buttonRight = binding.buttonRight;
         flingContainer = binding.frame;
+        loadingGif = binding.swipeLoadingGif;
         movies = new ArrayList<>();
         getReq = new GetRequest((MainActivity) getActivity());
+        loading = new Loading();
         jsonManipulator = new JSONManipulator();
         certificat = new CertificateByPass();
         certificat.IngoreCertificate();
