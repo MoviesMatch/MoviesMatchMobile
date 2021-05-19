@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.moviesmatch.R;
 import com.example.moviesmatch.certificate.CertificateByPass;
@@ -26,12 +27,15 @@ import com.example.moviesmatch.requests.GetRequest;
 import com.example.moviesmatch.requests.PostRequest;
 import com.example.moviesmatch.validation.InputsValidation;
 import com.example.moviesmatch.validation.JSONManipulator;
+import com.example.moviesmatch.validation.Loading;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import pl.droidsonroids.gif.GifImageView;
 
 public class GroupsFragment extends Fragment implements IGetActivity, IPostActivity {
     private ListView listViewGroups;
@@ -42,7 +46,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
     private GetRequest getRequest;
     private PostRequest postRequest;
     private CertificateByPass certificat;
-    private String userGroupsURL = "/api/user/getUserGroups/";
+    private String userGroupsURL ;
     private String createGroupURL = "/api/group/createGroup";
     private String joinGroupURL = "/api/group/joinGroup";
     private String token;
@@ -51,6 +55,9 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
     private InputsValidation validation;
     private Button createGroupButton, joinGroupButton;
     private EditText createGroupEditText, joinGroupEditText;
+    private TextView noGroupsTextView;
+    private GifImageView loadingGif;
+    private Loading loading;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -62,9 +69,16 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
         return binding.getRoot();
     }
 
+    private void amountOfGroups(){
+        if (listViewGroups.getAdapter().getCount() == 0){
+            noGroupsTextView.setVisibility(View.VISIBLE);
+        } else {
+            noGroupsTextView.setVisibility(View.GONE);
+        }
+    }
+
     private void displayGroups() {
         getGroupUser();
-
         listViewGroups.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -80,6 +94,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
     }
 
     private void getGroupUser() {
+        loading.loadingVisible(loadingGif, createGroupButton, joinGroupButton);
         arrayListGroups.clear();
         getRequest.getRequestArray(userGroupsURL, token, new IRequestCallbackArray() {
             @Override
@@ -93,6 +108,8 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
                 }
                 adapter = new GroupsAdapter(getContext(), arrayListGroups);
                 listViewGroups.setAdapter(adapter);
+                amountOfGroups();
+                loading.loadingGone(loadingGif, createGroupButton, joinGroupButton);
             }
         });
     }
@@ -121,6 +138,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
 
 
     private void createGroup() {
+        loading.loadingVisible(loadingGif, createGroupButton, joinGroupButton);
         JSONObject createGroupJSON = new JSONObject();
         createGroupJSON = jsonManipulator.put(createGroupJSON, "groupName", createGroupEditText.getText().toString());
         createGroupJSON = jsonManipulator.put(createGroupJSON, "userId", userId);
@@ -128,12 +146,14 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
             @Override
             public void onSuccess(JSONObject jsonObject) {
                 System.out.println("Create Group " + jsonObject);
+                loading.loadingGone(loadingGif, createGroupButton, joinGroupButton);
                 displayGroups();
             }
         });
     }
 
     private void joinGroup() {
+        loading.loadingVisible(loadingGif, createGroupButton, joinGroupButton);
         JSONObject joinGroupJSON = new JSONObject();
         joinGroupJSON = jsonManipulator.put(joinGroupJSON, "joinCode", joinGroupEditText.getText().toString());
         joinGroupJSON = jsonManipulator.put(joinGroupJSON, "userId", userId);
@@ -141,12 +161,14 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
             @Override
             public void onSuccess(JSONObject jsonObject) {
                 System.out.println("Join Group " + jsonObject);
+                loading.loadingGone(loadingGif, createGroupButton, joinGroupButton);
                 displayGroups();
             }
         });
     }
 
     private void setUserIdToURL() {
+        userGroupsURL = "/api/user/getUserGroups/";
         userId = jsonManipulator.getJSONObjectGetString(account, "userDB", "usrId");
         userGroupsURL += userId;
     }
@@ -157,11 +179,14 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
         joinGroupButton = binding.buttonJoin;
         createGroupEditText = binding.editTextCreateGroup;
         joinGroupEditText = binding.editTextJoinGroup;
+        noGroupsTextView = binding.textViewNoGroups;
+        loadingGif = binding.groupsLoadingGif;
         arrayListGroups = new ArrayList<JSONObject>();
         getRequest = new GetRequest((MainActivity) getActivity());
         postRequest = new PostRequest((MainActivity) getActivity());
         jsonManipulator = new JSONManipulator();
         validation = new InputsValidation(getContext());
+        loading = new Loading();
         certificat = new CertificateByPass();
         certificat.IngoreCertificate();
         account = jsonManipulator.newJSONObject(getArguments().getString("Account"));
@@ -171,11 +196,13 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
 
     @Override
     public void onGetErrorResponse(int errorCode) {
+        loading.loadingGone(loadingGif, createGroupButton, joinGroupButton);
         new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
     }
 
     @Override
     public void onPostErrorResponse(int errorCode) {
+        loading.loadingGone(loadingGif, createGroupButton, joinGroupButton);
         new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
     }
 }

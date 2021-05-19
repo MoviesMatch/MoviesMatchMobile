@@ -37,12 +37,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/guidelineListViewTop" />
 
+    <TextView
+        android:id="@+id/textViewNoGroups"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="You have no groups, create one or join one"
+        android:textSize="20dp"
+        app:layout_constraintTop_toTopOf="@id/listViewGroups"
+        app:layout_constraintBottom_toBottomOf="@id/listViewGroups"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <Button
         android:id="@+id/buttonCreateGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="25dp"
         android:text="Create"
         app:layout_constraintBottom_toBottomOf="@+id/editTextCreateGroup"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,40 +59,29 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/guidelineListViewBottom"
-        app:layout_constraintBottom_toTopOf="@id/divider"/>
+        app:layout_constraintBottom_toTopOf="@id/editTextJoinGroup"/>
 
     <EditText
         android:id="@+id/editTextCreateGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/custom_rectangle"
-        android:layout_marginRight="25dp"
-        android:ems="5"
         android:hint="Group name"
         android:inputType="textPersonName"
-        android:paddingLeft="5dp"
         android:textCursorDrawable="@drawable/color_cursor"
         android:textSize="20sp"
+        android:theme="@style/Inputs"
         app:layout_constraintBottom_toBottomOf="@+id/buttonCreateGroup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/buttonCreateGroup"
         app:layout_constraintTop_toTopOf="@+id/buttonCreateGroup" />
 
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?android:attr/listDivider"
-        android:visibility="invisible"
-        app:layout_constraintTop_toBottomOf="@id/buttonCreateGroup" />
-
     <Button
         android:id="@+id/buttonJoin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
-        android:layout_marginLeft="25dp"
         android:text="Join"
         app:layout_constraintBottom_toBottomOf="@+id/editTextJoinGroup"
         app:layout_constraintEnd_toStartOf="@+id/editTextJoinGroup"
@@ -97,18 +95,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/custom_rectangle"
-        android:layout_marginRight="25dp"
-        android:ems="5"
         android:hint="Group code"
         android:inputType="textPersonName"
-        android:paddingLeft="5dp"
         android:textCursorDrawable="@drawable/color_cursor"
         android:textSize="20sp"
-        android:layout_marginTop="10dp"
+        android:theme="@style/Inputs"
+        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/buttonJoin"
-        app:layout_constraintTop_toBottomOf="@id/divider"/>
+        app:layout_constraintTop_toBottomOf="@id/buttonCreateGroup"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineListViewTop"
@@ -123,6 +120,18 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.75" />
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/groupsLoadingGif"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/loading"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

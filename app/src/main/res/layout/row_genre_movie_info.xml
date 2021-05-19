@@ -23,6 +23,7 @@
                 android:layout_height="20dp"
                 android:layout_centerInParent="true"
                 android:layout_centerHorizontal="true"
+                android:textSize="20dp"
                 android:autoSizeTextType="uniform"
                 android:background="@drawable/custom_background"
                 android:paddingLeft="5dp"
