@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements IGetActivity, IPo
         toolbar = findViewById(R.id.toolbar);
         imageMatch = findViewById(R.id.imageMatch);
         account = getIntent().getStringExtra("Account");
-        System.out.println("");
         onErrorResponse = new OnErrorResponse();
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
