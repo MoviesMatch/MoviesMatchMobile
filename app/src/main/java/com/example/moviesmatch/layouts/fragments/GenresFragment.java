@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import com.example.moviesmatch.interfaces.IGetActivity;
 import com.example.moviesmatch.interfaces.IPostActivity;
 import com.example.moviesmatch.interfaces.IRequestCallbackArray;
+import com.example.moviesmatch.layouts.activities.LoginActivity;
 import com.example.moviesmatch.layouts.adapters.GenreCheckboxAdapter;
 import com.example.moviesmatch.requests.GetRequest;
 import com.example.moviesmatch.requests.PostRequest;
@@ -87,9 +89,20 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
                     postRequest.postRequest(jsonAccountWithGenres, postGenresURL, token, new IRequestCallback() {
                         @Override
                         public void onSuccess(JSONObject jsonObject) {
-                            Intent intent = new Intent(getContext(), MainActivity.class);
-                            intent.putExtra("Account", account.toString());
-                            startActivity(intent);
+                            Intent intent;
+                            if (parent.equals("MainActivity")){
+                                intent = new Intent(getContext(), MainActivity.class);
+                                intent.putExtra("Account", account.toString());
+                                startActivity(intent);
+                            } else {
+                                intent = new Intent(getContext(), LoginActivity.class);
+                                new AlertDialog.Builder(getContext()).setTitle("Email confirmation").setMessage("Your email must be confirmed. It may take some time to receive and be in your junk folder").show().setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                    @Override
+                                    public void onDismiss(DialogInterface dialogInterface) {
+                                        startActivity(intent);
+                                    }
+                                });
+                            }
                         }
                     });
                 } else {
