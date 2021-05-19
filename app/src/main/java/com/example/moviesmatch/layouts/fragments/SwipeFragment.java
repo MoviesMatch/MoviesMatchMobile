@@ -46,6 +46,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     private String getMovieURL, token;
     private JSONManipulator jsonManipulator;
     private JSONObject account, group;
+    private int index;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -87,15 +88,17 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
         getReq.getRequestArray(getMovieURL, token, new IRequestCallbackArray() {
             @Override
             public void onSuccess(JSONArray jsonArray) {
+                index = 0;
                 movies = new MovieFactory().createArrayMovies(jsonArray);
                 for (int i = 0; i <= 5; i++) {
                     new ImageRequest(movies.get(i).getImagePoster(), new IImageRequestCallback() {
                         @Override
-                        public void onSuccess(Bitmap bitmap, int index) {
+                        public void onSuccess(Bitmap bitmap) {
                             movies.get(index).setImagePoster(bitmap);
                             if (index == 5){
                                 fling();
                             }
+                            index++;
                         }
                     }).execute(movies.get(i).getPosterURL());
                 }
@@ -124,7 +127,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
                 movies.remove(0);
                 new ImageRequest(movies.get(5).getImagePoster(), new IImageRequestCallback() {
                     @Override
-                    public void onSuccess(Bitmap bitmap, int index) {
+                    public void onSuccess(Bitmap bitmap) {
                         movies.get(5).setImagePoster(bitmap);
                         arrayAdapter.notifyDataSetChanged();
                     }

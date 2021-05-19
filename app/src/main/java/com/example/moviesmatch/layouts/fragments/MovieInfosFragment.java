@@ -113,10 +113,6 @@ public class MovieInfosFragment extends Fragment implements IOnBackPressed {
         textViewUrl.setText(url);
         Picasso.get().load(posterUrl).into(poster);
 
-        /*for (int i = 0; i < movieGenreJson.length(); i++) {
-            genres.add(jsonManipulator.getStringFromJSONArrayAtPosition(movieGenreJson,"genName", i));
-        }*/
-
         initRecyclerView();
     }
 

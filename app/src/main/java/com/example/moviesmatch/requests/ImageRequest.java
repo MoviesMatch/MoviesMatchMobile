@@ -32,7 +32,7 @@ public class ImageRequest extends AsyncTask<String, Void, Bitmap> {
     protected void onPostExecute(Bitmap result) {
         bitmap = result;
         System.out.println("DONE " + index);
-        callback.onSuccess(result, index);
+        callback.onSuccess(result);
         index++;
     }
 }
