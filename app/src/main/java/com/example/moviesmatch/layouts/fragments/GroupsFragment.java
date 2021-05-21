@@ -82,13 +82,9 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
         listViewGroups.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Object group = adapter.getItem(position);
-                Bundle bundle = new Bundle();
-                bundle.putString("Group", group.toString());
-                bundle.putString("Account", account.toString());
-                SwipeFragment swipeFragment = new SwipeFragment();
-                swipeFragment.setArguments(bundle);
-                getFragmentManager().beginTransaction().replace(R.id.frame, swipeFragment).commit();
+                loading.loadingVisible(loadingGif, createGroupButton, joinGroupButton);
+                JSONObject group = adapter.getItem(position);
+                getUsersInGroup(group);
             }
         });
     }
@@ -173,6 +169,28 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
         userGroupsURL += userId;
     }
 
+    private void getUsersInGroup(JSONObject group){
+        String getUserInGroupURL = "/api/group/getUsersInGroup?groupId=" + jsonManipulator.getString(group, "grpId");
+        getRequest.getRequestArray(getUserInGroupURL, token, new IRequestCallbackArray() {
+            @Override
+            public void onSuccess(JSONArray jsonArray) {
+                System.out.println(jsonArray.length());
+                if (jsonArray.length() >= 2){
+                    loading.loadingGone(loadingGif, createGroupButton, joinGroupButton);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Group", group.toString());
+                    bundle.putString("Account", account.toString());
+                    SwipeFragment swipeFragment = new SwipeFragment();
+                    swipeFragment.setArguments(bundle);
+                    getFragmentManager().beginTransaction().replace(R.id.frame, swipeFragment).commit();
+                } else {
+                    loading.loadingGone(loadingGif, createGroupButton, joinGroupButton);
+                    new AlertDialog.Builder(getContext()).setTitle("No friend in the group").setMessage("Make sure you have a friend in the group to start swiping movies!").show();
+                }
+            }
+        });
+    }
+
     private void init() {
         listViewGroups = binding.listViewGroups;
         createGroupButton = binding.buttonCreateGroup;
@@ -203,6 +221,10 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
     @Override
     public void onPostErrorResponse(int errorCode) {
         loading.loadingGone(loadingGif, createGroupButton, joinGroupButton);
-        new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
+        if (errorCode == 400){
+            new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("This group does not exist").show();
+        } else {
+            new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
+        }
     }
 }
