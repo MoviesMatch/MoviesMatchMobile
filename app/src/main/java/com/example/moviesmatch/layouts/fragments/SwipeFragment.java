@@ -6,8 +6,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 
-import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,35 +16,43 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.moviesmatch.R;
+import com.example.moviesmatch.interfaces.IImageRequestCallback;
 import com.example.moviesmatch.interfaces.IRequestCallbackArray;
 import com.example.moviesmatch.layouts.adapters.SwipeAdapter;
+import com.example.moviesmatch.models.Movie;
+import com.example.moviesmatch.models.factory.MovieFactory;
 import com.example.moviesmatch.requests.GetRequest;
 import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.databinding.FragmentSwipeBinding;
 import com.example.moviesmatch.interfaces.IOnBackPressed;
-import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.layouts.activities.MainActivity;
+import com.example.moviesmatch.requests.ImageRequest;
 import com.example.moviesmatch.validation.JSONManipulator;
+import com.example.moviesmatch.validation.Loading;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import pl.droidsonroids.gif.GifImageView;
 
 public class SwipeFragment extends Fragment implements IOnBackPressed {
     private SwipeAdapter arrayAdapter;
     private SwipeFlingAdapterView flingContainer;
     private Button buttonLeft, buttonRight;
     private GetRequest getReq;
-    private ArrayList<JSONObject> listJsonObjectsFilms;
+    private ArrayList<Movie> movies;
     private FragmentSwipeBinding binding;
     private CertificateByPass certificat;
     private String getMovieURL, token;
     private JSONManipulator jsonManipulator;
     private JSONObject account, group;
-
+    private int index;
+    private GifImageView loadingGif;
+    private Loading loading;
+    long mLastClickTime = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -64,6 +73,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
         buttonRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                stopButtonSpamming();
                 flingContainer.getTopCardListener().selectLeft();
             }
         });
@@ -71,32 +81,28 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
         buttonLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                stopButtonSpamming();
                 flingContainer.getTopCardListener().selectRight();
             }
         });
     }
 
     private void getRequestListFilm() {
+        loading.loadingVisible(loadingGif, buttonLeft, buttonRight);
         account =  jsonManipulator.newJSONObject(getArguments().getString("Account"));
         group = jsonManipulator.newJSONObject(getArguments().getString("Group"));
 
         setUserSwipeURL();
 
-        getReq.getRequestArray(getMovieURL, token,new IRequestCallbackArray() {
+        getReq.getRequestArray(getMovieURL, token, new IRequestCallbackArray() {
             @Override
             public void onSuccess(JSONArray jsonArray) {
-                try {
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        listJsonObjectsFilms.add(jsonArray.getJSONObject(i));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                fling();
+                index = 0;
+                movies = new MovieFactory().createArrayMovies(jsonArray);
+                setImage();
             }
         });
     }
-
 
     private void setUserSwipeURL() {
         getMovieURL = "/api/movie/GetMovies";
@@ -108,7 +114,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
 
 
     private void fling() {
-        arrayAdapter = new SwipeAdapter(getContext(), listJsonObjectsFilms);
+        arrayAdapter = new SwipeAdapter(getContext(), movies);
         flingContainer.setAdapter(arrayAdapter);
         arrayAdapter.notifyDataSetChanged();
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
@@ -116,8 +122,15 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
             public void removeFirstObjectInAdapter() {
                 // this is the simplest way to delete an object from the Adapter (/AdapterView)
                 Log.d("LIST", "removed object!");
-                listJsonObjectsFilms.remove(0);
-                arrayAdapter.notifyDataSetChanged();
+                movies.remove(0);
+                System.out.println(movies.size());
+                if (movies.size() > 5){
+                    loadImage(5);
+                } else if (movies.size() <= 5 && movies.size() > 0){
+                    loadImage(movies.size() - 1);
+                } else {
+                    getRequestListFilm();
+                }
             }
 
             @Override
@@ -146,11 +159,45 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
             public void onItemClicked(int i, Object o) {
                 MovieInfosFragment movieInfosFragment = new MovieInfosFragment();
                 Bundle bundle = new Bundle();
-                bundle.putString("movie", o.toString());
+                Movie movie = (Movie) o;
+                bundle.putString("Title", movie.getTitle());
+                bundle.putString("Overview", movie.getOverview());
+                bundle.putString("PosterURL", movie.getPosterURL());
+                bundle.putString("ReleaseYear", movie.getReleaseYear());
+                bundle.putString("ImdbRating", movie.getImdbRating());
+                bundle.putString("Runtime", movie.getRuntime());
+                bundle.putString("URL", movie.getMovieURL());
+                bundle.putStringArrayList("Genres", movie.getGenres());
                 movieInfosFragment.setArguments(bundle);
                 getFragmentManager().beginTransaction().replace(R.id.frame, movieInfosFragment).addToBackStack(null).commit();
             }
         });
+    }
+
+    private void setImage(){
+        for (int i = 0; i <= 5; i++) {
+            new ImageRequest(movies.get(i).getImagePoster(), new IImageRequestCallback() {
+                @Override
+                public void onSuccess(Bitmap bitmap) {
+                    movies.get(index).setImagePoster(bitmap);
+                    if (index == 5){
+                        fling();
+                        loading.loadingGone(loadingGif, buttonLeft, buttonRight);
+                    }
+                    index++;
+                }
+            }).execute(movies.get(i).getPosterURL());
+        }
+    }
+
+    private void loadImage(int position){
+        new ImageRequest(movies.get(position).getImagePoster(), new IImageRequestCallback() {
+            @Override
+            public void onSuccess(Bitmap bitmap) {
+                movies.get(position).setImagePoster(bitmap);
+                arrayAdapter.notifyDataSetChanged();
+            }
+        }).execute(movies.get(position).getPosterURL());
     }
 
     @Override
@@ -162,10 +209,19 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
         buttonLeft = binding.buttonLeft;
         buttonRight = binding.buttonRight;
         flingContainer = binding.frame;
-        listJsonObjectsFilms = new ArrayList<>();
+        loadingGif = binding.swipeLoadingGif;
+        movies = new ArrayList<>();
         getReq = new GetRequest((MainActivity) getActivity());
+        loading = new Loading();
         jsonManipulator = new JSONManipulator();
         certificat = new CertificateByPass();
         certificat.IngoreCertificate();
+    }
+
+    private void stopButtonSpamming(){
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
     }
 }

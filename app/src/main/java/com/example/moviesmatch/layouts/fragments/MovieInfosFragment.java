@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -16,18 +15,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.moviesmatch.R;
 import com.example.moviesmatch.databinding.FragmentMovieInfosBinding;
 import com.example.moviesmatch.interfaces.IOnBackPressed;
-import com.example.moviesmatch.layouts.activities.MainActivity;
 import com.example.moviesmatch.layouts.adapters.RecyclerViewAdapter;
 import com.example.moviesmatch.validation.Calculator;
 import com.example.moviesmatch.validation.JSONManipulator;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -38,17 +31,11 @@ public class MovieInfosFragment extends Fragment implements IOnBackPressed {
     private RecyclerView recyclerView;
     private GridLayoutManager layoutManager;
     private RecyclerViewAdapter recyclerViewAdapter;
-
     private TextView textViewInfoTitle, textViewInfoDate, textViewInfoOverview, textViewRating, textViewRunTime, textViewUrl;
     private ImageView poster;
-
-    private JSONObject movieJson;
-    private JSONArray movieGenreJson;
-
-    private JSONManipulator jsonManipulator;
     private Calculator calculator;
-
     private ArrayList<String> genres;
+    private String title, overview, posterUrl, releaseYear, imdbRating, runtime, url;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,7 +56,6 @@ public class MovieInfosFragment extends Fragment implements IOnBackPressed {
 
     public void setUp() {
         genres = new ArrayList<>();
-        jsonManipulator = new JSONManipulator();
         calculator = new Calculator();
 
         recyclerView = binding.recyclerView;
@@ -88,25 +74,26 @@ public class MovieInfosFragment extends Fragment implements IOnBackPressed {
     public void getJsonObject() {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            String movieString = (String) bundle.get("movie");
-            movieJson = jsonManipulator.newJSONObject(movieString);
-            movieGenreJson = jsonManipulator.getJSONArrayFromJSONObject(movieJson, "movieGenreMgrs");
+            title = bundle.getString("Title");
+            overview = bundle.getString("Overview");
+            posterUrl = bundle.getString("PosterURL");
+            releaseYear = bundle.getString("ReleaseYear");
+            imdbRating = bundle.getString("ImdbRating");
+            runtime = bundle.getString("Runtime");
+            url = bundle.getString("URL");
+            genres = bundle.getStringArrayList("Genres");
         }
     }
 
     public void addInfos() {
 
-        textViewInfoTitle.setText(jsonManipulator.getString(movieJson, "movTitle"));
-        textViewInfoDate.setText(jsonManipulator.getString(movieJson, "movReleaseYear"));
-        textViewInfoOverview.setText(jsonManipulator.getString(movieJson, "movOverview"));
-        textViewRating.setText( calculator.rating(jsonManipulator.getString(movieJson, "movImdbRating")));
-        textViewRunTime.setText(calculator.runTime(jsonManipulator.getString(movieJson, "movRuntime")));
-        textViewUrl.setText(jsonManipulator.getString(movieJson, "movUrl"));
-        Picasso.get().load(jsonManipulator.getString(movieJson, "movPosterUrl")).into(poster);
-
-        for (int i = 0; i < movieGenreJson.length(); i++) {
-            genres.add(jsonManipulator.getStringFromJSONArrayAtPosition(movieGenreJson,"genName", i));
-        }
+        textViewInfoTitle.setText(title);
+        textViewInfoDate.setText(releaseYear);
+        textViewInfoOverview.setText(overview);
+        textViewRating.setText(calculator.rating(imdbRating));
+        textViewRunTime.setText(calculator.runTime(runtime));
+        textViewUrl.setText(url);
+        Picasso.get().load(posterUrl).into(poster);
 
         initRecyclerView();
     }

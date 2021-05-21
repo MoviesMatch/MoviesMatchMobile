@@ -6,17 +6,17 @@ import android.widget.Button;
 import pl.droidsonroids.gif.GifImageView;
 
 public class Loading {
-    public void loadingVisible(GifImageView gifImageView, Button... buttons){
+    public void loadingVisible(GifImageView gifImageView, View... views){
         gifImageView.setVisibility(View.VISIBLE);
-        for (Button button : buttons){
-            button.setEnabled(false);
+        for (View view : views){
+            view.setEnabled(false);
         }
     }
 
-    public void loadingGone(GifImageView gifImageView, Button... buttons){
+    public void loadingGone(GifImageView gifImageView, View... views){
         gifImageView.setVisibility(View.GONE);
-        for (Button button : buttons){
-            button.setEnabled(true);
+        for (View view : views){
+            view.setEnabled(true);
         }
     }
 }

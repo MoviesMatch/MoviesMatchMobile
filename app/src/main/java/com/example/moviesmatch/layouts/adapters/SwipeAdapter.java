@@ -12,26 +12,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.moviesmatch.R;
-import com.example.moviesmatch.validation.JSONManipulator;
-import com.squareup.picasso.Picasso;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import com.example.moviesmatch.models.Movie;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SwipeAdapter extends ArrayAdapter<JSONObject> {
+public class SwipeAdapter extends ArrayAdapter<Movie> {
+    private List<Movie> moviesList;
 
-    private Context mContext;
-    private List<JSONObject> moviesList;
-    private JSONManipulator jsonManipulator;
-
-    public SwipeAdapter(@NonNull Context context, ArrayList<JSONObject> list) {
+    public SwipeAdapter(@NonNull Context context, ArrayList<Movie> list) {
         super(context, 0, list);
-        mContext = context;
         moviesList = list;
-        jsonManipulator = new JSONManipulator();
     }
 
     @NonNull
@@ -43,17 +33,15 @@ public class SwipeAdapter extends ArrayAdapter<JSONObject> {
         } else {
             row = convertView;
         }
-
-        JSONObject currentMovie = moviesList.get(position);
+        Movie currentMovie = moviesList.get(position);
 
         ImageView image = row.findViewById(R.id.imageSwipe);
         TextView title = row.findViewById(R.id.textViewTitle);
         TextView date = row.findViewById(R.id.textViewDate);
 
-        Picasso.get().load(jsonManipulator.getString(currentMovie, "movPosterUrl")).into(image);
-        title.setText(jsonManipulator.getString(currentMovie, "movTitle"));
-        date.setText(jsonManipulator.getString(currentMovie, "movReleaseYear"));
-
+        image.setImageBitmap(currentMovie.getImagePoster());
+        title.setText(currentMovie.getTitle());
+        date.setText(String.valueOf(currentMovie.getReleaseYear()));
         return row;
     }
 }
