@@ -62,6 +62,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/custom_rectangle"
         android:drawableStart="@drawable/ic_baseline_lock_24"
+        android:drawableEnd="@drawable/ic_baseline_remove_red_eye_24"
         android:drawablePadding="12dp"
         android:ems="10"
         android:textSize="20dp"

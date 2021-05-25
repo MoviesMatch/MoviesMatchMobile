@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PostRequest {
-    private final String API = "http://EQ2.420-6D9-LI.E2021.info.cegeplimoilou.ca";
+    private final String API = "https://EQ2.420-6D9-LI.E2021.info.cegeplimoilou.ca";
     private RequestQueue queue;
     private WeakReference<AppCompatActivity> weakReference;
     private JsonObjectRequest jsonObjectRequest;

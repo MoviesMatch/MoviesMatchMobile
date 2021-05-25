@@ -18,6 +18,7 @@ import com.example.moviesmatch.interfaces.IPostActivity;
 import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.validation.InputsValidation;
 import com.example.moviesmatch.validation.Loading;
+import com.example.moviesmatch.validation.PasswordsEye;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,7 +59,7 @@ public class LoginActivity extends AppCompatActivity implements IPostActivity {
             e.printStackTrace();
         }
 
-        if (validation.validateEmail(editTextEmail.getText().toString())) {
+        if (validation.validateEmail(editTextEmail.getText().toString().trim())) {
             postRequest.postRequest(jsonObject, URL, null, new IRequestCallback() {
                 @Override
                 public void onSuccess(JSONObject jsonObject) {
@@ -95,6 +96,8 @@ public class LoginActivity extends AppCompatActivity implements IPostActivity {
         loading = new Loading();
         certificat = new CertificateByPass();
         certificat.IngoreCertificate();
+        PasswordsEye passwordsEye = new PasswordsEye();
+        passwordsEye.passwordEye(editTextPsw);
     }
 
 
