@@ -75,6 +75,10 @@ public class LoginActivity extends AppCompatActivity implements IPostActivity {
         loading.loadingGone(loadingGif, loginButton);
         if (errorCode == 401) {
             new AlertDialog.Builder(this).setTitle("Your email or password are wrong").setMessage("Please change your email or password").show();
+        } else if (errorCode == 403){
+            new AlertDialog.Builder(this).setTitle("Email confirmation").setMessage("Your email is not confirmed. It may take some time to receive and be in your junk folder").show();
+        }else if (errorCode == 429){
+            new AlertDialog.Builder(this).setTitle("Account Locked").setMessage("Your account has been locked. Try again in 5 minutes").show();
         } else {
             new AlertDialog.Builder(this).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
         }
