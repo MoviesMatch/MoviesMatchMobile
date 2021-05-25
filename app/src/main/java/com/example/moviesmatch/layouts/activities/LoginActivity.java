@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity implements IPostActivity {
             e.printStackTrace();
         }
 
-        if (validation.validateEmail(editTextEmail.getText().toString())) {
+        if (validation.validateEmail(editTextEmail.getText().toString().trim())) {
             postRequest.postRequest(jsonObject, URL, null, new IRequestCallback() {
                 @Override
                 public void onSuccess(JSONObject jsonObject) {

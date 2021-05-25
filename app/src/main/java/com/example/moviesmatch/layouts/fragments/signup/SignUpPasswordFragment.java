@@ -65,7 +65,7 @@ public class SignUpPasswordFragment extends Fragment implements IPostActivity {
             public void onClick(View view) {
                 try {
                     loading();
-                    jsonAccount.put("usrEmail", email.getText().toString());
+                    jsonAccount.put("usrEmail", email.getText().toString().trim());
                     jsonAccount.put("usrFirstname", getArguments().getString("Firstname"));
                     jsonAccount.put("usrLastname", getArguments().getString("Lastname"));
                     jsonAccount.put("usrPassword", password.getText().toString());
