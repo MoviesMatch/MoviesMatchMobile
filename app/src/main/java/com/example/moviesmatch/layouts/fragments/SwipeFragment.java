@@ -162,14 +162,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
                 MovieInfosFragment movieInfosFragment = new MovieInfosFragment();
                 Bundle bundle = new Bundle();
                 Movie movie = (Movie) o;
-                bundle.putString("Title", movie.getTitle());
-                bundle.putString("Overview", movie.getOverview());
-                bundle.putString("PosterURL", movie.getPosterURL());
-                bundle.putString("ReleaseYear", movie.getReleaseYear());
-                bundle.putString("ImdbRating", movie.getImdbRating());
-                bundle.putString("Runtime", movie.getRuntime());
-                bundle.putString("URL", movie.getMovieURL());
-                bundle.putStringArrayList("Genres", movie.getGenres());
+                bundle.putParcelable("Movie", movie);
                 movieInfosFragment.setArguments(bundle);
                 getFragmentManager().beginTransaction().replace(R.id.frame, movieInfosFragment).addToBackStack(null).commit();
             }

@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.example.moviesmatch.databinding.FragmentMovieInfosBinding;
 import com.example.moviesmatch.interfaces.IOnBackPressed;
 import com.example.moviesmatch.layouts.adapters.RecyclerViewAdapter;
+import com.example.moviesmatch.models.Movie;
 import com.example.moviesmatch.validation.Calculator;
 import com.example.moviesmatch.validation.JSONManipulator;
 import com.squareup.picasso.Picasso;
@@ -40,6 +41,7 @@ public class MovieInfosFragment extends Fragment implements IOnBackPressed {
     private ArrayList<String> genres;
     private String title, overview, posterUrl, releaseYear, imdbRating, runtime, url;
     private Button buttonUrl;
+    private Movie movie;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,25 +62,18 @@ public class MovieInfosFragment extends Fragment implements IOnBackPressed {
     public void getJsonObject() {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            title = bundle.getString("Title");
-            overview = bundle.getString("Overview");
-            posterUrl = bundle.getString("PosterURL");
-            releaseYear = bundle.getString("ReleaseYear");
-            imdbRating = bundle.getString("ImdbRating");
-            runtime = bundle.getString("Runtime");
-            url = bundle.getString("URL");
-            genres = bundle.getStringArrayList("Genres");
+            movie = bundle.getParcelable("Movie");
         }
     }
 
     public void addInfos() {
-        textViewInfoTitle.setText(title);
-        textViewInfoDate.setText(releaseYear);
-        textViewInfoOverview.setText(overview);
-        textViewRating.setText(calculator.rating(imdbRating));
-        textViewRunTime.setText(calculator.runTime(runtime));
-        buttonUrlOnClick(url);
-        Picasso.get().load(posterUrl).into(poster);
+        textViewInfoTitle.setText(movie.getTitle());
+        textViewInfoDate.setText(movie.getReleaseYear());
+        textViewInfoOverview.setText(movie.getOverview());
+        textViewRating.setText(calculator.rating(movie.getImdbRating()));
+        textViewRunTime.setText(calculator.runTime(movie.getRuntime()));
+        buttonUrlOnClick(movie.getMovieURL());
+        poster.setImageBitmap(movie.getImagePoster());
         initRecyclerView();
     }
 
@@ -110,7 +105,7 @@ public class MovieInfosFragment extends Fragment implements IOnBackPressed {
     }
 
     public void initRecyclerView() {
-        recyclerViewAdapter = new RecyclerViewAdapter(genres, getContext());
+        recyclerViewAdapter = new RecyclerViewAdapter(movie.getGenres(), getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(recyclerViewAdapter);
         recyclerViewAdapter.notifyDataSetChanged();
