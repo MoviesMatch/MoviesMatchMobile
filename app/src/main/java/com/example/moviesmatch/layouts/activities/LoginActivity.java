@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity implements IPostActivity {
     public void login(View view) {
         loading.loadingVisible(loadingGif, loginButton);
         try {
-            jsonObject.put("usrEmail", editTextEmail.getText().toString());
+            jsonObject.put("usrEmail", editTextEmail.getText().toString().trim());
             jsonObject.put("usrPassword", editTextPsw.getText().toString());
         } catch (JSONException e) {
             e.printStackTrace();
