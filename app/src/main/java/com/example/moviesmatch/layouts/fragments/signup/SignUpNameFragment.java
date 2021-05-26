@@ -53,12 +53,6 @@ public class SignUpNameFragment extends Fragment {
         });
     }
 
-    private void underline(){
-        SpannableString content = new SpannableString("Step 1 of 3");
-        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-        step.setText(content);
-    }
-
     private void setup() {
         inputsValidation = new InputsValidation(getContext());
         countryAbbreviation = new CountryAbbreviation();
@@ -67,6 +61,5 @@ public class SignUpNameFragment extends Fragment {
         lastname = binding.editTextSignupLastName;
         country = binding.spinnerCountry;
         next = binding.buttonSignupNextName;
-        underline();
     }
 }

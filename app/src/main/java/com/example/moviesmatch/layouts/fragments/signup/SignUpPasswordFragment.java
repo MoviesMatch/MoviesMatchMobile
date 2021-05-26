@@ -112,12 +112,6 @@ public class SignUpPasswordFragment extends Fragment implements IPostActivity {
         nextButton.setEnabled(true);
     }
 
-    private void underline(){
-        SpannableString content = new SpannableString("Step 2 of 3");
-        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-        step.setText(content);
-    }
-
     private void setup() {
         certificateByPass = new CertificateByPass();
         certificateByPass.IngoreCertificate();
@@ -133,7 +127,6 @@ public class SignUpPasswordFragment extends Fragment implements IPostActivity {
         password = binding.editTextPassword;
         confirmedPassword = binding.editTextConfirmPassword;
         nextButton = binding.buttonNextPassword;
-        underline();
     }
 
     @Override

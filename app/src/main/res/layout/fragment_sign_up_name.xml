@@ -18,7 +18,7 @@
         android:id="@+id/textViewStep1of3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Step 1 of 3"
+        android:text="@string/step1"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="24dp"

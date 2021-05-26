@@ -28,8 +28,7 @@ import pl.droidsonroids.gif.GifImageView;
 public class LoginActivity extends AppCompatActivity implements IPostActivity {
 
     private ActivityLoginBinding binding;
-    private EditText editTextEmail;
-    private EditText editTextPsw;
+    private EditText editTextEmail, editTextPsw;
     private PostRequest postRequest;
     private JSONObject jsonObject;
     private InputsValidation validation;
@@ -103,6 +102,11 @@ public class LoginActivity extends AppCompatActivity implements IPostActivity {
 
     public void register(View view) {
         startActivity(new Intent(LoginActivity.this, CreateAccountActivity.class));
+    }
+
+
+    public void forgotPassword(View view) {
+        startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
     }
 
 

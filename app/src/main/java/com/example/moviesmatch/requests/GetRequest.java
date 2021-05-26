@@ -3,10 +3,13 @@ package com.example.moviesmatch.requests;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
@@ -17,6 +20,7 @@ import com.example.moviesmatch.interfaces.IRequestCallbackArray;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,20 +53,41 @@ public class GetRequest {
             public void onErrorResponse(VolleyError error) {
                 System.out.println("Error " + error);
                 //Calls each classes onErrorResponseAlert method that implements IGetActivity to have custom error messages
-                if (activity instanceof IGetActivity){
-                    try{
+                if (activity instanceof IGetActivity) {
+                    try {
                         ((IGetActivity) activity).onGetErrorResponse(error.networkResponse.statusCode);
-                    } catch (NullPointerException e){
+                    } catch (NullPointerException e) {
                         ((IGetActivity) activity).onGetErrorResponse(0);
                     }
                 }
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Authorization", "Bearer " + token);
                 return headers;
+            }
+
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                try {
+                    String json = new String(
+                            response.data,
+                            "UTF-8"
+                    );
+
+                    if (json.length() == 0) {
+                        return Response.success(
+                                null,
+                                HttpHeaderParser.parseCacheHeaders(response)
+                        );
+                    } else {
+                        return super.parseNetworkResponse(response);
+                    }
+                } catch (UnsupportedEncodingException e) {
+                    return Response.error(new ParseError(e));
+                }
             }
         };
         queue.add(jsonObjectRequest);
@@ -81,15 +106,15 @@ public class GetRequest {
             public void onErrorResponse(VolleyError error) {
                 System.out.println("Error " + error);
                 //Calls each classes onErrorResponseAlert method that implements IGetActivity to have custom error messages
-                if (activity instanceof IGetActivity){
-                    try{
+                if (activity instanceof IGetActivity) {
+                    try {
                         ((IGetActivity) activity).onGetErrorResponse(error.networkResponse.statusCode);
-                    } catch (NullPointerException e){
+                    } catch (NullPointerException e) {
                         ((IGetActivity) activity).onGetErrorResponse(0);
                     }
                 }
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
