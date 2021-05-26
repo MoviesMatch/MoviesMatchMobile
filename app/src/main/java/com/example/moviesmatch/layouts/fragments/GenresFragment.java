@@ -90,7 +90,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
                         @Override
                         public void onSuccess(JSONObject jsonObject) {
                             Intent intent;
-                            if (parent.equals("MainActivity")){
+                            if (parent.equals("MainActivity")) {
                                 intent = new Intent(getContext(), MainActivity.class);
                                 intent.putExtra("Account", account.toString());
                                 startActivity(intent);
@@ -157,7 +157,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
      * Sets the URL with the loggedIn user id in parameter
      */
     private void setUserGenreURL() {
-        usrId = jsonManipulator.getJSONObjectGetString(account,"userDB", "usrId");
+        usrId = jsonManipulator.getJSONObjectGetString(account, "userDB", "usrId");
         getUserGenreURL += "?idUser=" + usrId;
     }
 

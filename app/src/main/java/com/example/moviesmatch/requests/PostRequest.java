@@ -29,7 +29,6 @@ public class PostRequest {
     private JsonObjectRequest jsonObjectRequest;
     protected AppCompatActivity activity;
 
-
     public PostRequest(AppCompatActivity activity) {
         weakReference = new WeakReference<AppCompatActivity>(activity);
         this.activity = weakReference.get();
