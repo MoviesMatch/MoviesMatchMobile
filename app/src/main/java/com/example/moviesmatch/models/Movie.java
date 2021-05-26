@@ -1,10 +1,12 @@
 package com.example.moviesmatch.models;
 
 import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.ArrayList;
 
-public class Movie {
+public class Movie implements Parcelable {
     String id;
     String title;
     String overview;
@@ -84,5 +86,15 @@ public class Movie {
                 ", runtime=" + runtime +
                 ", movieURL='" + movieURL + '\'' +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
     }
 }

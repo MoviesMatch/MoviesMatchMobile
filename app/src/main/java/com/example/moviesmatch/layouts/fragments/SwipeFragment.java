@@ -3,6 +3,7 @@ package com.example.moviesmatch.layouts.fragments;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.moviesmatch.R;
+import com.example.moviesmatch.interfaces.IGetActivity;
 import com.example.moviesmatch.interfaces.IImageRequestCallback;
 import com.example.moviesmatch.interfaces.IRequestCallbackArray;
 import com.example.moviesmatch.layouts.adapters.SwipeAdapter;
@@ -38,17 +40,18 @@ import java.util.ArrayList;
 
 import pl.droidsonroids.gif.GifImageView;
 
-public class SwipeFragment extends Fragment implements IOnBackPressed {
+public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActivity {
     private SwipeAdapter arrayAdapter;
     private SwipeFlingAdapterView flingContainer;
     private Button buttonLeft, buttonRight;
-    private GetRequest getReq;
+    private GetRequest getRequest;
     private ArrayList<Movie> movies;
     private FragmentSwipeBinding binding;
     private CertificateByPass certificat;
     private String getMovieURL, token;
     private JSONManipulator jsonManipulator;
-    private JSONObject account, group;
+    private JSONObject account;
+    private String groupId;
     private int index;
     private GifImageView loadingGif;
     private Loading loading;
@@ -90,11 +93,11 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     private void getRequestListFilm() {
         loading.loadingVisible(loadingGif, buttonLeft, buttonRight);
         account =  jsonManipulator.newJSONObject(getArguments().getString("Account"));
-        group = jsonManipulator.newJSONObject(getArguments().getString("Group"));
+        groupId = getArguments().getString("GroupId");
 
         setUserSwipeURL();
 
-        getReq.getRequestArray(getMovieURL, token, new IRequestCallbackArray() {
+        getRequest.getRequestArray(getMovieURL, token, new IRequestCallbackArray() {
             @Override
             public void onSuccess(JSONArray jsonArray) {
                 index = 0;
@@ -107,7 +110,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
     private void setUserSwipeURL() {
         getMovieURL = "/api/movie/GetMovies";
         String  usrId = "&userId=" + jsonManipulator.getJSONObjectGetString(account, "userDB","usrId");
-        String  grpId = "?groupId="+ jsonManipulator.getString(group,"grpId");
+        String  grpId = "?groupId="+ groupId;
         token = jsonManipulator.getString(account,"token");
         getMovieURL += grpId + usrId;
     }
@@ -160,14 +163,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
                 MovieInfosFragment movieInfosFragment = new MovieInfosFragment();
                 Bundle bundle = new Bundle();
                 Movie movie = (Movie) o;
-                bundle.putString("Title", movie.getTitle());
-                bundle.putString("Overview", movie.getOverview());
-                bundle.putString("PosterURL", movie.getPosterURL());
-                bundle.putString("ReleaseYear", movie.getReleaseYear());
-                bundle.putString("ImdbRating", movie.getImdbRating());
-                bundle.putString("Runtime", movie.getRuntime());
-                bundle.putString("URL", movie.getMovieURL());
-                bundle.putStringArrayList("Genres", movie.getGenres());
+                bundle.putParcelable("Movie", movie);
                 movieInfosFragment.setArguments(bundle);
                 getFragmentManager().beginTransaction().replace(R.id.frame, movieInfosFragment).addToBackStack(null).commit();
             }
@@ -181,7 +177,9 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
                 public void onSuccess(Bitmap bitmap) {
                     movies.get(index).setImagePoster(bitmap);
                     if (index == 5){
-                        fling();
+                        if (getContext() != null){
+                            fling();
+                        }
                         loading.loadingGone(loadingGif, buttonLeft, buttonRight);
                     }
                     index++;
@@ -211,7 +209,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
         flingContainer = binding.frame;
         loadingGif = binding.swipeLoadingGif;
         movies = new ArrayList<>();
-        getReq = new GetRequest((MainActivity) getActivity());
+        getRequest = new GetRequest((MainActivity) getActivity());
         loading = new Loading();
         jsonManipulator = new JSONManipulator();
         certificat = new CertificateByPass();
@@ -223,5 +221,11 @@ public class SwipeFragment extends Fragment implements IOnBackPressed {
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();
+    }
+
+    @Override
+    public void onGetErrorResponse(int errorCode) {
+        loading.loadingGone(loadingGif);
+        new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
     }
 }
