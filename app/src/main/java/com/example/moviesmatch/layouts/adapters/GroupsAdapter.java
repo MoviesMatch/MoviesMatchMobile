@@ -11,22 +11,25 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.moviesmatch.R;
+import com.example.moviesmatch.models.Group;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class GroupsAdapter extends ArrayAdapter<JSONObject> {
+public class GroupsAdapter extends ArrayAdapter<Group> {
 
     private Context mContext;
-    private List<JSONObject> groupsList;
+    private List<Group> groupsList;
 
-    public GroupsAdapter(@NonNull Context context, ArrayList<JSONObject> list) {
+    public GroupsAdapter(@NonNull Context context, ArrayList<Group> list) {
         super(context, 0, list);
         mContext = context;
         groupsList = list;
+        Collections.sort(groupsList);
     }
 
     @NonNull
@@ -40,16 +43,12 @@ public class GroupsAdapter extends ArrayAdapter<JSONObject> {
             row = convertView;
         }
 
-        JSONObject currentGroup = groupsList.get(position);
+        Group currentGroup = groupsList.get(position);
         TextView nameGroup = row.findViewById(R.id.textViewNameGroup);
         TextView joinCode = row.findViewById(R.id.textViewJoinCode);
 
-        try {
-            nameGroup.setText(currentGroup.getString("grpName"));
-            joinCode.setText(currentGroup.getString("grpJoinCode"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        nameGroup.setText(currentGroup.getGroupName());
+        joinCode.setText("Join code: "  + currentGroup.getGroupJoinCode());
 
         return row;
     }
