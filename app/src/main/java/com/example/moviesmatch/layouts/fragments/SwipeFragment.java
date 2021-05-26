@@ -176,7 +176,9 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
                 public void onSuccess(Bitmap bitmap) {
                     movies.get(index).setImagePoster(bitmap);
                     if (index == 5){
-                        fling();
+                        if (getContext() != null){
+                            fling();
+                        }
                         loading.loadingGone(loadingGif, buttonLeft, buttonRight);
                     }
                     index++;
