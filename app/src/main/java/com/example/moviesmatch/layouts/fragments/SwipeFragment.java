@@ -50,7 +50,8 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
     private CertificateByPass certificat;
     private String getMovieURL, token;
     private JSONManipulator jsonManipulator;
-    private JSONObject account, group;
+    private JSONObject account;
+    private String groupId;
     private int index;
     private GifImageView loadingGif;
     private Loading loading;
@@ -92,7 +93,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
     private void getRequestListFilm() {
         loading.loadingVisible(loadingGif, buttonLeft, buttonRight);
         account =  jsonManipulator.newJSONObject(getArguments().getString("Account"));
-        group = jsonManipulator.newJSONObject(getArguments().getString("Group"));
+        groupId = getArguments().getString("GroupId");
 
         setUserSwipeURL();
 
@@ -109,7 +110,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
     private void setUserSwipeURL() {
         getMovieURL = "/api/movie/GetMovies";
         String  usrId = "&userId=" + jsonManipulator.getJSONObjectGetString(account, "userDB","usrId");
-        String  grpId = "?groupId="+ jsonManipulator.getString(group,"grpId");
+        String  grpId = "?groupId="+ groupId;
         token = jsonManipulator.getString(account,"token");
         getMovieURL += grpId + usrId;
     }

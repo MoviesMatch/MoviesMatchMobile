@@ -23,6 +23,8 @@ import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.interfaces.IRequestCallbackArray;
 import com.example.moviesmatch.layouts.activities.MainActivity;
 import com.example.moviesmatch.layouts.adapters.GroupsAdapter;
+import com.example.moviesmatch.models.Group;
+import com.example.moviesmatch.models.factory.GroupFactory;
 import com.example.moviesmatch.requests.GetRequest;
 import com.example.moviesmatch.requests.PostRequest;
 import com.example.moviesmatch.validation.InputsValidation;
@@ -58,6 +60,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
     private TextView noGroupsTextView;
     private GifImageView loadingGif;
     private Loading loading;
+    private GroupFactory groupFactory;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -83,7 +86,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 loading.loadingVisible(loadingGif, createGroupButton, joinGroupButton);
-                JSONObject group = adapter.getItem(position);
+                Group group = adapter.getItem(position);
                 getUsersInGroup(group);
             }
         });
@@ -97,7 +100,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
             public void onSuccess(JSONArray jsonArray) {
                 try {
                     for (int i = 0; i < jsonArray.length(); i++) {
-                        arrayListGroups.add(jsonArray.getJSONObject(i));
+                        arrayListGroups.add(groupFactory.createGroup(jsonArray.getJSONObject(i)));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -169,8 +172,8 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
         userGroupsURL += userId;
     }
 
-    private void getUsersInGroup(JSONObject group){
-        String getUserInGroupURL = "/api/group/getUsersInGroup?groupId=" + jsonManipulator.getString(group, "grpId");
+    private void getUsersInGroup(Group group){
+        String getUserInGroupURL = "/api/group/getUsersInGroup?groupId=" + group.getGroupId();
         getRequest.getRequestArray(getUserInGroupURL, token, new IRequestCallbackArray() {
             @Override
             public void onSuccess(JSONArray jsonArray) {
@@ -178,7 +181,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
                 if (jsonArray.length() >= 2){
                     loading.loadingGone(loadingGif, createGroupButton, joinGroupButton);
                     Bundle bundle = new Bundle();
-                    bundle.putString("Group", group.toString());
+                    bundle.putString("GroupId", group.getGroupId());
                     bundle.putString("Account", account.toString());
                     SwipeFragment swipeFragment = new SwipeFragment();
                     swipeFragment.setArguments(bundle);
@@ -205,6 +208,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
         jsonManipulator = new JSONManipulator();
         validation = new InputsValidation(getContext());
         loading = new Loading();
+        groupFactory = new GroupFactory();
         certificat = new CertificateByPass();
         certificat.IngoreCertificate();
         account = jsonManipulator.newJSONObject(getArguments().getString("Account"));
