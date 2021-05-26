@@ -17,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class GroupsAdapter extends ArrayAdapter<Group> {
@@ -28,6 +29,7 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
         super(context, 0, list);
         mContext = context;
         groupsList = list;
+        Collections.sort(groupsList);
     }
 
     @NonNull
