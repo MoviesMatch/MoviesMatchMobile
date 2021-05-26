@@ -174,7 +174,6 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
             postRequest = new PostRequest((CreateAccountActivity) getActivity());
             getRequest = new GetRequest((CreateAccountActivity) getActivity());
             button.setText("Finish");
-            underline();
         } else {
             parent = "MainActivity";
             postRequest = new PostRequest((MainActivity) getActivity());
@@ -183,12 +182,6 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
             selectGenre.setTypeface(selectGenre.getTypeface(), Typeface.BOLD);
             selectGenre.setTextSize(24);
         }
-    }
-
-    private void underline(){
-        SpannableString content = new SpannableString("Step 3 of 3");
-        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
-        step.setText(content);
     }
 
     private void setUp() {
