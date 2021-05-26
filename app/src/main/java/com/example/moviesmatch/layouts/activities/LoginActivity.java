@@ -106,7 +106,7 @@ public class LoginActivity extends AppCompatActivity implements IPostActivity {
 
 
     public void forgotPassword(View view) {
-        startActivity(new Intent(LoginActivity.this, CreateAccountActivity.class));
+        startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
     }
 
 
