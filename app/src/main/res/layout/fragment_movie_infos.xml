@@ -1,30 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayoutInfosMovie"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical"
         tools:context=".layouts.fragments.MovieInfosFragment">
 
+        <TextView
+            android:id="@+id/textViewInfoTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="TextView"
+            android:textColor="@color/mv_darkRed"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/imageViewPoster"
+            app:layout_constraintEnd_toStartOf="@id/guidelineRight"
+            app:layout_constraintStart_toEndOf="@id/guidelineLeft"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageViewPoster"
+            android:layout_width="205dp"
+            android:layout_height="285dp"
+            android:layout_marginTop="30dp"
+            app:layout_constraintStart_toStartOf="@id/guidelineLeft"
+            app:layout_constraintTop_toBottomOf="@id/textViewInfoTitle"
+            tools:src="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/textView9"
+            android:id="@+id/textViewInfoDateHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Publication date:"
+            android:textColor="@color/mv_darkRed"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/guidelineRight"
+            app:layout_constraintStart_toEndOf="@id/imageViewPoster"
+            app:layout_constraintTop_toBottomOf="@id/textViewInfoTitle" />
+
+        <TextView
+            android:id="@+id/textViewInfoDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="TextView"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toStartOf="@id/guidelineRight"
+            app:layout_constraintStart_toEndOf="@id/imageViewPoster"
+            app:layout_constraintTop_toBottomOf="@id/textViewInfoDateHeader" />
+
+        <TextView
+            android:id="@+id/textViewRatingHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Rating:"
+            android:textColor="@color/mv_darkRed"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/guidelineRight"
+            app:layout_constraintStart_toEndOf="@id/imageViewPoster"
+            app:layout_constraintTop_toBottomOf="@id/textViewInfoDate" />
+
+        <TextView
+            android:id="@+id/textViewRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="TextView"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toStartOf="@id/guidelineRight"
+            app:layout_constraintStart_toEndOf="@id/imageViewPoster"
+            app:layout_constraintTop_toBottomOf="@id/textViewRatingHeader" />
+
+        <TextView
+            android:id="@+id/textViewRuntimeHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="RunTime:"
             android:textColor="@color/mv_darkRed"
-            android:textStyle="bold"
             android:textSize="20dp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@id/guidelineRight"
             app:layout_constraintStart_toEndOf="@id/imageViewPoster"
             app:layout_constraintTop_toBottomOf="@id/textViewRating" />
@@ -35,18 +104,77 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="TextView"
-            android:textSize="20dp"
             android:textColor="@color/black"
+            android:textSize="20dp"
             app:layout_constraintEnd_toStartOf="@id/guidelineRight"
             app:layout_constraintStart_toEndOf="@id/imageViewPoster"
-            app:layout_constraintTop_toBottomOf="@id/textView9" />
+            app:layout_constraintTop_toBottomOf="@id/textViewRuntimeHeader" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guidelineBot"
+        <Button
+            android:id="@+id/buttonUrl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="View on Netflix"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toStartOf="@id/guidelineRight"
+            app:layout_constraintStart_toEndOf="@id/guidelineLeft"
+            app:layout_constraintTop_toBottomOf="@id/imageViewPoster" />
+
+        <TextView
+            android:id="@+id/textViewOverviewHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Overview:"
+            android:textColor="@color/mv_darkRed"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/guidelineRight"
+            app:layout_constraintStart_toStartOf="@id/guidelineLeft"
+            app:layout_constraintTop_toBottomOf="@id/buttonUrl" />
+
+        <TextView
+            android:id="@+id/textViewOverview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toStartOf="@id/guidelineRight"
+            app:layout_constraintStart_toEndOf="@id/guidelineLeft"
+            app:layout_constraintTop_toBottomOf="@id/textViewOverviewHeader" />
+
+        <TextView
+            android:id="@+id/textViewGenreHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Genres:"
+            android:textColor="@color/mv_darkRed"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/guidelineRight"
+            app:layout_constraintStart_toStartOf="@id/guidelineLeft"
+            app:layout_constraintTop_toBottomOf="@id/textViewOverview" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:nestedScrollingEnabled="false"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.9" />
+            app:layout_constraintEnd_toStartOf="@id/guidelineRight"
+            app:layout_constraintStart_toStartOf="@id/guidelineLeft"
+            app:layout_constraintTop_toBottomOf="@id/textViewGenreHeader" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelineRight"
@@ -61,169 +189,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.05" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guidelineTop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.05" />
-
-
-        <TextView
-            android:id="@+id/textViewInfoTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textColor="@color/mv_darkRed"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/imageViewPoster"
-            app:layout_constraintEnd_toStartOf="@id/guidelineRight"
-            app:layout_constraintStart_toEndOf="@id/guidelineLeft"
-            app:layout_constraintTop_toBottomOf="@id/guidelineTop" />
-
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
-            android:text="Publication date:"
-            android:textSize="20dp"
-            android:textColor="@color/mv_darkRed"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/guidelineRight"
-            app:layout_constraintStart_toEndOf="@id/imageViewPoster"
-            app:layout_constraintTop_toBottomOf="@id/textViewInfoTitle" />
-
-        <TextView
-            android:id="@+id/textViewInfoDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="TextView"
-            android:textSize="20dp"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toStartOf="@id/guidelineRight"
-            app:layout_constraintStart_toEndOf="@id/imageViewPoster"
-            app:layout_constraintTop_toBottomOf="@id/textView5" />
-
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Overview:"
-            android:textColor="@color/mv_darkRed"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            app:layout_constraintEnd_toStartOf="@id/guidelineRight"
-            app:layout_constraintStart_toStartOf="@id/guidelineLeft"
-            app:layout_constraintTop_toBottomOf="@id/textViewUrl" />
-
-        <TextView
-            android:id="@+id/textViewInfoOverview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="10dp"
-            android:text="TextView"
-            android:textSize="20dp"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toStartOf="@id/guidelineRight"
-            app:layout_constraintStart_toEndOf="@id/guidelineLeft"
-            app:layout_constraintTop_toBottomOf="@id/textView7" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:nestedScrollingEnabled="false"
-            android:orientation="horizontal"
-            android:layout_marginBottom="10dp"
-            app:layout_constraintEnd_toStartOf="@id/guidelineRight"
-            app:layout_constraintStart_toStartOf="@id/guidelineLeft"
-            app:layout_constraintTop_toBottomOf="@id/textView2" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Genres:"
-            android:textSize="20dp"
-            android:textColor="@color/mv_darkRed"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/guidelineRight"
-            app:layout_constraintStart_toStartOf="@id/guidelineLeft"
-            app:layout_constraintTop_toBottomOf="@id/textViewInfoOverview" />
-
-        <ImageView
-            android:id="@+id/imageViewPoster"
-            android:layout_width="205dp"
-            android:layout_height="285dp"
-            android:layout_marginTop="70dp"
-            app:layout_constraintStart_toStartOf="@id/guidelineLeft"
-            app:layout_constraintTop_toBottomOf="@id/guidelineTop"
-            tools:src="@tools:sample/avatars" />
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Rating:"
-            android:textSize="20dp"
-            android:textColor="@color/mv_darkRed"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/guidelineRight"
-            app:layout_constraintStart_toEndOf="@id/imageViewPoster"
-            app:layout_constraintTop_toBottomOf="@id/textViewInfoDate" />
-
-        <TextView
-            android:id="@+id/textViewRating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="TextView"
-            android:textSize="20dp"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toStartOf="@id/guidelineRight"
-            app:layout_constraintStart_toEndOf="@id/imageViewPoster"
-            app:layout_constraintTop_toBottomOf="@id/textView6" />
-
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Link Netflix:"
-            android:textColor="@color/mv_darkRed"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            app:layout_constraintEnd_toStartOf="@id/guidelineRight"
-            app:layout_constraintStart_toStartOf="@id/guidelineLeft"
-            app:layout_constraintTop_toBottomOf="@id/imageViewPoster" />
-
-        <TextView
-            android:id="@+id/textViewUrl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="10dp"
-            android:text="TextView"
-            android:textSize="20dp"
-            android:autoLink="all"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toStartOf="@id/guidelineRight"
-            app:layout_constraintStart_toEndOf="@id/guidelineLeft"
-            app:layout_constraintTop_toBottomOf="@id/textView10" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
