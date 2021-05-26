@@ -64,7 +64,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
         URL = "/api/user/sendResetPasswordEmail?email=";
         if(validation.validateEmail(editTextEmail.getText().toString())){
             URL += editTextEmail.getText().toString();
-            System.out.println(URL);
             getRequest.getRequest(URL, null, new IRequestCallback() {
                 @Override
                 public void onSuccess(JSONObject jsonObject) {
