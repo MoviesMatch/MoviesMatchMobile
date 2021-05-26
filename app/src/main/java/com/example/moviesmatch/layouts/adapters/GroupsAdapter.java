@@ -46,7 +46,7 @@ public class GroupsAdapter extends ArrayAdapter<JSONObject> {
 
         try {
             nameGroup.setText(currentGroup.getString("grpName"));
-            joinCode.setText(joinCode.getText().toString() + currentGroup.getString("grpJoinCode"));
+            joinCode.setText("Join code: "  + currentGroup.getString("grpJoinCode"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
