@@ -23,6 +23,7 @@ import com.example.moviesmatch.interfaces.IPutActivity;
 import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.layouts.activities.MainActivity;
 import com.example.moviesmatch.layouts.fragments.GroupsFragment;
+import com.example.moviesmatch.models.MoviesMatchURLS;
 import com.example.moviesmatch.requests.PutRequest;
 import com.example.moviesmatch.validation.InputsValidation;
 import com.example.moviesmatch.validation.JSONManipulator;
@@ -38,7 +39,7 @@ public class AccountPasswordFragment extends Fragment implements IOnBackPressed,
     private Button buttonSavePassword;
     private PasswordsEye passwordsEye;
     private PutRequest putRequest;
-    private String URL = "/api/user/changePassword";
+    private String URL = MoviesMatchURLS.changePasswordURL;
     private JSONObject account, updAccount;
     private String token;
     private JSONManipulator jsonManipulator;

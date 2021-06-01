@@ -14,6 +14,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.moviesmatch.interfaces.IPostActivity;
 import com.example.moviesmatch.interfaces.IRequestCallback;
+import com.example.moviesmatch.models.MoviesMatchURLS;
 
 import org.json.JSONObject;
 
@@ -23,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PostRequest {
-    private final String API = "https://EQ2.420-6D9-LI.E2021.info.cegeplimoilou.ca";
+    private final String API = MoviesMatchURLS.moviesMatchURL;
     private RequestQueue queue;
     private WeakReference<AppCompatActivity> weakReference;
     private JsonObjectRequest jsonObjectRequest;

@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.moviesmatch.databinding.ActivityLoginBinding;
+import com.example.moviesmatch.models.MoviesMatchURLS;
 import com.example.moviesmatch.requests.PostRequest;
 import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.interfaces.IPostActivity;
@@ -37,7 +38,7 @@ public class LoginActivity extends AppCompatActivity implements IPostActivity {
     private Button loginButton;
     private Loading loading;
 
-    private final static String URL = "/api/user/login";
+    private final String URL = MoviesMatchURLS.loginURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
