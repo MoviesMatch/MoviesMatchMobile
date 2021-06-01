@@ -173,12 +173,11 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
     }
 
     private void getUsersInGroup(Group group){
-        String getUserInGroupURL = "/api/group/getUsersInGroup?groupId=" + group.getGroupId();
-        getRequest.getRequestArray(getUserInGroupURL, token, new IRequestCallbackArray() {
+        String getUserInGroupURL = "/api/group/getGroupInfo?groupId=" + group.getGroupId();
+        getRequest.getRequest(getUserInGroupURL, token, new IRequestCallback() {
             @Override
-            public void onSuccess(JSONArray jsonArray) {
-                System.out.println(jsonArray.length());
-                if (jsonArray.length() >= 2){
+            public void onSuccess(JSONObject jsonObject) {
+                if (jsonManipulator.getJSONArrayFromJSONObject(jsonObject, "listUsers").length() >= 2){
                     loading.loadingGone(loadingGif, createGroupButton, joinGroupButton);
                     Bundle bundle = new Bundle();
                     bundle.putString("GroupId", group.getGroupId());
