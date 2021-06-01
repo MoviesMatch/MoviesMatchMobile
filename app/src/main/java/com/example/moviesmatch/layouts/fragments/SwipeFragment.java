@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 
@@ -19,6 +20,7 @@ import android.widget.Button;
 import com.example.moviesmatch.R;
 import com.example.moviesmatch.interfaces.IGetActivity;
 import com.example.moviesmatch.interfaces.IImageRequestCallback;
+import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.interfaces.IRequestCallbackArray;
 import com.example.moviesmatch.layouts.adapters.SwipeAdapter;
 import com.example.moviesmatch.models.Movie;
@@ -29,6 +31,7 @@ import com.example.moviesmatch.databinding.FragmentSwipeBinding;
 import com.example.moviesmatch.interfaces.IOnBackPressed;
 import com.example.moviesmatch.layouts.activities.MainActivity;
 import com.example.moviesmatch.requests.ImageRequest;
+import com.example.moviesmatch.requests.PostRequest;
 import com.example.moviesmatch.validation.JSONManipulator;
 import com.example.moviesmatch.validation.Loading;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
@@ -45,10 +48,11 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
     private SwipeFlingAdapterView flingContainer;
     private Button buttonLeft, buttonRight;
     private GetRequest getRequest;
+    private PostRequest postRequest;
     private ArrayList<Movie> movies;
     private FragmentSwipeBinding binding;
     private CertificateByPass certificat;
-    private String getMovieURL, token;
+    private String getMovieURL, getMatchURL,token;
     private JSONManipulator jsonManipulator;
     private JSONObject account;
     private String groupId;
@@ -109,12 +113,26 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
 
     private void setUserSwipeURL() {
         getMovieURL = "/api/movie/GetMovies";
+        getMatchURL = "/api/movie/PostSwipeMovie";
         String  usrId = "&userId=" + jsonManipulator.getJSONObjectGetString(account, "userDB","usrId");
         String  grpId = "?groupId="+ groupId;
         token = jsonManipulator.getString(account,"token");
         getMovieURL += grpId + usrId;
     }
 
+    private void postSwipe(Movie o, Boolean rightOrLeft){
+        JSONObject currentMovie = new JSONObject();
+        jsonManipulator.put(currentMovie,"idUser",jsonManipulator.getJSONObjectGetString(account, "userDB","usrId"));
+        jsonManipulator.put(currentMovie, "idGroup",groupId);
+        jsonManipulator.put(currentMovie, "idMovie",o.getId());
+        jsonManipulator.put(currentMovie, "isLiked",rightOrLeft);
+        postRequest.postRequest(currentMovie, getMatchURL, token, new IRequestCallback() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
+
+            }
+        });
+    }
 
     private void fling() {
         arrayAdapter = new SwipeAdapter(getContext(), movies);
@@ -210,6 +228,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
         loadingGif = binding.swipeLoadingGif;
         movies = new ArrayList<>();
         getRequest = new GetRequest((MainActivity) getActivity());
+        postRequest = new PostRequest((MainActivity) getActivity());
         loading = new Loading();
         jsonManipulator = new JSONManipulator();
         certificat = new CertificateByPass();
