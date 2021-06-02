@@ -14,6 +14,7 @@ import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.databinding.ActivityLoginBinding;
 import com.example.moviesmatch.databinding.ActivityResetPasswordBinding;
 import com.example.moviesmatch.interfaces.IRequestCallback;
+import com.example.moviesmatch.models.MoviesMatchURLS;
 import com.example.moviesmatch.requests.GetRequest;
 import com.example.moviesmatch.validation.InputsValidation;
 import com.example.moviesmatch.validation.JSONManipulator;
@@ -61,7 +62,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
     public void resetPassword(View view) {
         loading.loadingVisible(loadingGif);
-        URL = "/api/user/sendResetPasswordEmail?email=";
+        URL = MoviesMatchURLS.resetPasswordURL;
         if(validation.validateEmail(editTextEmail.getText().toString())){
             URL += editTextEmail.getText().toString();
             getRequest.getRequest(URL, null, new IRequestCallback() {

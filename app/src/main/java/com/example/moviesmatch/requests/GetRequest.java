@@ -16,6 +16,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.moviesmatch.interfaces.IGetActivity;
 import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.interfaces.IRequestCallbackArray;
+import com.example.moviesmatch.models.MoviesMatchURLS;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -26,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GetRequest {
-    private final String API = "https://EQ2.420-6D9-LI.E2021.info.cegeplimoilou.ca";
+    private final String API = MoviesMatchURLS.moviesMatchURL;
     private RequestQueue queue;
     private WeakReference<AppCompatActivity> weakReference;
     private JsonObjectRequest jsonObjectRequest;

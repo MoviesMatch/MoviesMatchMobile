@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.example.moviesmatch.databinding.FragmentSignUpPasswordBinding;
 import com.example.moviesmatch.interfaces.IPostActivity;
 import com.example.moviesmatch.layouts.fragments.GenresFragment;
+import com.example.moviesmatch.models.MoviesMatchURLS;
 import com.example.moviesmatch.requests.PostRequest;
 import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.interfaces.IRequestCallback;
@@ -47,7 +48,7 @@ public class SignUpPasswordFragment extends Fragment implements IPostActivity {
     ConstraintLayout constraintLayout;
     PasswordsEye passwordsEye;
 
-    private final String URL = "/api/user/signUp";
+    private final String URL = MoviesMatchURLS.signupURL;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
