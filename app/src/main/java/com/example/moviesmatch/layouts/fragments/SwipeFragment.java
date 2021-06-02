@@ -9,6 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 
+import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.moviesmatch.R;
@@ -50,23 +52,25 @@ import pl.droidsonroids.gif.GifImageView;
 public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActivity {
     private SwipeAdapter arrayAdapter;
     private SwipeFlingAdapterView flingContainer;
-    private Button buttonLeft, buttonRight, buttonDismiss;
+    private Button buttonLeft, buttonRight, buttonDismiss, buttonMoreInfo;
     private ImageView imageViewPoster;
     private GetRequest getRequest;
     private PostRequest postRequest;
     private ArrayList<Movie> movies;
     private FragmentSwipeBinding binding;
     private CertificateByPass certificat;
-    private String getMovieURL, getMatchURL,token;
+    private String getMovieURL, getMatchURL, token;
     private JSONManipulator jsonManipulator;
     private JSONObject account;
     private String groupId;
     private int index;
     private TextView textViewTitleMovie;
-    private ConstraintLayout layoutMatch;
     private GifImageView loadingGif;
     private Loading loading;
+    private Dialog match;
     long mLastClickTime = 0;
+
+     private View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -103,7 +107,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
 
     private void getRequestListFilm() {
         loading.loadingVisible(loadingGif, buttonLeft, buttonRight);
-        account =  jsonManipulator.newJSONObject(getArguments().getString("Account"));
+        account = jsonManipulator.newJSONObject(getArguments().getString("Account"));
         groupId = getArguments().getString("GroupId");
 
         setUserSwipeURL();
@@ -121,33 +125,46 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
     private void setUserSwipeURL() {
         getMovieURL = "/api/movie/GetMovies";
         getMatchURL = "/api/movie/PostSwipeMovie";
-        String  usrId = "&userId=" + jsonManipulator.getJSONObjectGetString(account, "userDB","usrId");
-        String  grpId = "?groupId="+ groupId;
-        token = jsonManipulator.getString(account,"token");
+        String usrId = "&userId=" + jsonManipulator.getJSONObjectGetString(account, "userDB", "usrId");
+        String grpId = "?groupId=" + groupId;
+        token = jsonManipulator.getString(account, "token");
         getMovieURL += grpId + usrId;
     }
 
-    private void postSwipe(Movie o, Boolean rightOrLeft){
+    private void postSwipe(Movie o, Boolean rightOrLeft) {
         JSONObject currentMovie = new JSONObject();
-        jsonManipulator.put(currentMovie,"idUser",jsonManipulator.getJSONObjectGetString(account, "userDB","usrId"));
-        jsonManipulator.put(currentMovie, "idGroup",groupId);
-        jsonManipulator.put(currentMovie, "idMovie",o.getId());
-        jsonManipulator.put(currentMovie, "isLiked",rightOrLeft);
+        jsonManipulator.put(currentMovie, "idUser", jsonManipulator.getJSONObjectGetString(account, "userDB", "usrId"));
+        jsonManipulator.put(currentMovie, "idGroup", groupId);
+        jsonManipulator.put(currentMovie, "idMovie", o.getId());
+        jsonManipulator.put(currentMovie, "isLiked", rightOrLeft);
         postRequest.postRequest(currentMovie, getMatchURL, token, new IRequestCallback() {
             @Override
-            public void onSuccess(JSONObject jsonObject) {
-                if(jsonManipulator.getBoolean(jsonObject,"isMatch") ){
-                        layoutMatch.setVisibility(View.VISIBLE);
-                        textViewTitleMovie.setText(o.getTitle());
-                        imageViewPoster.setImageBitmap(o.getImagePoster());
-                        buttonDismiss.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                layoutMatch.setVisibility(View.GONE);
-                            }
-                        });
+            public void onSuccess(JSONObject jsonObject) { ;
+                if (jsonManipulator.getBoolean(jsonObject, "match")) {
+                    match.setContentView(view);
+                    textViewTitleMovie.setText(o.getTitle());
+                    imageViewPoster.setImageBitmap(o.getImagePoster());
+                    buttonDismiss.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            match.dismiss();
+                        }
+                    });
 
-                    }
+                    buttonMoreInfo.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            match.dismiss();
+                            MovieInfosFragment movieInfosFragment = new MovieInfosFragment();
+                            Bundle bundle = new Bundle();
+                            Movie movie = (Movie) o;
+                            bundle.putParcelable("Movie", movie);
+                            movieInfosFragment.setArguments(bundle);
+                            getFragmentManager().beginTransaction().replace(R.id.frame, movieInfosFragment).addToBackStack(null).commit();
+                        }
+                    });
+                    match.show();
+                }
             }
         });
     }
@@ -163,9 +180,9 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
                 Log.d("LIST", "removed object!");
                 movies.remove(0);
                 System.out.println(movies.size());
-                if (movies.size() > 5){
+                if (movies.size() > 5) {
                     loadImage(5);
-                } else if (movies.size() <= 5 && movies.size() > 0){
+                } else if (movies.size() <= 5 && movies.size() > 0) {
                     loadImage(movies.size() - 1);
                 } else {
                     getRequestListFilm();
@@ -205,14 +222,14 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
         });
     }
 
-    private void setImage(){
+    private void setImage() {
         for (int i = 0; i <= 5; i++) {
             new ImageRequest(movies.get(i).getImagePoster(), new IImageRequestCallback() {
                 @Override
                 public void onSuccess(Bitmap bitmap) {
                     movies.get(index).setImagePoster(bitmap);
-                    if (index == 5){
-                        if (getContext() != null){
+                    if (index == 5) {
+                        if (getContext() != null) {
                             fling();
                         }
                         loading.loadingGone(loadingGif, buttonLeft, buttonRight);
@@ -223,7 +240,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
         }
     }
 
-    private void loadImage(int position){
+    private void loadImage(int position) {
         new ImageRequest(movies.get(position).getImagePoster(), new IImageRequestCallback() {
             @Override
             public void onSuccess(Bitmap bitmap) {
@@ -238,15 +255,33 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
         ((MainActivity) getActivity()).replaceFrag(new GroupsFragment());
     }
 
+    /*public void isMatchVisibile(Boolean ok) {
+        if (!ok) {
+            buttonLeft.setEnabled(true);
+            buttonRight.setEnabled(true);
+            flingContainer.setEnabled(true);
+            layoutMatch.setVisibility(View.GONE);
+        } else {
+            buttonLeft.setEnabled(false);
+            buttonRight.setEnabled(false);
+            flingContainer.setEnabled(false);
+            layoutMatch.setVisibility(View.VISIBLE);
+        }
+    }*/
+
     public void setUp() {
         buttonLeft = binding.buttonLeft;
         buttonRight = binding.buttonRight;
         flingContainer = binding.frame;
         loadingGif = binding.swipeLoadingGif;
-        layoutMatch = binding.layoutMatch;
-        buttonDismiss = binding.buttonDismiss;
-        imageViewPoster = binding.imageViewPoster;
-        textViewTitleMovie = binding.textViewTitleMovie;
+
+        view = View.inflate(getContext(), R.layout.layout_match,null);
+        buttonDismiss =  view.findViewById(R.id.buttonDismiss);
+        buttonMoreInfo = view.findViewById(R.id.buttonMoreInfo);
+        imageViewPoster = view.findViewById(R.id.imageViewPoster);
+        textViewTitleMovie = view.findViewById(R.id.textViewTitleMovie);
+        match = new Dialog(getContext());
+
         movies = new ArrayList<>();
         getRequest = new GetRequest((MainActivity) getActivity());
         postRequest = new PostRequest((MainActivity) getActivity());
@@ -256,8 +291,8 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
         certificat.IngoreCertificate();
     }
 
-    private void stopButtonSpamming(){
-        if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
+    private void stopButtonSpamming() {
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();
