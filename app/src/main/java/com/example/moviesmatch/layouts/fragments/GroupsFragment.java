@@ -24,6 +24,7 @@ import com.example.moviesmatch.interfaces.IRequestCallbackArray;
 import com.example.moviesmatch.layouts.activities.MainActivity;
 import com.example.moviesmatch.layouts.adapters.GroupsAdapter;
 import com.example.moviesmatch.models.Group;
+import com.example.moviesmatch.models.MoviesMatchURLS;
 import com.example.moviesmatch.models.factory.GroupFactory;
 import com.example.moviesmatch.requests.GetRequest;
 import com.example.moviesmatch.requests.PostRequest;
@@ -49,8 +50,8 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
     private PostRequest postRequest;
     private CertificateByPass certificat;
     private String userGroupsURL ;
-    private String createGroupURL = "/api/group/createGroup";
-    private String joinGroupURL = "/api/group/joinGroup";
+    private String createGroupURL = MoviesMatchURLS.createGroupURL;
+    private String joinGroupURL = MoviesMatchURLS.joinGroupURL;
     private String token;
     private String userId;
     private JSONManipulator jsonManipulator;
@@ -167,14 +168,14 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
     }
 
     private void setUserIdToURL() {
-        userGroupsURL = "/api/user/getUserGroups/";
+        userGroupsURL = MoviesMatchURLS.getUserGroupsURL;
         userId = jsonManipulator.getJSONObjectGetString(account, "userDB", "usrId");
         userGroupsURL += userId;
     }
 
     private void getUsersInGroup(Group group){
-        String getUserInGroupURL = "/api/group/getGroupInfo?groupId=" + group.getGroupId();
-        getRequest.getRequest(getUserInGroupURL, token, new IRequestCallback() {
+        String getGroupInfoURL = MoviesMatchURLS.getGroupInfoURL + group.getGroupId();
+        getRequest.getRequest(getGroupInfoURL, token, new IRequestCallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
                 if (jsonManipulator.getJSONArrayFromJSONObject(jsonObject, "listUsers").length() >= 2){
