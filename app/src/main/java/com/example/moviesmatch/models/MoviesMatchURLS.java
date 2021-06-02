@@ -31,4 +31,5 @@ public class MoviesMatchURLS {
     //Movies
     public static String getMoviesURL = "/api/movie/GetMovies"; //Get
     public static String postSwipeMovie = "/api/movie/PostSwipeMovie"; //Post
+    public static String getMatchURL = "/api/movie/PostSwipeMovie"; //Post
 }
