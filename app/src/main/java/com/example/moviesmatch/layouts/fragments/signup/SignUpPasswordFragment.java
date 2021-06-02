@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.moviesmatch.databinding.FragmentSignUpPasswordBinding;
+import com.example.moviesmatch.interfaces.IOnBackPressed;
 import com.example.moviesmatch.interfaces.IPostActivity;
 import com.example.moviesmatch.layouts.fragments.GenresFragment;
 import com.example.moviesmatch.requests.PostRequest;
@@ -31,7 +33,7 @@ import org.json.JSONObject;
 
 import pl.droidsonroids.gif.GifImageView;
 
-public class SignUpPasswordFragment extends Fragment implements IPostActivity {
+public class SignUpPasswordFragment extends Fragment implements IPostActivity, IOnBackPressed {
     FragmentSignUpPasswordBinding binding;
     PostRequest postRequest;
     TextView step;
@@ -66,8 +68,8 @@ public class SignUpPasswordFragment extends Fragment implements IPostActivity {
                 try {
                     loading();
                     jsonAccount.put("usrEmail", email.getText().toString().trim());
-                    jsonAccount.put("usrFirstname", getArguments().getString("Firstname"));
-                    jsonAccount.put("usrLastname", getArguments().getString("Lastname"));
+                    jsonAccount.put("usrFirstname", getFirstname());
+                    jsonAccount.put("usrLastname", getLastname());
                     jsonAccount.put("usrPassword", password.getText().toString());
                     jsonAccount.put("usrCountry", getArguments().getString("Country"));
                     System.out.println(jsonAccount);
@@ -137,5 +139,21 @@ public class SignUpPasswordFragment extends Fragment implements IPostActivity {
         } else {
             new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Bundle bundle = new Bundle();
+        bundle.putString("Firstname", getFirstname());
+        bundle.putString("Lastname",getLastname());
+        ((CreateAccountActivity)getActivity()).replaceFrag(new SignUpNameFragment(), bundle);
+    }
+
+    private String getFirstname(){
+        return getArguments().getString("Firstname");
+    }
+    
+    private String getLastname(){
+        return getArguments().getString("Lastname");
     }
 }

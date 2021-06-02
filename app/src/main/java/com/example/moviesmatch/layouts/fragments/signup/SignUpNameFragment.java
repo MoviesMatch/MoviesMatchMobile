@@ -1,5 +1,6 @@
 package com.example.moviesmatch.layouts.fragments.signup;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
@@ -15,11 +16,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.moviesmatch.databinding.FragmentSignUpNameBinding;
+import com.example.moviesmatch.interfaces.IOnBackPressed;
 import com.example.moviesmatch.layouts.activities.CreateAccountActivity;
+import com.example.moviesmatch.layouts.activities.LoginActivity;
+import com.example.moviesmatch.layouts.activities.MainActivity;
 import com.example.moviesmatch.validation.CountryAbbreviation;
 import com.example.moviesmatch.validation.InputsValidation;
 
-public class SignUpNameFragment extends Fragment {
+public class SignUpNameFragment extends Fragment implements IOnBackPressed {
     private FragmentSignUpNameBinding binding;
     private InputsValidation inputsValidation;
     private CountryAbbreviation countryAbbreviation;
@@ -61,5 +65,14 @@ public class SignUpNameFragment extends Fragment {
         lastname = binding.editTextSignupLastName;
         country = binding.spinnerCountry;
         next = binding.buttonSignupNextName;
+        if (getArguments() != null){
+            firstname.setText(getArguments().getString("Firstname"));
+            lastname.setText(getArguments().getString("Lastname"));
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(getContext(), LoginActivity.class));
     }
 }
