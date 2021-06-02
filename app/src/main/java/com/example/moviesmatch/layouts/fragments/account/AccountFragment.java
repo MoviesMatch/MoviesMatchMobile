@@ -19,6 +19,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.moviesmatch.R;
 import com.example.moviesmatch.databinding.FragmentAccountBinding;
 import com.example.moviesmatch.interfaces.IRequestCallback;
+import com.example.moviesmatch.models.MoviesMatchURLS;
 import com.example.moviesmatch.requests.GetRequest;
 import com.example.moviesmatch.requests.PutRequest;
 import com.example.moviesmatch.validation.CountryAbbreviation;
@@ -41,7 +42,7 @@ public class AccountFragment extends Fragment {
     private PutRequest putRequest;
     private GetRequest getRequest;
     private InputsValidation inputsValidation;
-    private String URLUpdate = "/api/user/updateUser";
+    private String URLUpdate = MoviesMatchURLS.updateUserURL;
     private String URLGetAccount;
     private String token;
 
@@ -78,7 +79,7 @@ public class AccountFragment extends Fragment {
     }
 
     private void setAccountURL() {
-        URLGetAccount = "/api/user/getUser/";
+        URLGetAccount = MoviesMatchURLS.getUserURL;
         String usrId = "";
         try {
             usrId = account.getJSONObject("userDB").getString("usrId");

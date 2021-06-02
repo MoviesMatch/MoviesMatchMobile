@@ -16,7 +16,7 @@ public class PasswordsEye {
                 final int DRAWABLE_RIGHT = 2;
 
                 if(event.getAction() == MotionEvent.ACTION_UP) {
-                    if(event.getRawX() >= (passwordEditText.getRight() - passwordEditText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                    if(event.getRawX()+ passwordEditText.getPaddingRight() >= (passwordEditText.getRight() - passwordEditText.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                         if (isPasswordHidden){
                             passwordEditText.setTransformationMethod(null);
                             isPasswordHidden = false;

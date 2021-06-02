@@ -23,6 +23,7 @@ import com.example.moviesmatch.interfaces.IPostActivity;
 import com.example.moviesmatch.interfaces.IRequestCallbackArray;
 import com.example.moviesmatch.layouts.activities.LoginActivity;
 import com.example.moviesmatch.layouts.adapters.GenreCheckboxAdapter;
+import com.example.moviesmatch.models.MoviesMatchURLS;
 import com.example.moviesmatch.requests.GetRequest;
 import com.example.moviesmatch.requests.PostRequest;
 import com.example.moviesmatch.certificate.CertificateByPass;
@@ -64,9 +65,9 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     private String usrId;
     private Loading loading;
 
-    private final String getGenresURL = "/api/genre/getAllGenres";
-    private final String postGenresURL = "/api/genre/addGenresToUser";
-    private String getUserGenreURL = "/api/genre/getUserGenres";
+    private final String getGenresURL = MoviesMatchURLS.getAllGenresURL;
+    private final String postGenresURL = MoviesMatchURLS.addGenresToUserURL;
+    private String getUserGenreURL = MoviesMatchURLS.getUserGenreURL;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -158,7 +159,7 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
      */
     private void setUserGenreURL() {
         usrId = jsonManipulator.getJSONObjectGetString(account, "userDB", "usrId");
-        getUserGenreURL += "?idUser=" + usrId;
+        getUserGenreURL += usrId;
     }
 
     private void imageGone() {

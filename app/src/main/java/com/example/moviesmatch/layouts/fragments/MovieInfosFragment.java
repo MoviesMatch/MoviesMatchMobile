@@ -38,8 +38,6 @@ public class MovieInfosFragment extends Fragment implements IOnBackPressed {
     private TextView textViewInfoTitle, textViewInfoDate, textViewInfoOverview, textViewRating, textViewRunTime;
     private ImageView poster;
     private Calculator calculator;
-    private ArrayList<String> genres;
-    private String title, overview, posterUrl, releaseYear, imdbRating, runtime, url;
     private Button buttonUrl;
     private Movie movie;
 
@@ -89,7 +87,6 @@ public class MovieInfosFragment extends Fragment implements IOnBackPressed {
     }
 
     public void init() {
-        genres = new ArrayList<>();
         calculator = new Calculator();
 
         recyclerView = binding.recyclerView;

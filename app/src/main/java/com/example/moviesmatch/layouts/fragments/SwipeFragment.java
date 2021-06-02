@@ -22,6 +22,7 @@ import com.example.moviesmatch.interfaces.IImageRequestCallback;
 import com.example.moviesmatch.interfaces.IRequestCallbackArray;
 import com.example.moviesmatch.layouts.adapters.SwipeAdapter;
 import com.example.moviesmatch.models.Movie;
+import com.example.moviesmatch.models.MoviesMatchURLS;
 import com.example.moviesmatch.models.factory.MovieFactory;
 import com.example.moviesmatch.requests.GetRequest;
 import com.example.moviesmatch.certificate.CertificateByPass;
@@ -108,7 +109,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
     }
 
     private void setUserSwipeURL() {
-        getMovieURL = "/api/movie/GetMovies";
+        getMovieURL = MoviesMatchURLS.getMoviesURL;
         String  usrId = "&userId=" + jsonManipulator.getJSONObjectGetString(account, "userDB","usrId");
         String  grpId = "?groupId="+ groupId;
         token = jsonManipulator.getString(account,"token");
