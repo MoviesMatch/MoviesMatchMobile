@@ -86,6 +86,7 @@ public class SignUpPasswordFragment extends Fragment implements IPostActivity {
                 @Override
                 public void onSuccess(JSONObject jsonObject) {
                     Bundle bundle = new Bundle();
+                    System.out.println(jsonObject);
                     bundle.putString("Account", jsonObject.toString());
                     bundle.putString("Parent", "CreateAccountActivity");
                     ((CreateAccountActivity) getActivity()).replaceFrag(new GenresFragment(), bundle);

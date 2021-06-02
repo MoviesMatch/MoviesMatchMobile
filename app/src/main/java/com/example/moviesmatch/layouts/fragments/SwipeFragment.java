@@ -5,17 +5,21 @@ import androidx.annotation.Nullable;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.moviesmatch.R;
 import com.example.moviesmatch.interfaces.IGetActivity;
@@ -46,7 +50,8 @@ import pl.droidsonroids.gif.GifImageView;
 public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActivity {
     private SwipeAdapter arrayAdapter;
     private SwipeFlingAdapterView flingContainer;
-    private Button buttonLeft, buttonRight;
+    private Button buttonLeft, buttonRight, buttonDismiss;
+    private ImageView imageViewPoster;
     private GetRequest getRequest;
     private PostRequest postRequest;
     private ArrayList<Movie> movies;
@@ -57,6 +62,8 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
     private JSONObject account;
     private String groupId;
     private int index;
+    private TextView textViewTitleMovie;
+    private ConstraintLayout layoutMatch;
     private GifImageView loadingGif;
     private Loading loading;
     long mLastClickTime = 0;
@@ -129,7 +136,18 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
         postRequest.postRequest(currentMovie, getMatchURL, token, new IRequestCallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
+                if(jsonManipulator.getBoolean(jsonObject,"isMatch") ){
+                        layoutMatch.setVisibility(View.VISIBLE);
+                        textViewTitleMovie.setText(o.getTitle());
+                        imageViewPoster.setImageBitmap(o.getImagePoster());
+                        buttonDismiss.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                layoutMatch.setVisibility(View.GONE);
+                            }
+                        });
 
+                    }
             }
         });
     }
@@ -156,13 +174,12 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
 
             @Override
             public void onLeftCardExit(Object dataObject) {
-                //Do something on the left!
-                //You also have access to the original object.
-                //If you want to use it just cast it (String) dataObject
+                postSwipe((Movie) dataObject, false);
             }
 
             @Override
             public void onRightCardExit(Object dataObject) {
+                postSwipe((Movie) dataObject, true);
             }
 
             @Override
@@ -226,6 +243,10 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
         buttonRight = binding.buttonRight;
         flingContainer = binding.frame;
         loadingGif = binding.swipeLoadingGif;
+        layoutMatch = binding.layoutMatch;
+        buttonDismiss = binding.buttonDismiss;
+        imageViewPoster = binding.imageViewPoster;
+        textViewTitleMovie = binding.textViewTitleMovie;
         movies = new ArrayList<>();
         getRequest = new GetRequest((MainActivity) getActivity());
         postRequest = new PostRequest((MainActivity) getActivity());

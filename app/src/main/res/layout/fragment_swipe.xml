@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".layouts.fragments.SwipeFragment">
+
 
     <com.lorentzos.flingswipe.SwipeFlingAdapterView
         android:id="@+id/frame"
@@ -72,5 +74,87 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutMatch"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        android:backgroundTint="@color/white"
+        tools:layout_editor_absoluteX="143dp"
+        tools:layout_editor_absoluteY="178dp">
+
+
+        <ImageView
+            android:id="@+id/imageViewItsMatch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/itsmatch"
+            app:layout_constraintEnd_toStartOf="@id/guidelineRight2"
+            app:layout_constraintStart_toStartOf="@id/guidelineLeft2"
+            app:layout_constraintTop_toBottomOf="@id/guidelineTop2" />
+
+
+        <ImageView
+            android:id="@+id/imageViewPoster"
+            android:layout_width="205dp"
+            android:layout_height="285dp"
+            app:layout_constraintEnd_toStartOf="@id/guidelineRight2"
+            app:layout_constraintStart_toStartOf="@id/guidelineLeft2"
+            app:layout_constraintTop_toBottomOf="@id/textViewTitleMovie"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/textViewTitleMovie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textColor="@color/mv_darkRed"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/guidelineRight2"
+            app:layout_constraintStart_toStartOf="@id/guidelineLeft2"
+            app:layout_constraintTop_toBottomOf="@id/imageViewItsMatch" />
+
+        <Button
+            android:id="@+id/buttonDismiss"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nice"
+            app:layout_constraintEnd_toStartOf="@id/guidelineRight2"
+            app:layout_constraintStart_toStartOf="@id/guidelineLeft2"
+            app:layout_constraintTop_toBottomOf="@id/imageViewPoster" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineBot2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.9" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineTop2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineRight2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.85" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineLeft2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.15" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
