@@ -132,6 +132,8 @@ public class MainActivity extends AppCompatActivity implements IGetActivity, IPo
                 ((SwipeFragment) f).onBackPressed();
             } else if (f != null && f instanceof MovieInfosFragment) {
                 ((MovieInfosFragment) f).onBackPressed();
+            } else if (f != null && f instanceof GroupsFragment) {
+                ((GroupsFragment) f).onBackPressed();
             }
         }
     }

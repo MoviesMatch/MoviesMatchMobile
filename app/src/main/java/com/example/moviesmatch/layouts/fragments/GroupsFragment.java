@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +14,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.moviesmatch.R;
 import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.databinding.FragmentGroupsBinding;
 import com.example.moviesmatch.interfaces.IGetActivity;
+import com.example.moviesmatch.interfaces.IOnBackPressed;
 import com.example.moviesmatch.interfaces.IPostActivity;
 import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.interfaces.IRequestCallbackArray;
@@ -40,7 +43,7 @@ import java.util.ArrayList;
 
 import pl.droidsonroids.gif.GifImageView;
 
-public class GroupsFragment extends Fragment implements IGetActivity, IPostActivity {
+public class GroupsFragment extends Fragment implements IGetActivity, IPostActivity, IOnBackPressed {
     private ListView listViewGroups;
     private FragmentGroupsBinding binding;
     private JSONObject account;
@@ -62,6 +65,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
     private GifImageView loadingGif;
     private Loading loading;
     private GroupFactory groupFactory;
+    private int exitCount = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -230,5 +234,23 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
         } else {
             new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        exitCount++;
+        if (exitCount == 2){
+            getActivity().finishAffinity();
+            System.exit(0);
+        } else {
+            Toast.makeText(getActivity(), "Press back again to exit",
+                    Toast.LENGTH_LONG).show();
+        }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                exitCount = 0;
+            }
+        }, 2500);
     }
 }
