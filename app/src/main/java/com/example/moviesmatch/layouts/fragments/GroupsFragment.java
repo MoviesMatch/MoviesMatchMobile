@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.moviesmatch.R;
-import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.databinding.FragmentGroupsBinding;
 import com.example.moviesmatch.interfaces.IGetActivity;
 import com.example.moviesmatch.interfaces.IOnBackPressed;
@@ -51,7 +50,6 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
     private GroupsAdapter adapter;
     private GetRequest getRequest;
     private PostRequest postRequest;
-    private CertificateByPass certificat;
     private String userGroupsURL ;
     private String createGroupURL = MoviesMatchURLS.createGroupURL;
     private String joinGroupURL = MoviesMatchURLS.joinGroupURL;
@@ -213,8 +211,6 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
         validation = new InputsValidation(getContext());
         loading = new Loading();
         groupFactory = new GroupFactory();
-        certificat = new CertificateByPass();
-        certificat.IngoreCertificate();
         account = jsonManipulator.newJSONObject(getArguments().getString("Account"));
         setUserIdToURL();
         token = jsonManipulator.getString(account, "token");
