@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.moviesmatch.interfaces.IGetActivity;
+import com.example.moviesmatch.interfaces.IOnBackPressed;
 import com.example.moviesmatch.interfaces.IPostActivity;
 import com.example.moviesmatch.interfaces.IRequestCallbackArray;
 import com.example.moviesmatch.layouts.activities.LoginActivity;
@@ -40,7 +41,7 @@ import java.util.ArrayList;
 import pl.droidsonroids.gif.GifImageView;
 
 
-public class GenresFragment extends Fragment implements IGetActivity, IPostActivity {
+public class GenresFragment extends Fragment implements IGetActivity, IPostActivity, IOnBackPressed {
 
     private FragmentGenresBinding binding;
     private ArrayList<Genre> listGenres;
@@ -208,5 +209,12 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     public void onPostErrorResponse(int errorCode) {
         loading.loadingGone(gifLoading, button);
         new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (parent.equals("MainActivity")){
+            ((MainActivity)getActivity()).replaceFrag(new GroupsFragment());
+        }
     }
 }
