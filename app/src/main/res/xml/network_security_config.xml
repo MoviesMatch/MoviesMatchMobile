@@ -6,4 +6,4 @@
             <certificates src="@raw/certificatserveur"/>
         </trust-anchors>
     </domain-config>
-</network-security-config>S
+</network-security-config>
