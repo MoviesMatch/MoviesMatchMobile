@@ -54,6 +54,18 @@ public class JSONManipulator {
         return value;
     }
 
+    public Boolean getBoolean(JSONObject jsonObject, String columnName) {
+        Boolean value = false;
+        try {
+            value = jsonObject.getBoolean(columnName);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return value;
+    }
+
+
+
     public JSONObject put(JSONObject jsonObject, String columnName, Object value) {
         try {
             jsonObject.put(columnName, value);
