@@ -18,7 +18,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.moviesmatch.R;
 import com.example.moviesmatch.databinding.FragmentAccountBinding;
+import com.example.moviesmatch.interfaces.IOnBackPressed;
 import com.example.moviesmatch.interfaces.IRequestCallback;
+import com.example.moviesmatch.layouts.activities.MainActivity;
+import com.example.moviesmatch.layouts.fragments.GroupsFragment;
 import com.example.moviesmatch.models.MoviesMatchURLS;
 import com.example.moviesmatch.requests.GetRequest;
 import com.example.moviesmatch.requests.PutRequest;
@@ -29,7 +32,7 @@ import com.example.moviesmatch.validation.JSONManipulator;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class AccountFragment extends Fragment {
+public class AccountFragment extends Fragment implements IOnBackPressed {
 
     private FragmentAccountBinding binding;
     private Button buttonChangePassword, buttonSave;
@@ -141,5 +144,10 @@ public class AccountFragment extends Fragment {
                 getFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        ((MainActivity)getActivity()).replaceFrag(new GroupsFragment());
     }
 }

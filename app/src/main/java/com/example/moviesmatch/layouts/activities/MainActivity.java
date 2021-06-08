@@ -26,6 +26,7 @@ import com.example.moviesmatch.layouts.fragments.SettingsFragment;
 import com.example.moviesmatch.layouts.fragments.SwipeFragment;
 import com.example.moviesmatch.interfaces.IGetActivity;
 import com.example.moviesmatch.layouts.fragments.account.AccountFragment;
+import com.example.moviesmatch.layouts.fragments.account.AccountPasswordFragment;
 import com.example.moviesmatch.validation.OnErrorResponse;
 import com.google.android.material.navigation.NavigationView;
 
@@ -134,6 +135,12 @@ public class MainActivity extends AppCompatActivity implements IGetActivity, IPo
                 ((MovieInfosFragment) f).onBackPressed();
             } else if (f != null && f instanceof GroupsFragment) {
                 ((GroupsFragment) f).onBackPressed();
+            } else if (f != null && f instanceof AccountFragment) {
+                ((AccountFragment) f).onBackPressed();
+            } else if (f != null && f instanceof AccountPasswordFragment) {
+                ((AccountPasswordFragment) f).onBackPressed();
+            } else if (f != null && f instanceof GenresFragment) {
+                ((GenresFragment) f).onBackPressed();
             }
         }
     }
