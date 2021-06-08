@@ -14,7 +14,6 @@ import android.widget.EditText;
 import com.example.moviesmatch.databinding.ActivityLoginBinding;
 import com.example.moviesmatch.models.MoviesMatchURLS;
 import com.example.moviesmatch.requests.PostRequest;
-import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.interfaces.IPostActivity;
 import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.validation.InputsValidation;
@@ -33,7 +32,6 @@ public class LoginActivity extends AppCompatActivity implements IPostActivity {
     private PostRequest postRequest;
     private JSONObject jsonObject;
     private InputsValidation validation;
-    private CertificateByPass certificat;
     private GifImageView loadingGif;
     private Button loginButton;
     private Loading loading;
@@ -94,8 +92,6 @@ public class LoginActivity extends AppCompatActivity implements IPostActivity {
         postRequest = new PostRequest(this);
         validation = new InputsValidation(this);
         loading = new Loading();
-        certificat = new CertificateByPass();
-        certificat.IngoreCertificate();
         PasswordsEye passwordsEye = new PasswordsEye();
         passwordsEye.passwordEye(editTextPsw);
     }

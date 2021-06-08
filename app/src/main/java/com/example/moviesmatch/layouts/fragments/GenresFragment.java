@@ -8,8 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +24,6 @@ import com.example.moviesmatch.layouts.adapters.GenreCheckboxAdapter;
 import com.example.moviesmatch.models.MoviesMatchURLS;
 import com.example.moviesmatch.requests.GetRequest;
 import com.example.moviesmatch.requests.PostRequest;
-import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.databinding.FragmentGenresBinding;
 import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.layouts.activities.CreateAccountActivity;
@@ -51,7 +48,6 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     private GetRequest getRequest;
     private JSONObject account;
     private JSONObject jsonAccountWithGenres;
-    private CertificateByPass certificateByPass;
     private GifImageView gifLoading;
     private Button button;
     private String parent;
@@ -186,8 +182,6 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     }
 
     private void setUp() {
-        certificateByPass = new CertificateByPass();
-        certificateByPass.IngoreCertificate();
         jsonManipulator = new JSONManipulator();
         loading = new Loading();
         account = jsonManipulator.newJSONObject(this.getArguments().getString("Account"));
