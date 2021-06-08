@@ -124,7 +124,6 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
     }
 
     private void setUserSwipeURL() {
-
         getMatchURL = MoviesMatchURLS.getMatchURL;
         getMovieURL = MoviesMatchURLS.getMoviesURL;
         String  usrId = "&userId=" + jsonManipulator.getJSONObjectGetString(account, "userDB","usrId");
@@ -257,20 +256,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
     public void onBackPressed() {
         ((MainActivity) getActivity()).replaceFrag(new GroupsFragment());
     }
-
-    /*public void isMatchVisibile(Boolean ok) {
-        if (!ok) {
-            buttonLeft.setEnabled(true);
-            buttonRight.setEnabled(true);
-            flingContainer.setEnabled(true);
-            layoutMatch.setVisibility(View.GONE);
-        } else {
-            buttonLeft.setEnabled(false);
-            buttonRight.setEnabled(false);
-            flingContainer.setEnabled(false);
-            layoutMatch.setVisibility(View.VISIBLE);
-        }
-    }*/
+    
 
     public void setUp() {
         buttonLeft = binding.buttonLeft;
