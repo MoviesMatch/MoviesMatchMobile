@@ -45,7 +45,6 @@ public class MovieInfosFragment extends Fragment implements IOnBackPressed {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentMovieInfosBinding.inflate(getLayoutInflater());
-
         return binding.getRoot();
     }
 

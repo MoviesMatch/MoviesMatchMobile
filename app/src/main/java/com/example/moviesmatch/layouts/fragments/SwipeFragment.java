@@ -80,6 +80,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
         setUp();
         getRequestListFilm();
         swipeButtons();
+        goToListMatch();
     }
 
     public void swipeButtons() {
@@ -118,7 +119,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
     }
 
     private void setUserSwipeURL() {
-        getMatchURL = MoviesMatchURLS.getMatchURL;
+        getMatchURL = MoviesMatchURLS.postMatchURL;
         getMovieURL = MoviesMatchURLS.getMoviesURL;
         String  usrId = "&userId=" + jsonManipulator.getJSONObjectGetString(account, "userDB","usrId");
         String  grpId = "?groupId="+ groupId;
@@ -249,6 +250,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
     @Override
     public void onBackPressed() {
         ((MainActivity) getActivity()).replaceFrag(new GroupsFragment());
+
     }
     
 
@@ -258,12 +260,17 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
         flingContainer = binding.frame;
         loadingGif = binding.swipeLoadingGif;
 
+
         view = View.inflate(getContext(), R.layout.layout_match,null);
+        ((MainActivity)getActivity()).imageMatchVisible();
+
         buttonDismiss =  view.findViewById(R.id.buttonDismiss);
         buttonMoreInfo = view.findViewById(R.id.buttonMoreInfo);
         imageViewPoster = view.findViewById(R.id.imageViewPoster);
         textViewTitleMovie = view.findViewById(R.id.textViewTitleMovie);
         match = new Dialog(getContext());
+
+
 
         movies = new ArrayList<>();
         getRequest = new GetRequest((MainActivity) getActivity());
@@ -271,6 +278,11 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
         loading = new Loading();
         jsonManipulator = new JSONManipulator();
     }
+
+    private void goToListMatch(){
+        ((MainActivity)getActivity()).imageMatchClick(token, groupId);
+    }
+
 
     private void stopButtonSpamming() {
         if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
