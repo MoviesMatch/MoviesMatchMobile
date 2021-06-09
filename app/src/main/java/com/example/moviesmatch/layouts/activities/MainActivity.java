@@ -157,15 +157,19 @@ public class MainActivity extends AppCompatActivity implements IGetActivity, IPo
             @Override
             public void onClick(View v) {
                 imageMatch.setVisibility(View.GONE);
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                MatchFragment matchFragment = new MatchFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("GroupId", groupId);
-                bundle.putString("Token", token);
-                matchFragment.setArguments(bundle);
-                transaction.replace(R.id.frame, matchFragment).addToBackStack(null).commit();
+                seeMatches(token, groupId);
             }
         });
+    }
+
+    public void seeMatches(String token, String groupId){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        MatchFragment matchFragment = new MatchFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("GroupId", groupId);
+        bundle.putString("Token", token);
+        matchFragment.setArguments(bundle);
+        transaction.replace(R.id.frame, matchFragment).addToBackStack(null).commit();
     }
 
     @Override
