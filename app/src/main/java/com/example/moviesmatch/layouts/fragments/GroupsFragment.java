@@ -122,6 +122,8 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
             public void onClick(View view) {
                 if (validation.validateInputNotEmpty(createGroupEditText.getText().toString(), "Create Group", "You must give a name to your group")) {
                     createGroup();
+                    createGroupEditText.setText("");
+                    createGroupEditText.clearFocus();
                 }
             }
         });
@@ -133,6 +135,8 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
             public void onClick(View v) {
                 if (validation.validateInputNotEmpty(joinGroupEditText.getText().toString(), "Join Group", "You must write a valid code")) {
                     joinGroup();
+                    joinGroupEditText.setText("");
+                    joinGroupEditText.clearFocus();
                 }
             }
         });

@@ -140,6 +140,8 @@ public class AccountFragment extends Fragment implements IOnBackPressed, IDelete
         putRequest.putRequest(updAccount, URLUpdate, token, new IRequestCallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
+                editTextFirstName.clearFocus();
+                editTextLastName.clearFocus();
                 new AlertDialog.Builder(getContext()).setTitle("Success!").setMessage("Your infos has been saved.").show();
             }
         });
