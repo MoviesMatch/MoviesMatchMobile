@@ -155,6 +155,7 @@ public class InfoGroupFragment extends Fragment implements IGetActivity, IPostAc
                     @Override
                     public void onSuccess(JSONObject jsonObject) {
                         loading.loadingGone(loadingGif);
+                        groupName.clearFocus();
                         new AlertDialog.Builder(getContext()).setTitle("Success").setMessage("The group name has been changed to " + newGroupName).show();
                     }
                 });
