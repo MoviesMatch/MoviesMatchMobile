@@ -1,5 +1,6 @@
 package com.example.moviesmatch.layouts.fragments.account;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +36,7 @@ import org.json.JSONObject;
 public class AccountFragment extends Fragment implements IOnBackPressed {
 
     private FragmentAccountBinding binding;
-    private Button buttonChangePassword, buttonSave;
+    private Button buttonChangePassword, buttonSave, buttonDeleteUser;
     private EditText editTextFirstName, editTextLastName;
     private TextView textViewEmail;
     private Spinner spinnerCountry;
@@ -62,6 +63,7 @@ public class AccountFragment extends Fragment implements IOnBackPressed {
         getAccountById();
         goToChangePassword();
         saveChanges();
+        deleteUser();
     }
 
     private void setUp() {
@@ -71,6 +73,7 @@ public class AccountFragment extends Fragment implements IOnBackPressed {
         spinnerCountry = binding.spinnerCountry;
         buttonChangePassword = binding.buttonChangePassword;
         buttonSave = binding.buttonSave;
+        buttonDeleteUser = binding.buttonDeleteUser;
         updAccount = new JSONObject();
         countryAbbreviation = new CountryAbbreviation();
         jsonManipulator = new JSONManipulator();
@@ -144,6 +147,37 @@ public class AccountFragment extends Fragment implements IOnBackPressed {
                 getFragmentManager().beginTransaction().replace(R.id.frame, fragment).addToBackStack(null).commit();
             }
         });
+    }
+
+    private void deleteUser(){
+            buttonDeleteUser.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                    builder.setTitle("Delete my account");
+                    builder.setMessage("Are you sure you want to delete your account ?");
+
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int which) {
+
+
+                            dialog.dismiss();
+                        }
+                    });
+
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+            });
     }
 
     @Override
