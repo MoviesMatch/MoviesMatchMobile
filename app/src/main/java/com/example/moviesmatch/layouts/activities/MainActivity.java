@@ -96,12 +96,6 @@ public class MainActivity extends AppCompatActivity implements IGetActivity, IPo
                     case R.id.genres:
                         frag = new GenresFragment();
                         break;
-                    case R.id.settings:
-                        frag = new SettingsFragment();
-                        break;
-                    case R.id.donate:
-                        frag = new DonateFragment();
-                        break;
                     case R.id.disconnect:
                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
                         break;

@@ -16,14 +16,6 @@
             android:icon="@drawable/ic_baseline_movie_filter_24"
             android:title="Genres" />
         <item
-            android:id="@+id/settings"
-            android:icon="@drawable/ic_baseline_settings_24"
-            android:title="Settings" />
-        <item
-            android:id="@+id/donate"
-            android:icon="@drawable/ic_baseline_attach_money_24"
-            android:title="Donate" />
-        <item
             android:id="@+id/disconnect"
             android:icon="@drawable/ic_baseline_exit_to_app_24"
             android:title="Disconnect" />
