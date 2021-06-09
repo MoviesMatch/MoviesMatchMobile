@@ -24,6 +24,7 @@ import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.layouts.activities.MainActivity;
 import com.example.moviesmatch.layouts.adapters.RecyclerViewAdapter;
 import com.example.moviesmatch.models.Group;
+import com.example.moviesmatch.models.Movie;
 import com.example.moviesmatch.models.MoviesMatchURLS;
 import com.example.moviesmatch.requests.DeleteRequest;
 import com.example.moviesmatch.requests.GetRequest;
@@ -70,6 +71,7 @@ public class InfoGroupFragment extends Fragment implements IGetActivity, IPostAc
 
     private void getGroupInfo(){
         loading.loadingVisible(loadingGif);
+        getGroupInfoURL = MoviesMatchURLS.getGroupInfoURL;
         getGroupInfoURL += group.getGroupId();
         getRequest.getRequest(getGroupInfoURL, token, new IRequestCallback() {
             @Override
