@@ -2,6 +2,6 @@ package com.example.moviesmatch.interfaces;
 
 import com.example.moviesmatch.models.Group;
 
-public interface OnClickGroupInfoListener {
+public interface IOnClickGroupInfoListener {
     void onGroupInfoClicked(Group group);
 }

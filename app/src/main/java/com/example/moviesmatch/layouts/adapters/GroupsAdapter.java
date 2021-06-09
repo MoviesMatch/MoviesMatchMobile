@@ -12,12 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.moviesmatch.R;
-import com.example.moviesmatch.interfaces.OnClickGroupInfoListener;
-import com.example.moviesmatch.layouts.activities.MainActivity;
+import com.example.moviesmatch.interfaces.IOnClickGroupInfoListener;
 import com.example.moviesmatch.models.Group;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,13 +23,13 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
 
     private Context mContext;
     private List<Group> groupsList;
-    private OnClickGroupInfoListener onClickGroupInfoListener;
+    private IOnClickGroupInfoListener IOnClickGroupInfoListener;
 
-    public GroupsAdapter(@NonNull Context context, ArrayList<Group> list, OnClickGroupInfoListener onClickGroupInfoListener) {
+    public GroupsAdapter(@NonNull Context context, ArrayList<Group> list, IOnClickGroupInfoListener IOnClickGroupInfoListener) {
         super(context, 0, list);
         mContext = context;
         groupsList = list;
-        this.onClickGroupInfoListener = onClickGroupInfoListener;
+        this.IOnClickGroupInfoListener = IOnClickGroupInfoListener;
         Collections.sort(groupsList);
     }
 
@@ -64,7 +60,7 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickGroupInfoListener.onGroupInfoClicked(group);
+                IOnClickGroupInfoListener.onGroupInfoClicked(group);
             }
         });
     }
