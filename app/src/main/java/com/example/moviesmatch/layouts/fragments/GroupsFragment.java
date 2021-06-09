@@ -108,7 +108,7 @@ public class GroupsFragment extends Fragment implements IGetActivity, IPostActiv
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                adapter = new GroupsAdapter(getContext(), arrayListGroups);
+                adapter = new GroupsAdapter(getContext(), arrayListGroups, (MainActivity)getActivity());
                 listViewGroups.setAdapter(adapter);
                 amountOfGroups();
                 loading.loadingGone(loadingGif, createGroupButton, joinGroupButton);

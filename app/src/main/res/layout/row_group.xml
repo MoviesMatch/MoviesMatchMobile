@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/linearLayoutGroup"
         android:layout_width="match_parent"
         android:layout_height="70sp"
         android:orientation="vertical"
@@ -35,6 +36,17 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageGroupInfo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="0.5:1"
+        android:layout_marginEnd="15dp"
+        app:srcCompat="@drawable/ic_baseline_info_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/linearLayoutGroup"
+        app:layout_constraintBottom_toBottomOf="@id/linearLayoutGroup"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
