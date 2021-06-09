@@ -8,8 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.moviesmatch.interfaces.IGetActivity;
+import com.example.moviesmatch.interfaces.IOnBackPressed;
 import com.example.moviesmatch.interfaces.IPostActivity;
 import com.example.moviesmatch.interfaces.IRequestCallbackArray;
 import com.example.moviesmatch.layouts.activities.LoginActivity;
@@ -26,7 +25,6 @@ import com.example.moviesmatch.layouts.adapters.GenreCheckboxAdapter;
 import com.example.moviesmatch.models.MoviesMatchURLS;
 import com.example.moviesmatch.requests.GetRequest;
 import com.example.moviesmatch.requests.PostRequest;
-import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.databinding.FragmentGenresBinding;
 import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.layouts.activities.CreateAccountActivity;
@@ -43,7 +41,7 @@ import java.util.ArrayList;
 import pl.droidsonroids.gif.GifImageView;
 
 
-public class GenresFragment extends Fragment implements IGetActivity, IPostActivity {
+public class GenresFragment extends Fragment implements IGetActivity, IPostActivity, IOnBackPressed {
 
     private FragmentGenresBinding binding;
     private ArrayList<Genre> listGenres;
@@ -51,7 +49,6 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     private GetRequest getRequest;
     private JSONObject account;
     private JSONObject jsonAccountWithGenres;
-    private CertificateByPass certificateByPass;
     private GifImageView gifLoading;
     private Button button;
     private String parent;
@@ -186,8 +183,6 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     }
 
     private void setUp() {
-        certificateByPass = new CertificateByPass();
-        certificateByPass.IngoreCertificate();
         jsonManipulator = new JSONManipulator();
         loading = new Loading();
         account = jsonManipulator.newJSONObject(this.getArguments().getString("Account"));
@@ -214,5 +209,12 @@ public class GenresFragment extends Fragment implements IGetActivity, IPostActiv
     public void onPostErrorResponse(int errorCode) {
         loading.loadingGone(gifLoading, button);
         new AlertDialog.Builder(getContext()).setTitle("Error").setMessage("Make sure you are connected to an internet connection and try again").show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (parent.equals("MainActivity")){
+            ((MainActivity)getActivity()).replaceFrag(new GroupsFragment());
+        }
     }
 }

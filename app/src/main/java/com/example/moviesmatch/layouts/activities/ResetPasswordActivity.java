@@ -10,21 +10,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-import com.example.moviesmatch.certificate.CertificateByPass;
-import com.example.moviesmatch.databinding.ActivityLoginBinding;
 import com.example.moviesmatch.databinding.ActivityResetPasswordBinding;
 import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.models.MoviesMatchURLS;
 import com.example.moviesmatch.requests.GetRequest;
 import com.example.moviesmatch.validation.InputsValidation;
-import com.example.moviesmatch.validation.JSONManipulator;
 import com.example.moviesmatch.validation.Loading;
 
 import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
 import pl.droidsonroids.gif.GifImageView;
 
@@ -34,7 +27,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
     private ActivityResetPasswordBinding binding;
     private EditText editTextEmail;
     private InputsValidation validation;
-    private CertificateByPass certificat;
     private GetRequest getRequest;
     private GifImageView loadingGif;
     private Loading loading;
@@ -55,8 +47,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
         loading = new Loading();
         loadingGif = binding.resetPswLoadingGif;
         getRequest = new GetRequest(this);
-        certificat = new CertificateByPass();
-        certificat.IngoreCertificate();
     }
 
 

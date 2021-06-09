@@ -13,6 +13,7 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.moviesmatch.certificate.ValidateCertificate;
 import com.example.moviesmatch.interfaces.IGetActivity;
 import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.interfaces.IRequestCallbackArray;
@@ -32,9 +33,12 @@ public class GetRequest {
     private WeakReference<AppCompatActivity> weakReference;
     private JsonObjectRequest jsonObjectRequest;
     private JsonArrayRequest jsonArrayRequest;
+    private ValidateCertificate validateCertificate;
     protected AppCompatActivity activity;
 
     public GetRequest(AppCompatActivity activity) {
+        validateCertificate = new ValidateCertificate();
+        validateCertificate.validateCertificate();
         weakReference = new WeakReference<AppCompatActivity>(activity);
         this.activity = weakReference.get();
         queue = Volley.newRequestQueue(activity);

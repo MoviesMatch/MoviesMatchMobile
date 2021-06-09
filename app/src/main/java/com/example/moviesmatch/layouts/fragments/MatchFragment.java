@@ -1,6 +1,6 @@
 package com.example.moviesmatch.layouts.fragments;
 
-import android.graphics.Bitmap;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,31 +13,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.moviesmatch.R;
-import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.databinding.FragmentMatchBinding;
-import com.example.moviesmatch.databinding.FragmentSwipeBinding;
 import com.example.moviesmatch.interfaces.IOnBackPressed;
-import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.interfaces.IRequestCallbackArray;
 import com.example.moviesmatch.layouts.activities.MainActivity;
-import com.example.moviesmatch.layouts.adapters.RecyclerViewAdapter;
 import com.example.moviesmatch.layouts.adapters.RecyclerViewMatchAdapter;
 import com.example.moviesmatch.models.Movie;
 import com.example.moviesmatch.models.MoviesMatchURLS;
 import com.example.moviesmatch.models.factory.MovieFactory;
 import com.example.moviesmatch.requests.GetRequest;
-import com.example.moviesmatch.validation.JSONManipulator;
 import com.example.moviesmatch.validation.Loading;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
+
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 import pl.droidsonroids.gif.GifImageView;
 
@@ -62,7 +55,6 @@ public class MatchFragment extends Fragment implements IOnBackPressed {
 
     private GetRequest getRequest;
 
-    private CertificateByPass certificat;
 
     private Loading loading;
     private GifImageView loadingGif;
@@ -93,8 +85,6 @@ public class MatchFragment extends Fragment implements IOnBackPressed {
         moviesMatchURLS = new MoviesMatchURLS();
 
         getRequest = new GetRequest((AppCompatActivity) getContext());
-        certificat = new CertificateByPass();
-        certificat.IngoreCertificate();
 
         loading = new Loading();
     }

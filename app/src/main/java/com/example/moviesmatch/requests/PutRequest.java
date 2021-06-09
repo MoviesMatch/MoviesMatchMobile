@@ -12,6 +12,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.moviesmatch.certificate.ValidateCertificate;
 import com.example.moviesmatch.interfaces.IPutActivity;
 import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.models.MoviesMatchURLS;
@@ -28,9 +29,12 @@ public class PutRequest {
     private RequestQueue queue;
     private WeakReference<AppCompatActivity> weakReference;
     private JsonObjectRequest jsonObjectRequest;
+    private ValidateCertificate validateCertificate;
     protected AppCompatActivity activity;
 
     public PutRequest(AppCompatActivity activity) {
+        validateCertificate = new ValidateCertificate();
+        validateCertificate.validateCertificate();
         weakReference = new WeakReference<AppCompatActivity>(activity);
         this.activity = weakReference.get();
         queue = Volley.newRequestQueue(activity);

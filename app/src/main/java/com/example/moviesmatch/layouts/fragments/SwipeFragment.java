@@ -29,7 +29,6 @@ import com.example.moviesmatch.models.Movie;
 import com.example.moviesmatch.models.MoviesMatchURLS;
 import com.example.moviesmatch.models.factory.MovieFactory;
 import com.example.moviesmatch.requests.GetRequest;
-import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.databinding.FragmentSwipeBinding;
 import com.example.moviesmatch.interfaces.IOnBackPressed;
 import com.example.moviesmatch.layouts.activities.MainActivity;
@@ -55,7 +54,6 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
     private PostRequest postRequest;
     private ArrayList<Movie> movies;
     private FragmentSwipeBinding binding;
-    private CertificateByPass certificat;
     private String getMovieURL, getMatchURL, token;
     private JSONManipulator jsonManipulator;
     private JSONObject account;
@@ -279,8 +277,6 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
         postRequest = new PostRequest((MainActivity) getActivity());
         loading = new Loading();
         jsonManipulator = new JSONManipulator();
-        certificat = new CertificateByPass();
-        certificat.IngoreCertificate();
     }
 
     private void goToListMatch(){

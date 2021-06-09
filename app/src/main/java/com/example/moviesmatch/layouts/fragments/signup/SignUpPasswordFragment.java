@@ -4,11 +4,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +19,6 @@ import com.example.moviesmatch.interfaces.IPostActivity;
 import com.example.moviesmatch.layouts.fragments.GenresFragment;
 import com.example.moviesmatch.models.MoviesMatchURLS;
 import com.example.moviesmatch.requests.PostRequest;
-import com.example.moviesmatch.certificate.CertificateByPass;
 import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.layouts.activities.CreateAccountActivity;
 import com.example.moviesmatch.validation.CountryAbbreviation;
@@ -44,7 +40,6 @@ public class SignUpPasswordFragment extends Fragment implements IPostActivity, I
     JSONObject jsonAccount;
     InputsValidation inputsValidation;
     CountryAbbreviation countryAbbreviation;
-    CertificateByPass certificateByPass;
     GifImageView loadingGif;
     Button nextButton;
     ConstraintLayout constraintLayout;
@@ -116,8 +111,6 @@ public class SignUpPasswordFragment extends Fragment implements IPostActivity, I
     }
 
     private void setup() {
-        certificateByPass = new CertificateByPass();
-        certificateByPass.IngoreCertificate();
         loadingGif = binding.signUpLoadingGif;
         postRequest = new PostRequest((CreateAccountActivity) getActivity());
         jsonAccount = new JSONObject();
