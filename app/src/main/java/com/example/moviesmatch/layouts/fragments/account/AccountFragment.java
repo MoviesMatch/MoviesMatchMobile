@@ -2,6 +2,7 @@ package com.example.moviesmatch.layouts.fragments.account;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import com.example.moviesmatch.interfaces.IRequestCallback;
 import com.example.moviesmatch.layouts.activities.MainActivity;
 import com.example.moviesmatch.layouts.fragments.GroupsFragment;
 import com.example.moviesmatch.models.MoviesMatchURLS;
+import com.example.moviesmatch.requests.DeleteRequest;
 import com.example.moviesmatch.requests.GetRequest;
 import com.example.moviesmatch.requests.PutRequest;
 import com.example.moviesmatch.validation.CountryAbbreviation;
@@ -45,9 +47,11 @@ public class AccountFragment extends Fragment implements IOnBackPressed {
     private CountryAbbreviation countryAbbreviation;
     private PutRequest putRequest;
     private GetRequest getRequest;
+    private DeleteRequest deleteRequest;
     private InputsValidation inputsValidation;
     private String URLUpdate = MoviesMatchURLS.updateUserURL;
     private String URLGetAccount;
+    private String URLDeleteAccount;
     private String token;
 
     @Override
@@ -80,6 +84,7 @@ public class AccountFragment extends Fragment implements IOnBackPressed {
         account = jsonManipulator.newJSONObject(getArguments().getString("Account"));
         putRequest = new PutRequest((AppCompatActivity) getActivity());
         getRequest = new GetRequest((AppCompatActivity) getActivity());
+        deleteRequest = new DeleteRequest((AppCompatActivity) getActivity());
         inputsValidation = new InputsValidation(getContext());
         token = jsonManipulator.getString(account, "token");
     }
@@ -150,6 +155,7 @@ public class AccountFragment extends Fragment implements IOnBackPressed {
     }
 
     private void deleteUser(){
+
             buttonDeleteUser.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -158,10 +164,20 @@ public class AccountFragment extends Fragment implements IOnBackPressed {
                     builder.setTitle("Delete my account");
                     builder.setMessage("Are you sure you want to delete your account ?");
 
+                    // Set up the input
+                    final EditText input = new EditText(getContext());
+
+                    input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    builder.setView(input);
+
+
+                    URLDeleteAccount = MoviesMatchURLS.deleteUserURL;
+                    URLDeleteAccount += 
+
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
                         public void onClick(DialogInterface dialog, int which) {
-
+                            deleteRequest.deleteRequest();
 
                             dialog.dismiss();
                         }
