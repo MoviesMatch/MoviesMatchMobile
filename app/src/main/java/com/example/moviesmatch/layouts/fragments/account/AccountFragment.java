@@ -109,8 +109,6 @@ public class AccountFragment extends Fragment implements IOnBackPressed {
             @Override
             public void onClick(View v) {
                 if (inputsValidation.validateName(editTextFirstName.getText().toString(), editTextLastName.getText().toString())) {
-                    editTextFirstName.clearFocus();
-                    editTextLastName.clearFocus();
                     try {
                         updAccount.put("usrId", jsonManipulator.getJSONObjectGetString(account, "userDB", "usrId"));
                         updAccount.put("usrFirstname", editTextFirstName.getText().toString());
@@ -130,6 +128,8 @@ public class AccountFragment extends Fragment implements IOnBackPressed {
         putRequest.putRequest(updAccount, URLUpdate, token, new IRequestCallback() {
             @Override
             public void onSuccess(JSONObject jsonObject) {
+                editTextFirstName.clearFocus();
+                editTextLastName.clearFocus();
                 new AlertDialog.Builder(getContext()).setTitle("Success!").setMessage("Your infos has been saved.").show();
             }
         });
