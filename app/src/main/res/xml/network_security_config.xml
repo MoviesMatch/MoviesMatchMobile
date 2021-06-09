@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config>
+        <domain includeSubdomains="true">EQ2.420-6D9-LI.E2021.info.cegeplimoilou.ca</domain>
+        <trust-anchors>
+            <certificates src="@raw/certificatserveur"/>
+        </trust-anchors>
+    </domain-config>
+</network-security-config>
