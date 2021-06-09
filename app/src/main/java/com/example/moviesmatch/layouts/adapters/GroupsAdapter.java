@@ -5,16 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.moviesmatch.R;
+import com.example.moviesmatch.interfaces.IOnClickGroupInfoListener;
 import com.example.moviesmatch.models.Group;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,11 +23,13 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
 
     private Context mContext;
     private List<Group> groupsList;
+    private IOnClickGroupInfoListener IOnClickGroupInfoListener;
 
-    public GroupsAdapter(@NonNull Context context, ArrayList<Group> list) {
+    public GroupsAdapter(@NonNull Context context, ArrayList<Group> list, IOnClickGroupInfoListener IOnClickGroupInfoListener) {
         super(context, 0, list);
         mContext = context;
         groupsList = list;
+        this.IOnClickGroupInfoListener = IOnClickGroupInfoListener;
         Collections.sort(groupsList);
     }
 
@@ -46,10 +47,21 @@ public class GroupsAdapter extends ArrayAdapter<Group> {
         Group currentGroup = groupsList.get(position);
         TextView nameGroup = row.findViewById(R.id.textViewNameGroup);
         TextView joinCode = row.findViewById(R.id.textViewJoinCode);
+        ImageView imageInfoGroup = row.findViewById(R.id.imageGroupInfo);
+        infoGroupOnClick(imageInfoGroup, currentGroup);
 
         nameGroup.setText(currentGroup.getGroupName());
         joinCode.setText("Join code: "  + currentGroup.getGroupJoinCode());
 
         return row;
+    }
+
+    public void infoGroupOnClick(ImageView imageView, Group group){
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                IOnClickGroupInfoListener.onGroupInfoClicked(group);
+            }
+        });
     }
 }

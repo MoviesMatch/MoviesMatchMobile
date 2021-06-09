@@ -1,9 +1,12 @@
 package com.example.moviesmatch.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class Group implements Comparator<Group>, Comparable<Group> {
+public class Group implements Comparator<Group>, Comparable<Group>, Parcelable {
     String groupId, groupJoinCode, groupName;
     ArrayList<String> moviesGroup, members;
 
@@ -69,5 +72,15 @@ public class Group implements Comparator<Group>, Comparable<Group> {
     @Override
     public int compare(Group o1, Group o2) {
         return o1.getGroupName().compareTo(o2.getGroupName());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
     }
 }

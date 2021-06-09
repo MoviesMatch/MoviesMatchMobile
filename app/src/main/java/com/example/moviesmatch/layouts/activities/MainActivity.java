@@ -14,16 +14,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.moviesmatch.interfaces.IDeleteActivity;
 import com.example.moviesmatch.interfaces.IOnClickMatchListener;
 import com.example.moviesmatch.interfaces.IPostActivity;
 import com.example.moviesmatch.interfaces.IPutActivity;
-import com.example.moviesmatch.layouts.fragments.DonateFragment;
+import com.example.moviesmatch.interfaces.IOnClickGroupInfoListener;
 import com.example.moviesmatch.layouts.fragments.GenresFragment;
 import com.example.moviesmatch.layouts.fragments.GroupsFragment;
+import com.example.moviesmatch.layouts.fragments.InfoGroupFragment;
 import com.example.moviesmatch.layouts.fragments.MatchFragment;
 import com.example.moviesmatch.R;
 import com.example.moviesmatch.layouts.fragments.MovieInfosFragment;
-import com.example.moviesmatch.layouts.fragments.SettingsFragment;
 import com.example.moviesmatch.layouts.fragments.SwipeFragment;
 import com.example.moviesmatch.interfaces.IGetActivity;
 import com.example.moviesmatch.layouts.fragments.account.AccountFragment;
@@ -31,13 +32,12 @@ import com.example.moviesmatch.layouts.fragments.account.AccountFragment;
 import com.example.moviesmatch.models.Movie;
 
 import com.example.moviesmatch.layouts.fragments.account.AccountPasswordFragment;
-
+import com.example.moviesmatch.models.Group;
 import com.example.moviesmatch.validation.OnErrorResponse;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.List;
-
-public class MainActivity extends AppCompatActivity implements IGetActivity, IPostActivity, IPutActivity, IOnClickMatchListener {
+public class MainActivity extends AppCompatActivity implements IGetActivity, IPostActivity, IPutActivity, IDeleteActivity, IOnClickMatchListener, IOnClickGroupInfoListener {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
@@ -142,6 +142,8 @@ public class MainActivity extends AppCompatActivity implements IGetActivity, IPo
                 ((AccountPasswordFragment) f).onBackPressed();
             } else if (f != null && f instanceof GenresFragment) {
                 ((GenresFragment) f).onBackPressed();
+            } else if (f != null && f instanceof InfoGroupFragment) {
+                ((InfoGroupFragment) f).onBackPressed();
             }
         }
     }
@@ -194,5 +196,23 @@ public class MainActivity extends AppCompatActivity implements IGetActivity, IPo
     @Override
     public void onPutErrorResponse(int errorCode) {
         onErrorResponse.onPutErrorResponse(errorCode, this);
+    }
+
+    @Override
+    public void onDeleteErrorResponse(int errorCode) {
+        onErrorResponse.onDeleteErrorResponse(errorCode, this);
+    }
+
+    @Override
+    public void onGroupInfoClicked(Group group) {
+        Fragment infoGroupFragment = new InfoGroupFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        Bundle accountBundle = new Bundle();
+        accountBundle.putString("Account", account);
+        accountBundle.putParcelable("Group", group);
+        infoGroupFragment.setArguments(accountBundle);
+        transaction.replace(R.id.frame, infoGroupFragment);
+        transaction.commit();
+        drawerLayout.closeDrawers();
     }
 }

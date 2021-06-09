@@ -24,7 +24,7 @@ public class MoviesMatchURLS {
     public static String joinGroupURL = "/api/group/joinGroup"; //Post
     public static String getGroupInfoURL = "/api/group/getGroupInfo?groupId="; //Get
     public static String leaveGroupURL = "/api/group/leaveGroup"; //Delete
-    public static String changeGroupNameURL = "/api/group/leaveGroup"; //Post
+    public static String changeGroupNameURL = "/api/group/changeGroupName"; //Post
     public static String getMatchesURL = "/api/group/getMatches"; //Get
     public static String deleteMatchURL = "/api/group/deleteMatch"; //Delete
 
