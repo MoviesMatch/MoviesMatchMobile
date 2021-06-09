@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 
@@ -13,14 +11,12 @@ import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.moviesmatch.R;
@@ -86,6 +82,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
         setUp();
         getRequestListFilm();
         swipeButtons();
+        goToListMatch();
     }
 
     public void swipeButtons() {
@@ -124,7 +121,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
     }
 
     private void setUserSwipeURL() {
-        getMatchURL = MoviesMatchURLS.getMatchURL;
+        getMatchURL = MoviesMatchURLS.postMatchURL;
         getMovieURL = MoviesMatchURLS.getMoviesURL;
         String  usrId = "&userId=" + jsonManipulator.getJSONObjectGetString(account, "userDB","usrId");
         String  grpId = "?groupId="+ groupId;
@@ -255,6 +252,7 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
     @Override
     public void onBackPressed() {
         ((MainActivity) getActivity()).replaceFrag(new GroupsFragment());
+
     }
     
 
@@ -264,12 +262,17 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
         flingContainer = binding.frame;
         loadingGif = binding.swipeLoadingGif;
 
+
         view = View.inflate(getContext(), R.layout.layout_match,null);
+        ((MainActivity)getActivity()).imageMatchVisible();
+
         buttonDismiss =  view.findViewById(R.id.buttonDismiss);
         buttonMoreInfo = view.findViewById(R.id.buttonMoreInfo);
         imageViewPoster = view.findViewById(R.id.imageViewPoster);
         textViewTitleMovie = view.findViewById(R.id.textViewTitleMovie);
         match = new Dialog(getContext());
+
+
 
         movies = new ArrayList<>();
         getRequest = new GetRequest((MainActivity) getActivity());
@@ -279,6 +282,11 @@ public class SwipeFragment extends Fragment implements IOnBackPressed, IGetActiv
         certificat = new CertificateByPass();
         certificat.IngoreCertificate();
     }
+
+    private void goToListMatch(){
+        ((MainActivity)getActivity()).imageMatchClick(token, groupId);
+    }
+
 
     private void stopButtonSpamming() {
         if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {

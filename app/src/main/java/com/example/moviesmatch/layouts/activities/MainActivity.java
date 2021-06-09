@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.moviesmatch.interfaces.IOnClickMatchListener;
 import com.example.moviesmatch.interfaces.IPostActivity;
 import com.example.moviesmatch.interfaces.IPutActivity;
 import com.example.moviesmatch.layouts.fragments.DonateFragment;
@@ -26,12 +27,13 @@ import com.example.moviesmatch.layouts.fragments.SettingsFragment;
 import com.example.moviesmatch.layouts.fragments.SwipeFragment;
 import com.example.moviesmatch.interfaces.IGetActivity;
 import com.example.moviesmatch.layouts.fragments.account.AccountFragment;
+import com.example.moviesmatch.models.Movie;
 import com.example.moviesmatch.validation.OnErrorResponse;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements IGetActivity, IPostActivity, IPutActivity {
+public class MainActivity extends AppCompatActivity implements IGetActivity, IPostActivity, IPutActivity, IOnClickMatchListener {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
@@ -134,8 +136,41 @@ public class MainActivity extends AppCompatActivity implements IGetActivity, IPo
                 ((MovieInfosFragment) f).onBackPressed();
             } else if (f != null && f instanceof GroupsFragment) {
                 ((GroupsFragment) f).onBackPressed();
+            } else if (f != null && f instanceof MatchFragment) {
+                ((MatchFragment) f).onBackPressed();
             }
         }
+    }
+
+    public void imageMatchVisible(){
+        imageMatch.setVisibility(View.VISIBLE);
+    }
+
+    public void imageMatchClick(String token, String groupId){
+        imageMatch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageMatch.setVisibility(View.GONE);
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                MatchFragment matchFragment = new MatchFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("GroupId", groupId);
+                bundle.putString("Token", token);
+                matchFragment.setArguments(bundle);
+                transaction.replace(R.id.frame, matchFragment).addToBackStack(null).commit();
+            }
+        });
+    }
+
+    @Override
+    public void matchFragmentFromListMatch(Movie o){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        MovieInfosFragment movieInfosFragment = new MovieInfosFragment();
+        Bundle bundle = new Bundle();
+        Movie movie = (Movie) o;
+        bundle.putParcelable("Movie", movie);
+        movieInfosFragment.setArguments(bundle);
+        transaction.replace(R.id.frame, movieInfosFragment).addToBackStack(null).commit();
     }
 
     public void matchFragment(View view) {
